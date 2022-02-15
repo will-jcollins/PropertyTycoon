@@ -8,6 +8,12 @@ public class Action implements Actionable {
     private final int val1;
     private final int val2;
 
+    /**
+     * Constructs an action based on an input string in the format "ACTION ACTIONVALUE1 ACTIONVALUE1"
+     *
+     * @param in string action is constructed based on
+     * @author Will Collins
+     */
     public Action(String in) {
         in = in.toUpperCase();
         ActCode[] values = ActCode.values();
@@ -33,6 +39,14 @@ public class Action implements Actionable {
         }
     }
 
+    /**
+     * Constructs an Action using parameters as attribute values
+     *
+     * @param actcode process action represents
+     * @param val1 value 1 for the action
+     * @param val2 value 2 for the action
+     * @author Will Collins
+     */
     public Action(ActCode actcode, int val1, int val2) {
         this.actcode = actcode;
         this.val1 = val1;
