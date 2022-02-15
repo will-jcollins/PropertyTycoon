@@ -1,4 +1,7 @@
-package model;
+package model.board;
+
+import model.actions.Action;
+import model.actions.Actionable;
 
 public class ActionTile extends Tile implements Actionable {
 

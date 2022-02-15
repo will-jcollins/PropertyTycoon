@@ -1,5 +1,6 @@
-package model;
+package model.board;
 
+import model.actions.Action;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,19 +10,12 @@ import java.util.Arrays;
 
 public class Board {
     private static final String DATAPATH = System.getProperty("user.dir") + "/assets/jsons/BoardData.json";
-    private static final int GOREWARD = 200;
     public static final int SIZE = 40;
-
-    private static final int[] UTILITYFACTORS = new int[] {4,10};
 
     private Tile[] tiles;
 
-    private Dice dice = new Dice(2,6);
-
-    private Player[] players;
-    private int currentPlayer = 0;
-
-    public Board(int humanPlayers, int AIPlayers) throws IOException {
+    public Board() throws IOException {
+        // Initialise and populate array with empty tiles (avoid null pointer exceptions)
         tiles = new Tile[SIZE];
         Arrays.fill(tiles, new Tile("Empty"));
 
@@ -87,65 +81,6 @@ public class Board {
             }
             tiles[obj.getInt("position")] = tile;
         }
-
-        players = new Player[humanPlayers + AIPlayers];
-
-        for (int i = 0; i < humanPlayers; i++) {
-            // TODO: insert human players into array
-        }
-
-        for (int i = 0; i < AIPlayers; i++) {
-            // TODO: insert AI players into array
-        }
-    }
-
-    public void takeTurn() {
-        dice.roll();
-
-        int prevPos = players[currentPlayer].getPos();
-        players[currentPlayer].movePlayer(dice.getRollTotal());
-
-        if (prevPos > players[currentPlayer].getPos()) {
-            players[currentPlayer].addToCurrency(GOREWARD);
-        }
-
-        if (0 < dice.getMatches() && dice.getMatches() < 3) {
-            takeTurn();
-        }
-        else {
-            if (3 <= dice.getMatches()) {
-                executeActionable(new Action("JAIL"));
-            }
-
-            // Update currentPlayer to the next player
-            currentPlayer = (currentPlayer + 1) % players.length;
-
-            dice.reset();
-        }
-    }
-
-    private void actOnTile(PropertyTile tile) {
-        // TODO:: implement logic for properties
-    }
-
-    private void actOnTile(ActionTile tile) {
-        // TODO:: implement logic for actions
-    }
-
-    private void actOnTile(AssetTile tile) {
-        switch (tile.getType()) {
-            case STATION:
-                // TODO:: implement logic for stations
-                break;
-            case UTILITY:
-                // TODO:: implement logic for utilities
-                break;
-            default: throw new IllegalStateException("Impossible position: should not be here");
-        }
-    }
-
-    private void executeActionable(Actionable action) {
-
     }
 
     public Tile getTile(int i) {
@@ -170,7 +105,7 @@ public class Board {
 
     public static void main(String[] args) {
         try {
-            Board b = new Board(1, 1);
+            Board b = new Board();
             System.out.println(b);
         }
         catch (IOException e) {

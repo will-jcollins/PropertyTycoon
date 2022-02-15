@@ -1,4 +1,4 @@
-package model;
+package model.actions;
 
 import java.util.Locale;
 
