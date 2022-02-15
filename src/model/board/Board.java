@@ -8,6 +8,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
+/**
+ *
+ */
 public class Board {
     private static final String DATAPATH = System.getProperty("user.dir") + "/assets/jsons/BoardData.json";
     public static final int SIZE = 40;
@@ -17,6 +20,7 @@ public class Board {
      * Constructs a Board object based on the information stored in the JSON file at DATAPATH
      *
      * @throws IOException if the JSON file does not exist at DATAPATH
+     * @author Will Collins
      */
     public Board() throws IOException {
         // Initialise and populate array with empty tiles (avoid null pointer exceptions)
@@ -92,6 +96,7 @@ public class Board {
      *
      * @param i index
      * @return tile indexed
+     * @author Will Collins
      */
     public Tile getTile(int i) {
         return tiles[i];
@@ -102,6 +107,7 @@ public class Board {
      *
      * @param name name attribute of tile searching for
      * @return tile with name equal to param, null if there is no tile with that name
+     * @author Will Collins
      */
     public Tile getTile(String name) {
         for (int i = 0; i < tiles.length; i++) {
