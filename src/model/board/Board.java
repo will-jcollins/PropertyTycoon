@@ -96,8 +96,12 @@ public class Board {
      * @return tile indexed
      * @author Will Collins
      */
-    public Tile getTile(int i) {
-        return tiles[i];
+    public Tile getTile(int i) throws IndexOutOfBoundsException {
+        if (0 <= i && i < SIZE) {
+            return tiles[i];
+        } else {
+            throw new IndexOutOfBoundsException("index " + i + " out of board's bounds");
+        }
     }
 
     /**
@@ -108,9 +112,9 @@ public class Board {
      * @author Will Collins
      */
     public Tile getTile(String name) {
-        for (int i = 0; i < tiles.length; i++) {
-            if (tiles[i].getName().equals(name)) {
-                return tiles[i];
+        for (Tile tile : tiles) {
+            if (tile.getName().equals(name)) {
+                return tile;
             }
         }
         return null;
