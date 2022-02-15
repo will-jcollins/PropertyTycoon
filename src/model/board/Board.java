@@ -11,9 +11,13 @@ import java.util.Arrays;
 public class Board {
     private static final String DATAPATH = System.getProperty("user.dir") + "/assets/jsons/BoardData.json";
     public static final int SIZE = 40;
-
     private Tile[] tiles;
 
+    /**
+     * Constructs a Board object based on the information stored in the JSON file at DATAPATH
+     *
+     * @throws IOException if the JSON file does not exist at DATAPATH
+     */
     public Board() throws IOException {
         // Initialise and populate array with empty tiles (avoid null pointer exceptions)
         tiles = new Tile[SIZE];
@@ -83,10 +87,22 @@ public class Board {
         }
     }
 
+    /**
+     * Returns the tile at index i in the board
+     *
+     * @param i index
+     * @return tile indexed
+     */
     public Tile getTile(int i) {
         return tiles[i];
     }
 
+    /**
+     * Returns the first board tile with the name entered
+     *
+     * @param name name attribute of tile searching for
+     * @return tile with name equal to param, null if there is no tile with that name
+     */
     public Tile getTile(String name) {
         for (int i = 0; i < tiles.length; i++) {
             if (tiles[i].getName().equals(name)) {
