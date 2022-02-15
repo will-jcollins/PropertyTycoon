@@ -8,9 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
-/**
- *
- */
+
 public class Board {
     private static final String DATAPATH = System.getProperty("user.dir") + "/assets/jsons/BoardData.json";
     public static final int SIZE = 40;
