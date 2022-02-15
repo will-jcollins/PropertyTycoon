@@ -53,18 +53,34 @@ public class Action implements Actionable {
         this.val2 = val2;
     }
 
+    /**
+     * Returns the action's enumerated action
+     * @return action enum
+     */
     public ActCode getActcode() {
         return actcode;
     }
 
+    /**
+     * Actionable interface implementation
+     * @return returns itself
+     */
     public Action getAction() {
         return this;
     }
 
+    /**
+     * Returns the first value associated with the action
+     * @return value 1
+     */
     public int getVal1() {
         return val1;
     }
 
+    /**
+     * Returns the second value associated with the action
+     * @return value 2
+     */
     public int getVal2() {
         return val2;
     }
