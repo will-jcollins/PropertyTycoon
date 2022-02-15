@@ -1,4 +1,4 @@
-package model;
+package model.board;
 
 import com.sun.istack.internal.NotNull;
 
