@@ -1,7 +1,5 @@
 package model;
 
-import ui.StreetColor;
-
 import java.util.Arrays;
 
 public class PropertyTile extends Tile {
