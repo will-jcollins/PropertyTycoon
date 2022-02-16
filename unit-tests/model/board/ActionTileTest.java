@@ -11,7 +11,7 @@ class ActionTileTest {
     @Test
     void testGetters() {
         String name = "Oppurtunity Knock";
-        Action action = new Action(ActCode.OPPURTUNITY, 0,0);
+        Action action = new Action(ActCode.OPPORTUNITY, 0,0);
         ActionTile actTile = new ActionTile(name, action);
         assertEquals(actTile.getName(), name);
         assertEquals(actTile.getAction(), action);

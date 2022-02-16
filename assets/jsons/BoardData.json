@@ -65,8 +65,8 @@
   {
     "position" : 7,
     "type"     : "action",
-    "name"     : "Oppurtunity Knock 1",
-    "action"   : "OPPURTUNITY"
+    "name"     : "Opportunity Knock 1",
+    "action"   : "OPPORTUNITY"
   },
   {
     "position"  : 8,
@@ -218,8 +218,8 @@
   {
     "position" : 22,
     "type"     : "action",
-    "name"     : "Oppurtunity Knock 2",
-    "action"   : "OPPURTUNITY"
+    "name"     : "Opportunity Knock 2",
+    "action"   : "OPPORTUNITY"
   },
   {
     "position"  : 23,
@@ -358,8 +358,8 @@
   {
     "position" : 36,
     "type"     : "action",
-    "name"     : "Oppurtunity Knock 3",
-    "action"   : "OPPURTUNITY"
+    "name"     : "Opportunity Knock 3",
+    "action"   : "OPPORTUNITY"
   },
   {
     "position"  : 37,
