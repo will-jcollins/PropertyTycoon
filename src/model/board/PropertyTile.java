@@ -35,8 +35,8 @@ public class PropertyTile extends Tile {
         return cost;
     }
 
-    public int getRent() {
-        return rent[noHouses];
+    public int[] getRent() {
+        return rent;
     }
 
     public int getOwnerID() {

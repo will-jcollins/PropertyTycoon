@@ -15,7 +15,7 @@ public class AssetTile extends Tile {
         this.cost = cost;
     }
 
-    public AssetType getType() {
+    public AssetType getAssetType() {
         return type;
     }
 

@@ -13,7 +13,7 @@ class AssetTileTest {
         int cost = 50;
         AssetTile assTile = new AssetTile(name, type, cost);
         assertEquals(assTile.getName(), name);
-        assertEquals(assTile.getType(), type);
+        assertEquals(assTile.getAssetType(), type);
         assertEquals(assTile.getCost(), cost);
         assertEquals(assTile.getOwner(), -1);
     }
