@@ -2,7 +2,7 @@
   {
     "position" : 0,
     "type"     : "action",
-    "name"     : "GO",
+    "name"     : "Go",
     "action"   : "NOP"
   },
   {

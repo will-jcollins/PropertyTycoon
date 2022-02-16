@@ -1,5 +1,6 @@
 package model.actions;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,7 +10,7 @@ public class Action implements Actionable {
     private final int val2;
 
     /**
-     * Constructs an action based on an input string in the format "ACTION ACTIONVALUE1 ACTIONVALUE1"
+     * Constructs an action based on an input string in the format "ACTION [VALUE1] [VALUE2]"
      *
      * @param in string action is constructed based on
      * @author Will Collins
@@ -57,12 +58,12 @@ public class Action implements Actionable {
      * Returns the action's enumerated action
      * @return action enum
      */
-    public ActCode getActcode() {
+    public ActCode getActCode() {
         return actcode;
     }
 
     /**
-     * Actionable interface implementation
+     * Returns an object that represents an action
      * @return returns itself
      */
     public Action getAction() {
@@ -83,6 +84,14 @@ public class Action implements Actionable {
      */
     public int getVal2() {
         return val2;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Action action = (Action) o;
+        return val1 == action.val1 && val2 == action.val2 && actcode == action.actcode;
     }
 
     @Override

@@ -1,30 +1,24 @@
 package model.board;
 
-import java.util.Objects;
-
 public class Tile {
 
     private String name;
 
+    /**
+     * Constructor assigns attributes from parameter
+     * @param name value for tile's name
+     */
     public Tile(String name) {
         this.name = name;
     }
 
+
+    /**
+     * Getter for tile's name
+     * @return tile's name
+     */
     public String getName() {
         return name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Tile tile = (Tile) o;
-        return Objects.equals(name, tile.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
     }
 
     @Override

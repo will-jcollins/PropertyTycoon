@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 public class PropertyTile extends Tile {
 
+    public static final int MAXNOHOUSES = 6;
+
     private StreetColor group;
     // Cost attributes
     private int cost;
@@ -19,6 +21,10 @@ public class PropertyTile extends Tile {
         this.group = group;
         this.cost = cost;
         this.rent = rent;
+
+        if (rent.length != MAXNOHOUSES) {
+            throw new IllegalArgumentException("array of rents should be " + MAXNOHOUSES + ", instead is " + rent.length);
+        }
     }
 
     public StreetColor getGroup() {
@@ -39,6 +45,12 @@ public class PropertyTile extends Tile {
 
     public int getNoHouses() {
         return noHouses;
+    }
+
+    public boolean addHouse() {
+        int prevHouses = noHouses;
+        noHouses = Math.min(noHouses + 1, MAXNOHOUSES - 1);
+        return !(prevHouses == noHouses);
     }
 
     @Override
