@@ -89,6 +89,10 @@ public class Board {
         }
     }
 
+    public void setTile(int i, Tile tile) {
+        tiles[i] = tile;
+    }
+
     /**
      * Returns the tile at index i in the board
      *
@@ -96,12 +100,8 @@ public class Board {
      * @return tile indexed
      * @author Will Collins
      */
-    public Tile getTile(int i) throws IndexOutOfBoundsException {
-        if (0 <= i && i < SIZE) {
-            return tiles[i];
-        } else {
-            throw new IndexOutOfBoundsException("index " + i + " out of board's bounds");
-        }
+    public Tile getTile(int i) {
+        return tiles[i];
     }
 
     /**
