@@ -25,8 +25,8 @@ public class TestWindow extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         UIBoard root = new UIBoard(new Board());
-        root.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
+        root.setOnMouseClicked(event1 -> {
+            if (event1.getButton() == MouseButton.PRIMARY) {
                 rt.setByAngle(90);
             } else {
                 rt.setByAngle(-90);

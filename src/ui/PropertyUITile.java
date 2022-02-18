@@ -2,15 +2,11 @@ package ui;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.board.PropertyTile;
 
 public class PropertyUITile extends UITile {
-
-    protected static final Font TITLEFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 9);
-    protected static final Font COSTFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 7);
 
     public PropertyUITile(int x, int y, double width, double height, double angle, PropertyTile property) {
         super(x, y, width, height, angle);
@@ -28,11 +24,12 @@ public class PropertyUITile extends UITile {
         // Replace space chars with newline
         String name = property.getName().replaceAll("( )+", "\n");
 
-        Text title = new Text(name);
+        Text title = new Text(name.toUpperCase());
         title.setX(x);
         title.setY(y + 1.7 * (height / 4));
         title.setWrappingWidth(width);
         title.setTextAlignment(TextAlignment.CENTER);
+        title.setLineSpacing(-7.5);
         title.setFont(TITLEFONT);
         title.setStroke(Color.BLACK);
         title.setStrokeWidth(0.4);
@@ -40,10 +37,10 @@ public class PropertyUITile extends UITile {
 
         Text caption = new Text("M" + property.getCost());
         caption.setX(x);
-        caption.setY(y + height - (height / 8));
+        caption.setY(y + height - (height / 12));
         caption.setWrappingWidth(width);
         caption.setTextAlignment(TextAlignment.CENTER);
-        caption.setFont(COSTFONT);
+        caption.setFont(CAPTIONFONT);
         caption.setStroke(Color.BLACK);
         caption.setStrokeWidth(0.4);
         getChildren().add(caption);

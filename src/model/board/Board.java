@@ -21,7 +21,7 @@ public class Board {
      * @author Will Collins
      */
     public Board() throws IOException {
-        // Initialise and populate array with empty tiles (avoid null pointer exceptions)
+        // Initialise and populate array with empty tiles (avoid null pointer exception)
         tiles = new Tile[SIZE];
         Arrays.fill(tiles, new Tile("Empty"));
 

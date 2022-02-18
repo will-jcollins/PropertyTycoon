@@ -3,6 +3,7 @@ package ui;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 
 public class UITile extends Group {
@@ -10,6 +11,10 @@ public class UITile extends Group {
     protected static final int STROKEWIDTH = 4;
     protected static final Color BACKCOLOR = new Color(0.75,0.86,0.68,1.0);
     protected static final Color STROKECOLOR = Color.BLACK;
+
+    protected static final Font TITLEFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 9);
+    protected static final Font CAPTIONFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 7);
+
 
     public UITile(int x, int y, double width, double height, double angle) {
         Rectangle back = new Rectangle();

@@ -69,16 +69,15 @@ public class UIBoard extends BorderPane {
 
         // Starting in the bottom right corner, draw each row
         for (int i = 0; i < 4; i++) {
-            System.out.println(i);
             // Draw corner tile from board info
-            tiles.getChildren().add(board.getTile(i + TILESPERSIDE * i).getUITile(x, y, TILEHEIGHT, TILEHEIGHT, angle));
+            tiles.getChildren().add(board.getTile(Board.SIZE / 4 * i).getUITile(x, y, TILEHEIGHT, TILEHEIGHT, angle));
 
-            for (int j = 0; j < TILESPERSIDE; j++) {
+            for (int j = 1; j <= TILESPERSIDE; j++) {
                 // Update point where elements are added to the screen
                 x += TILEWIDTH * xDirections[i];
                 y += TILEWIDTH * yDirections[i];
 
-                tiles.getChildren().add(board.getTile(j + TILESPERSIDE * i).getUITile(x, y, TILEWIDTH, TILEHEIGHT, angle));
+                tiles.getChildren().add(board.getTile(i * Board.SIZE / 4 + j).getUITile(x, y, TILEWIDTH, TILEHEIGHT, angle));
             }
 
             // Update angle tiles are placed
