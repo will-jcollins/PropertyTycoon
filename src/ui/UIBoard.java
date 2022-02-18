@@ -1,14 +1,11 @@
 package ui;
 
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Screen;
-import model.actions.Action;
 import model.board.*;
 
 public class UIBoard extends BorderPane {
@@ -74,20 +71,14 @@ public class UIBoard extends BorderPane {
         for (int i = 0; i < 4; i++) {
             System.out.println(i);
             // Draw corner tile from board info
-            drawSquareTile(x, y, angle, board.getTile(i * TILESPERSIDE));
+            tiles.getChildren().add(board.getTile(i + TILESPERSIDE * i).getUITile(x, y, TILEHEIGHT, TILEHEIGHT, angle));
 
             for (int j = 0; j < TILESPERSIDE; j++) {
                 // Update point where elements are added to the screen
                 x += TILEWIDTH * xDirections[i];
                 y += TILEWIDTH * yDirections[i];
 
-                // Draw rectangular tile from board info
-                // VERY BAD USING INSTANCEOF WILL THINK OF A BETTER WAY OF DOING THIS
-                if (board.getTile(j + i * TILESPERSIDE) instanceof PropertyTile) {
-                    drawTile(x, y, angle, (PropertyTile) board.getTile(j + i * TILESPERSIDE));
-                } else {
-                    drawTile(x, y, angle, board.getTile(j + i * TILESPERSIDE));
-                }
+                tiles.getChildren().add(board.getTile(j + TILESPERSIDE * i).getUITile(x, y, TILEWIDTH, TILEHEIGHT, angle));
             }
 
             // Update angle tiles are placed
@@ -95,20 +86,5 @@ public class UIBoard extends BorderPane {
         }
 
         setCenter(tiles);
-    }
-
-    private void drawTile(int x, int y, int angle, Tile tile) {
-        RectangleUITile uiTile = new RectangleUITile(x, y, TILEWIDTH, TILEHEIGHT, angle);
-        tiles.getChildren().add(uiTile);
-    }
-
-    private void drawTile(int x, int y, int angle, PropertyTile propTile) {
-        PropertyUITile uiTile = new PropertyUITile(x, y, TILEWIDTH, TILEHEIGHT, angle, propTile);
-        tiles.getChildren().add(uiTile);
-    }
-
-    private void drawSquareTile(int x, int y, int angle, Tile tile) {
-        SquareUITile uiTile = new SquareUITile(x, y, TILEHEIGHT, angle);
-        tiles.getChildren().add(uiTile);
     }
 }

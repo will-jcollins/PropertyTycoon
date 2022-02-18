@@ -7,7 +7,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.board.PropertyTile;
 
-public class PropertyUITile extends RectangleUITile {
+public class PropertyUITile extends UITile {
 
     protected static final Font TITLEFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 9);
     protected static final Font COSTFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 7);

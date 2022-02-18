@@ -1,5 +1,8 @@
 package model.board;
 
+import ui.PropertyUITile;
+import ui.UITile;
+
 import java.util.Arrays;
 
 public class PropertyTile extends Tile {
@@ -51,6 +54,11 @@ public class PropertyTile extends Tile {
         int prevHouses = noHouses;
         noHouses = Math.min(noHouses + 1, MAXNOHOUSES - 1);
         return !(prevHouses == noHouses);
+    }
+
+    @Override
+    public UITile getUITile(int x, int y, int width, int height, int angle) {
+        return new PropertyUITile(x, y, width, height, angle, this);
     }
 
     @Override

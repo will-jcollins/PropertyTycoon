@@ -1,5 +1,8 @@
 package model.board;
 
+import ui.PropertyUITile;
+import ui.UITile;
+
 public class Tile {
 
     private String name;
@@ -19,6 +22,10 @@ public class Tile {
      */
     public String getName() {
         return name;
+    }
+
+    public UITile getUITile(int x, int y, int width, int height, int angle) {
+        return new UITile(x, y, width, height, angle);
     }
 
     @Override
