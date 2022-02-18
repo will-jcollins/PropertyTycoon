@@ -5,13 +5,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import model.board.PropertyTile;
 
 public class PropertyUITile extends RectangleUITile {
 
     protected static final Font TITLEFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 9);
     protected static final Font COSTFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 7);
 
-    public PropertyUITile(int x, int y, double width, double height, double angle, StreetColor streetGroup, String name, int cost) {
+    public PropertyUITile(int x, int y, double width, double height, double angle, PropertyTile property) {
         super(x, y, width, height, angle);
 
         Rectangle group = new Rectangle();
@@ -19,13 +20,13 @@ public class PropertyUITile extends RectangleUITile {
         group.setY(y);
         group.setWidth(width);
         group.setHeight(height / 4);
-        group.setFill(streetGroup.getColor());
+        group.setFill(property.getGroup().getColor());
         group.setStroke(STROKECOLOR);
         group.setStrokeWidth(STROKEWIDTH);
         getChildren().add(group);
 
         // Replace space chars with newline
-        name.replaceAll("( )+", "\n");
+        String name = property.getName().replaceAll("( )+", "\n");
 
         Text title = new Text(name);
         title.setX(x);
@@ -37,7 +38,7 @@ public class PropertyUITile extends RectangleUITile {
         title.setStrokeWidth(0.4);
         getChildren().add(title);
 
-        Text caption = new Text("M" + cost);
+        Text caption = new Text("M" + property.getCost());
         caption.setX(x);
         caption.setY(y + height - (height / 8));
         caption.setWrappingWidth(width);
