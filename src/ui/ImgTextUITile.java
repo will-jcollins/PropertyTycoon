@@ -5,14 +5,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import model.board.ActionTile;
 import model.board.AssetTile;
 
-public class AssetUITile extends UITile {
+public class ImgTextUITile extends UITile {
 
     private static final String STATIONIMGPATH = "file:assets/images/station.png";
     private static final String UTILITYIMGPATH = "file:assets/images/utility.png";
+    private static final String OPPORTUNITYIMGPATH = "file:assets/images/opportunity.png";
+    private static final String POTLUCKIMGPATH = "file:assets/images/potluck.png";
 
-    public AssetUITile(int x, int y, double width, double height, double angle, AssetTile asset) {
+    public ImgTextUITile(int x, int y, double width, double height, double angle, AssetTile asset) {
         super(x, y, width, height, angle);
 
         // Replace space chars with newline
@@ -30,7 +33,7 @@ public class AssetUITile extends UITile {
         title.setStrokeWidth(0.4);
         getChildren().add(title);
 
-        // Draw station's cost
+        // Draw cost
         Text caption = new Text("M" + asset.getCost());
         caption.setX(x);
         caption.setY(y + height - (height / 12));

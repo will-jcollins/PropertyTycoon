@@ -21,7 +21,7 @@
   {
     "position" : 2,
     "type"     : "action",
-    "name"     : "Pot Luck 1",
+    "name"     : "Pot Luck",
     "action"   : "POTLUCK"
   },
   {
@@ -65,7 +65,7 @@
   {
     "position" : 7,
     "type"     : "action",
-    "name"     : "Opportunity Knock 1",
+    "name"     : "Opportunity Knock",
     "action"   : "OPPORTUNITY"
   },
   {
@@ -167,7 +167,7 @@
   {
     "position" : 17,
     "type"     : "action",
-    "name"     : "Pot Luck 2",
+    "name"     : "Pot Luck",
     "action"   : "POTLUCK"
   },
   {
@@ -218,7 +218,7 @@
   {
     "position" : 22,
     "type"     : "action",
-    "name"     : "Opportunity Knock 2",
+    "name"     : "Opportunity Knock",
     "action"   : "OPPORTUNITY"
   },
   {
@@ -333,7 +333,7 @@
   {
     "position" : 33,
     "type"     : "action",
-    "name"     : "Pot Luck 3",
+    "name"     : "Pot Luck",
     "action"   : "POTLUCK"
   },
   {
@@ -358,7 +358,7 @@
   {
     "position" : 36,
     "type"     : "action",
-    "name"     : "Opportunity Knock 3",
+    "name"     : "Opportunity Knock",
     "action"   : "OPPORTUNITY"
   },
   {

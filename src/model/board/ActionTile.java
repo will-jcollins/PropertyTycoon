@@ -1,7 +1,11 @@
 package model.board;
 
+import model.actions.ActCode;
 import model.actions.Action;
 import model.actions.Actionable;
+import ui.ImageUITile;
+import ui.ImgTextUITile;
+import ui.UITile;
 
 public class ActionTile extends Tile implements Actionable {
 
@@ -15,6 +19,17 @@ public class ActionTile extends Tile implements Actionable {
 
     public Action getAction() {
         return action;
+    }
+
+    @Override
+    public UITile getUITile(int x, int y, int width, int height, int angle) {
+        switch (action.getActCode()) {
+            case OPPORTUNITY:
+            case POTLUCK:
+                return new ImageUITile(x, y, width, height, angle, this);
+            default:
+                return super.getUITile(x, y, width, height, angle);
+        }
     }
 
     @Override

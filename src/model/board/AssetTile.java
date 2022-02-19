@@ -1,7 +1,7 @@
 package model.board;
 
 import com.sun.istack.internal.NotNull;
-import ui.AssetUITile;
+import ui.ImgTextUITile;
 import ui.UITile;
 
 public class AssetTile extends Tile {
@@ -31,7 +31,7 @@ public class AssetTile extends Tile {
 
     @Override
     public UITile getUITile(int x, int y, int width, int height, int angle) {
-        return new AssetUITile(x, y, width, height, angle, this);
+        return new ImgTextUITile(x, y, width, height, angle, this);
     }
 
     @Override
