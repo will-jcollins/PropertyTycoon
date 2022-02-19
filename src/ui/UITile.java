@@ -15,6 +15,8 @@ public class UITile extends Group {
     protected static final Font TITLEFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 9);
     protected static final Font CAPTIONFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 7);
 
+    protected static final int MAXCHARSPERLINE = 7;
+
 
     public UITile(int x, int y, double width, double height, double angle) {
         Rectangle back = new Rectangle();
@@ -34,5 +36,30 @@ public class UITile extends Group {
         this.getTransforms().add(rotate);
     }
 
+    protected String formatText(String in) {
+        String[] words = in.split("( )+");
 
+        if (words.length > 1) {
+            StringBuilder sb = new StringBuilder();
+            int length = words[0].length();
+
+            for (int i = 0; i < words.length - 1; i++) {
+                length += words[i + 1].length();
+                sb.append(words[i]);
+                if (length > MAXCHARSPERLINE) {
+                    sb.append("\n");
+                    length = 0;
+                } else {
+                    sb.append(" ");
+                }
+            }
+
+            sb.append(words[words.length - 1]);
+
+            return sb.toString();
+        }
+        else {
+            return in;
+        }
+    }
 }

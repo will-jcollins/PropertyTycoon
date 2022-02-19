@@ -22,7 +22,7 @@ public class PropertyUITile extends UITile {
         getChildren().add(group);
 
         // Replace space chars with newline
-        String name = property.getName().replaceAll("( )+", "\n");
+        String name = formatText(property.getName());
 
         Text title = new Text(name.toUpperCase());
         title.setX(x);

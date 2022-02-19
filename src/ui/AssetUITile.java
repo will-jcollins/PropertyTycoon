@@ -10,13 +10,13 @@ import model.board.AssetTile;
 public class AssetUITile extends UITile {
 
     private static final String STATIONIMGPATH = "file:assets/images/station.png";
-    private static final String UTILITYIMGPATH = STATIONIMGPATH;
+    private static final String UTILITYIMGPATH = "file:assets/images/utility.png";
 
     public AssetUITile(int x, int y, double width, double height, double angle, AssetTile asset) {
         super(x, y, width, height, angle);
 
         // Replace space chars with newline
-        String name = asset.getName().replaceAll("( )+", "\n");
+        String name = formatText(asset.getName());
 
         // Draw station's name
         Text title = new Text(name.toUpperCase());
