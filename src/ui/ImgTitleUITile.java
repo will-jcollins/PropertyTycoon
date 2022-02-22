@@ -7,13 +7,13 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.board.ActionTile;
 
-public class ImageUITile extends UITile {
+public class ImgTitleUITile extends UITile {
 
     protected static final Image OPPURTUNITYIMG = new Image("file:assets/images/opportunity.png");
     protected static final Image POTLUCKIMG = new Image("file:assets/images/potluck.png");
 
 
-    public ImageUITile(int x, int y, double width, double height, double angle, ActionTile action) {
+    public ImgTitleUITile(int x, int y, double width, double height, double angle, ActionTile action) {
         super(x, y, width, height, angle);
 
         // Replace space chars with newline

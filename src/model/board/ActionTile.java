@@ -1,10 +1,8 @@
 package model.board;
 
-import model.actions.ActCode;
 import model.actions.Action;
 import model.actions.Actionable;
-import ui.ImageUITile;
-import ui.ImgTextUITile;
+import ui.ImgTitleUITile;
 import ui.UITile;
 
 public class ActionTile extends Tile implements Actionable {
@@ -26,7 +24,7 @@ public class ActionTile extends Tile implements Actionable {
         switch (action.getActCode()) {
             case OPPORTUNITY:
             case POTLUCK:
-                return new ImageUITile(x, y, width, height, angle, this);
+                return new ImgTitleUITile(x, y, width, height, angle, this);
             default:
                 return super.getUITile(x, y, width, height, angle);
         }

@@ -7,14 +7,14 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.board.AssetTile;
 
-public class ImgTextUITile extends UITile {
+public class ImgCostUITile extends UITile {
 
     private static final String STATIONIMGPATH = "file:assets/images/station.png";
     private static final String UTILITYIMGPATH = "file:assets/images/utility.png";
     private static final String OPPORTUNITYIMGPATH = "file:assets/images/opportunity.png";
     private static final String POTLUCKIMGPATH = "file:assets/images/potluck.png";
 
-    public ImgTextUITile(int x, int y, double width, double height, double angle, AssetTile asset) {
+    public ImgCostUITile(int x, int y, double width, double height, double angle, AssetTile asset) {
         super(x, y, width, height, angle);
 
         // Replace space chars with newline
