@@ -5,7 +5,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import model.board.ActionTile;
 import model.board.AssetTile;
 
 public class ImgTextUITile extends UITile {
