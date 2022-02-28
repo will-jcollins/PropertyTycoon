@@ -1,5 +1,6 @@
 package model.board;
 
+import ui.ImgUITile;
 import ui.PropertyUITile;
 import ui.UITile;
 
@@ -25,7 +26,13 @@ public class Tile {
     }
 
     public UITile getUITile(int x, int y, int width, int height, int angle) {
-        return new UITile(x, y, width, height, angle);
+        switch (name) {
+            case "Go":
+            case "Jail":
+                return new ImgUITile(x,y,width,height,angle, this);
+            default:
+                return new UITile(x, y, width, height, angle);
+        }
     }
 
     @Override

@@ -83,6 +83,9 @@ public class Board {
                             obj.getInt("cost")
                     );
                     break;
+                case "notype":
+                    tile = new Tile(obj.getString("name"));
+                    break;
                 default: throw new IllegalStateException("Invalid JSON data from \"" + DATAPATH + "\"");
             }
             tiles[obj.getInt("position")] = tile;

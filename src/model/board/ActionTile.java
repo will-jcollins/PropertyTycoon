@@ -4,6 +4,7 @@ import model.actions.Action;
 import model.actions.Actionable;
 import ui.ImgCostUITile;
 import ui.ImgTitleUITile;
+import ui.ImgUITile;
 import ui.UITile;
 
 public class ActionTile extends Tile implements Actionable {
@@ -28,6 +29,9 @@ public class ActionTile extends Tile implements Actionable {
                 return new ImgTitleUITile(x, y, width, height, angle, this);
             case PAYFINE:
                 return new ImgCostUITile(x,y,width,height,angle,this);
+            case FINEPAY:
+            case JAIL:
+                return new ImgUITile(x,y,width,height,angle,this);
             default:
                 return super.getUITile(x, y, width, height, angle);
         }

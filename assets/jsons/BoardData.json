@@ -1,7 +1,7 @@
 [
   {
     "position" : 0,
-    "type"     : "action",
+    "type"     : "notype",
     "name"     : "Go",
     "action"   : "NOP"
   },
@@ -96,7 +96,7 @@
   },
   {
     "position" : 10,
-    "type"     : "action",
+    "type"     : "notype",
     "name"     : "Jail",
     "action"   : "NOP"
   },
