@@ -4,8 +4,11 @@ import com.sun.istack.internal.NotNull;
 
 public class AssetTile extends Tile {
 
+    private String tileType = "Asset";
+
     @NotNull private AssetType type;
     private int cost;
+    private int rent = 100;
     private int owner = -1;
 
     public AssetTile(String name, AssetType type, int cost) {
@@ -27,6 +30,7 @@ public class AssetTile extends Tile {
         return owner;
     }
 
+    public int getRent() {return rent;}
     @Override
     public String toString() {
         return "AssetTile{" +

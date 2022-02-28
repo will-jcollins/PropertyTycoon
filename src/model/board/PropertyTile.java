@@ -47,6 +47,10 @@ public class PropertyTile extends Tile {
         return noHouses;
     }
 
+    public void setOwner(int buyer){
+        owner = buyer;
+    }
+
     public boolean addHouse() {
         int prevHouses = noHouses;
         noHouses = Math.min(noHouses + 1, MAXNOHOUSES - 1);
