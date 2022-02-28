@@ -1,7 +1,7 @@
 package model.board;
 
 public class Tile {
-
+    private String tileType = "Tile";
     private String name;
 
     /**
@@ -10,6 +10,7 @@ public class Tile {
      */
     public Tile(String name) {
         this.name = name;
+        this.tileType =  "Tile";
     }
 
 
@@ -26,5 +27,9 @@ public class Tile {
         return "Tile{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    public String getTileType(){
+       return tileType;
     }
 }

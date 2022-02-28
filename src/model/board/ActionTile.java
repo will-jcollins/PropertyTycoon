@@ -6,10 +6,11 @@ import model.actions.Actionable;
 public class ActionTile extends Tile implements Actionable {
 
     private Action action;
-
+    private String tileType;
     public ActionTile(String name, Action action) {
-        super(name);
 
+        super(name);
+        this.tileType = "action";
         this.action = action;
     }
 
@@ -24,4 +25,5 @@ public class ActionTile extends Tile implements Actionable {
                 ", action=" + action +
                 '}';
     }
+
 }

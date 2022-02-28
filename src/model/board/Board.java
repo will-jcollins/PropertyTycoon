@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 public class Board {
     private static final String DATAPATH = System.getProperty("user.dir") + "/assets/jsons/BoardData.json";
+
     public static final int SIZE = 40;
     private Tile[] tiles;
 
