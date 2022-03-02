@@ -32,4 +32,7 @@ public class Tile {
     public String getTileType(){
        return tileType;
     }
+
+
 }
+

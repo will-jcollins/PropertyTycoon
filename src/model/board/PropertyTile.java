@@ -35,9 +35,7 @@ public class PropertyTile extends Tile {
         return cost;
     }
 
-    public int[] getRent() {
-        return rent;
-    }
+    public int getRent() {return rent[1];}
 
     public int getOwnerID() {
         return owner;
@@ -57,6 +55,14 @@ public class PropertyTile extends Tile {
         return !(prevHouses == noHouses);
     }
 
+    public int getOwner(){
+        return owner;
+    }
+
+    public String getTileType(){
+        return "PropertyTile";
+    }
+
     @Override
     public String toString() {
         return "PropertyTile{" +
@@ -68,4 +74,6 @@ public class PropertyTile extends Tile {
                 ", noHouses=" + noHouses +
                 '}';
     }
+
+
 }
