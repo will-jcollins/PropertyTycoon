@@ -54,6 +54,18 @@ public class Action implements Actionable {
         this.val2 = val2;
     }
 
+    public Action(ActCode actcode, int val1) {
+        this.actcode = actcode;
+        this.val1 = val1;
+        this.val2 = 0;
+    }
+
+    public Action(ActCode actcode) {
+        this.actcode = actcode;
+        this.val1 = 0;
+        this.val2 = 0;
+    }
+
     /**
      * Returns the action's enumerated action
      * @return action enum

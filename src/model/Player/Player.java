@@ -1,39 +1,57 @@
 package model.Player;
 
+import model.board.Board;
+
+import java.util.Objects;
 import java.util.Random;
 
 public class Player {
-    private static int IDCount = 0;
-
-    private int id;
+    private final int id;
     private int pos = 0; // the player position
-    private Random dice;
     private int money = 1500;
 
-    public Player(){
-        dice = new Random();
-        id = IDCount++;
-    }
-
-    public boolean move(){
-        int roll1 = dice.nextInt(6)+1;
-        System.out.println(roll1);
-        int roll2 = dice.nextInt(6)+1;
-        System.out.println(roll2);
-        pos = (pos + (roll1+roll2))%40;
-
-        return roll1 == roll2;
+    public Player(int id){
+        this.id = id;
     }
 
     public int getPos(){
         return pos;
     }
 
-    public void pay(int amount){
+    public void setPos(int newPos) {
+        pos = newPos;
+    }
+
+    public void changePos(int newPos) {
+        pos = (newPos + newPos) % Board.SIZE;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void pay(int amount) {
         money += amount;
     }
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return id == player.id && pos == player.pos && money == player.money;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id=" + id +
+                ", pos=" + pos +
+                ", money=" + money +
+                '}';
     }
 }

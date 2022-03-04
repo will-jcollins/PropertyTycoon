@@ -1,8 +1,7 @@
 package model.board;
 
-public class Tile {
-    private String tileType = "Tile";
-    private String name;
+public abstract class Tile {
+    private final String name;
 
     /**
      * Constructor assigns attributes from parameter
@@ -10,12 +9,11 @@ public class Tile {
      */
     public Tile(String name) {
         this.name = name;
-        this.tileType =  "Tile";
     }
 
 
     /**
-     * Getter for tile's name
+     * Returns tile's name
      * @return tile's name
      */
     public String getName() {
@@ -28,11 +26,5 @@ public class Tile {
                 "name='" + name + '\'' +
                 '}';
     }
-
-    public String getTileType(){
-       return tileType;
-    }
-
-
 }
 

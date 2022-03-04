@@ -1,10 +1,12 @@
 package model.board;
 
+import model.Player.Player;
 import model.actions.Action;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -21,21 +23,25 @@ public class Board {
      * @throws IOException if the JSON file does not exist at DATAPATH
      * @author Will Collins
      */
-    public Board() throws IOException {
+    public Board() {
         // Initialise and populate array with empty tiles (avoid null pointer exceptions)
         tiles = new Tile[SIZE];
-        Arrays.fill(tiles, new Tile("Empty"));
 
-        // Open file input stream and read characters into string builder
-        FileInputStream fis = new FileInputStream(DATAPATH);
         StringBuilder sb = new StringBuilder();
 
-        int content;
-        while ((content = fis.read()) != -1) {
-            sb.append((char)content);
-        }
+        // Open file input stream and read characters into string builder
+        try (FileInputStream fis = new FileInputStream(DATAPATH)) {
 
-        fis.close();
+            int content;
+            while ((content = fis.read()) != -1) {
+                sb.append((char) content);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Parse json file
         JSONArray objects = new JSONArray(sb.toString());
@@ -53,34 +59,32 @@ public class Board {
                     // Construct PropertyTile
                     tile = new PropertyTile(
                             obj.getString("name"),
-                            StreetColor.fromString(obj.getString("group")),
                             obj.getInt("cost"),
-                            new int[] {obj.getInt("rent0"),obj.getInt("rent1"),obj.getInt("rent2"),obj.getInt("rent3"),obj.getInt("rent4"),obj.getInt("rent5")}
+                            new int[] {obj.getInt("rent0"),obj.getInt("rent1"),obj.getInt("rent2"),obj.getInt("rent3"),obj.getInt("rent4"),obj.getInt("rent5")},
+                            Street.fromString(obj.getString("group"))
                     );
 
                     tiles[obj.getInt("position")] = tile;
                     break;
                 case "action":
                     // Construct ActionTile
-                    Action act = new Action(obj.getString("action"));
+                    Action action = new Action(obj.getString("action"));
                     tile = new ActionTile(
                             obj.getString("name"),
-                            act
+                            action
                     );
                     break;
                 case "utility":
                     // Construct AssetTile object for utility
-                    tile = new AssetTile(
+                    tile = new UtilityTile(
                             obj.getString("name"),
-                            AssetType.UTILITY,
                             obj.getInt("cost")
                     );
                     break;
                 case "station":
                     // Construct AssetTile object for utility
-                    tile = new AssetTile(
+                    tile = new StationTile(
                             obj.getString("name"),
-                            AssetType.STATION,
                             obj.getInt("cost")
                     );
                     break;
@@ -121,20 +125,23 @@ public class Board {
         return null;
     }
 
+    public void freeProperties(Player p) {
+        // Removes ownership from every property with player p
+        for (Tile tile : tiles) {
+            if (tile instanceof BuyableTile) {
+                BuyableTile buyable = (BuyableTile) tile;
+
+                if (buyable.getOwner() == p) {
+                    buyable.setOwner(null);
+                }
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "Board{" +
                 "tiles=" + Arrays.toString(tiles) +
                 '}';
-    }
-
-    public static void main(String[] args) {
-        try {
-            Board b = new Board();
-            System.out.println(b);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

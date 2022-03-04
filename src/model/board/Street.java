@@ -2,13 +2,13 @@ package model.board;
 
 import javafx.scene.paint.Color;
 
-public enum StreetColor {
+public enum Street {
     BROWN(Color.SADDLEBROWN),BLUE(Color.PALETURQUOISE),DEEPBLUE(Color.ROYALBLUE),PURPLE(Color.DEEPPINK),
     ORANGE(Color.ORANGE),RED(Color.ORANGERED),YELLOW(Color.LIGHTGOLDENRODYELLOW),GREEN(Color.FORESTGREEN);
 
     private Color color;
 
-    StreetColor(Color color) {
+    Street(Color color) {
         this.color = color;
     }
 
@@ -16,14 +16,14 @@ public enum StreetColor {
         return color;
     }
 
-    public static StreetColor fromString(String in) {
+    public static Street fromString(String in) {
         in = in.toUpperCase();
-        StreetColor[] values = StreetColor.values();
+        Street[] values = Street.values();
         for (int i = 0; i < values.length; i++) {
             if (values[i].toString().equals(in)) {
                 return values[i];
             }
         }
-        throw new EnumConstantNotPresentException(StreetColor.class, in);
+        throw new EnumConstantNotPresentException(Street.class, in);
     }
 }

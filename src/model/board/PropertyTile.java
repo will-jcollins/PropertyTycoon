@@ -2,75 +2,50 @@ package model.board;
 
 import java.util.Arrays;
 
-public class PropertyTile extends Tile {
+public class PropertyTile extends BuyableTile {
 
-    public static final int MAXNOHOUSES = 6;
+    public static final int MAX_NO_HOUSES = 6;
 
-    private StreetColor group;
-    // Cost attributes
-    private int cost;
-    private int[] rent;
-    // Development attributes
-    private int owner = -1;
+    private final Street street;
+    private final int[] rent;
     private int noHouses = 0;
 
-    public PropertyTile(String name, StreetColor group, int cost, int[] rent) {
-        super(name);
+    public PropertyTile(String name, int cost, int[] rent, Street group) {
+        super(name,cost);
 
         // Attribute assignment
-        this.group = group;
-        this.cost = cost;
+        this.street = group;
         this.rent = rent;
 
-        if (rent.length != MAXNOHOUSES) {
-            throw new IllegalArgumentException("array of rents should be " + MAXNOHOUSES + ", instead is " + rent.length);
+        if (rent.length != MAX_NO_HOUSES) {
+            throw new IllegalArgumentException("array of rents should be " + MAX_NO_HOUSES + ", instead is " + rent.length);
         }
     }
 
-    public StreetColor getGroup() {
-        return group;
+    public Street getStreet() {
+        return street;
     }
 
-    public int getCost() {
-        return cost;
-    }
-
-    public int getRent() {return rent[1];}
-
-    public int getOwnerID() {
-        return owner;
+    public int getRent() {
+        return rent[noHouses];
     }
 
     public int getNoHouses() {
         return noHouses;
     }
 
-    public void setOwner(int buyer){
-        owner = buyer;
-    }
-
-    public boolean addHouse() {
-        int prevHouses = noHouses;
-        noHouses = Math.min(noHouses + 1, MAXNOHOUSES - 1);
-        return !(prevHouses == noHouses);
-    }
-
-    public int getOwner(){
-        return owner;
-    }
-
-    public String getTileType(){
-        return "PropertyTile";
+    public void setNoHouses(int noHouses) {
+        this.noHouses = noHouses;
     }
 
     @Override
     public String toString() {
         return "PropertyTile{" +
                 "name=" + getName() +
-                ", group=" + group +
-                ", cost=" + cost +
+                ", group=" + street +
+                ", cost=" + getCost() +
                 ", rent=" + Arrays.toString(rent) +
-                ", owner=" + owner +
+                ", owner=" + getOwner().toString() +
                 ", noHouses=" + noHouses +
                 '}';
     }
