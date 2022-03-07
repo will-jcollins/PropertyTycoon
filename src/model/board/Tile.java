@@ -1,7 +1,7 @@
 package model.board;
 
-import ui.ImgUITile;
-import ui.UITile;
+import ui.board.ImgUITile;
+import ui.board.UITile;
 
 public abstract class Tile {
     private final String name;

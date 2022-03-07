@@ -1,5 +1,8 @@
 package model.board;
 
+import ui.board.PropertyUITile;
+import ui.board.UITile;
+
 import java.util.Arrays;
 
 public class PropertyTile extends BuyableTile {
@@ -36,6 +39,11 @@ public class PropertyTile extends BuyableTile {
 
     public void setNoHouses(int noHouses) {
         this.noHouses = noHouses;
+    }
+
+    @Override
+    public UITile getUITile(int x, int y, int width, int height, int angle) {
+        return new PropertyUITile(x,y,width,height,angle,this);
     }
 
     @Override

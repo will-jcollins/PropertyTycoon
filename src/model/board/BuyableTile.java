@@ -1,6 +1,8 @@
 package model.board;
 
 import model.Player.Player;
+import ui.board.ImgCostUITile;
+import ui.board.UITile;
 
 public abstract class BuyableTile extends Tile {
 
@@ -44,5 +46,10 @@ public abstract class BuyableTile extends Tile {
 
     public void setOwner(Player owner) {
         this.owner = owner;
+    }
+
+    @Override
+    public UITile getUITile(int x, int y, int width, int height, int angle) {
+        return new ImgCostUITile(x, y, width, height, angle, this);
     }
 }

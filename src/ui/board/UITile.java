@@ -1,6 +1,9 @@
-package ui;
+package ui.board;
 
+import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -17,7 +20,6 @@ public class UITile extends Group {
 
     protected static final int MAXCHARSPERLINE = 7;
 
-
     public UITile(int x, int y, double width, double height, double angle) {
         Rectangle back = new Rectangle();
         back.setX(x);
@@ -33,7 +35,7 @@ public class UITile extends Group {
         rotate.setPivotX(x);
         rotate.setPivotY(y);
         rotate.setAngle(angle);
-        this.getTransforms().add(rotate);
+        getTransforms().add(rotate);
     }
 
     protected String formatText(String in) {

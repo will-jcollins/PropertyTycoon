@@ -1,4 +1,4 @@
-package ui;
+package ui.board;
 
 import javafx.scene.image.ImageView;
 import model.board.ActionTile;

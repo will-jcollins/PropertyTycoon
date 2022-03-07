@@ -5,13 +5,15 @@ import model.board.Board;
 import java.util.Objects;
 import java.util.Random;
 
-public class Player {
+public abstract class Player {
     private final int id;
+    private final String name;
     private int pos = 0; // the player position
     private int money = 1500;
 
-    public Player(int id){
+    public Player(int id, String name){
         this.id = id;
+        this.name = name;
     }
 
     public int getPos(){
@@ -36,6 +38,15 @@ public class Player {
 
     public int getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean askPlayer(String message) {
+        System.out.println(message);
+        return true;
     }
 
     @Override

@@ -1,15 +1,14 @@
 package model.mainGame;
 
+import model.Player.AIPlayer;
+import model.Player.HumanPlayer;
 import model.Player.Player;
 import model.actions.Action;
 import model.actions.Actionable;
 import model.board.*;
-import sun.text.normalizer.Utility;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import static model.actions.ActCode.BANKPAY;
 
 public class Game {
 
@@ -27,19 +26,17 @@ public class Game {
     private Scanner scanner = new Scanner(System.in);
 
 
-    public Game(int noHumans, int noAutos) {
-        int noPlayers = noHumans + noAutos;
+    public Game(int noHumans, int noAIs) {
 
         players = new ArrayList<>();
 
-        for (int i = 0; i < noPlayers; i++) {
-            players.add(new Player(i));
+        for (int i = 0; i < noHumans; i++) {
+            players.add(new HumanPlayer(i, "Hello"));
         }
-    }
 
-    public static void main(String[] args){
-        Game game = new Game(1,1);
-        game.startGameLoop();
+        for (int i = 0; i < noAIs; i++) {
+            players.add(new AIPlayer(i));
+        }
     }
 
     public void startGameLoop() {
@@ -60,7 +57,7 @@ public class Game {
             System.out.println("Player " + players.get(currentPlayer).getId() + " has " + players.get(currentPlayer).getMoney());
 
             if (players.get(currentPlayer).getMoney() <= 0) {
-                killPlayer(players.get(currentPlayer));
+                removePlayer(players.get(currentPlayer));
                 anotherTurn = false;
             }
 
@@ -81,7 +78,7 @@ public class Game {
 
     private void takeTurn(Player p) {
         // Move the player
-        askPlayer("Do you want to move");
+        p.askPlayer("Do you want to move");
         int prevPos = p.getPos();
         p.changePos(dice.getRollTotal());
 
@@ -108,7 +105,7 @@ public class Game {
 
         // If the property is not owned by anyone yet prompt player to buy it
         if (tile.canBuy()) {
-            boolean toBuy = askPlayer("wanna buy "+ tile.getName()+" for "+ tile.getCost()+"?");
+            boolean toBuy = p.askPlayer("wanna buy "+ tile.getName()+" for "+ tile.getCost()+"?");
             if (toBuy){
                 tile.buy(p);
             } else {
@@ -185,22 +182,15 @@ public class Game {
         return noStations;
     }
 
-    public void killPlayer(Player p) {
+    public void removePlayer(Player p) {
         players.remove(p);
         currentPlayer = currentPlayer % players.size();
         board.freeProperties(p);
     }
 
-    public boolean askPlayer(String message){
-//        String playerDecision = "";
-//        System.out.println(message);
-//        while(!playerDecision.equals("yes") && !playerDecision.equals("no")){
-//            playerDecision = scanner.nextLine();
-//        }
-//        return (playerDecision.equals("yes"));
-        System.out.println(message);
-        return true;
+    public static void main(String[] args){
+        Game game = new Game(0,4);
+        game.startGameLoop();
     }
-
 }
 
