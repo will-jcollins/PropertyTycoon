@@ -22,9 +22,6 @@ public class Game {
     // RNG
     private Dice dice = new Dice(2,6);
 
-    // Interface
-    private Scanner scanner = new Scanner(System.in);
-
 
     public Game(int noHumans, int noAIs) {
 
@@ -45,7 +42,7 @@ public class Game {
             boolean anotherTurn;
             dice.roll();
 
-            if (dice.getDoubles() >= 3) {
+            if (dice.getDoubles() >= TURNS_TO_JAIL) {
                 // After 3 doubles send player straight to jail and prep next player
                 sendToJail(players.get(currentPlayer));
                 anotherTurn = false;

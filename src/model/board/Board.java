@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 
-
 public class Board {
     private static final String DATAPATH = System.getProperty("user.dir") + "/assets/jsons/BoardData.json";
 

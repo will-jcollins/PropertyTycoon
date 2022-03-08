@@ -9,6 +9,7 @@ public abstract class Player {
     private final int id;
     private final String name;
     private int pos = 0; // the player position
+    private int prevPos = 0;
     private int money = 1500;
 
     public Player(int id, String name){
@@ -21,11 +22,12 @@ public abstract class Player {
     }
 
     public void setPos(int newPos) {
+        prevPos = pos;
         pos = newPos;
     }
 
     public void changePos(int newPos) {
-        pos = (newPos + newPos) % Board.SIZE;
+        setPos((pos + newPos) % Board.SIZE);
     }
 
     public int getMoney() {
@@ -38,6 +40,10 @@ public abstract class Player {
 
     public int getId() {
         return id;
+    }
+
+    public int getPrevPos() {
+        return prevPos;
     }
 
     public String getName() {

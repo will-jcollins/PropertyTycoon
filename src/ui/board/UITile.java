@@ -1,10 +1,12 @@
 package ui.board;
 
 import javafx.geometry.Insets;
+import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
@@ -20,6 +22,13 @@ public class UITile extends Group {
 
     protected static final int MAXCHARSPERLINE = 7;
 
+    private final double width;
+    private final double height;
+    private final int minX;
+    private final int maxX;
+    private final int minY;
+    private final int maxY;
+
     public UITile(int x, int y, double width, double height, double angle) {
         Rectangle back = new Rectangle();
         back.setX(x);
@@ -29,6 +38,7 @@ public class UITile extends Group {
         back.setFill(BACKCOLOR);
         back.setStroke(STROKECOLOR);
         back.setStrokeWidth(STROKEWIDTH);
+        back.setCache(true);
         getChildren().add(back);
 
         Rotate rotate = new Rotate();
@@ -36,6 +46,18 @@ public class UITile extends Group {
         rotate.setPivotY(y);
         rotate.setAngle(angle);
         getTransforms().add(rotate);
+
+        // Works out min / max of x & y with rotation factored in
+        double[] sizeArr = {0,width, height};
+        int[] xDifference = {1,-2,-1,2};
+        int[] yDifference = {2,1,-2,-1};
+
+        minX = Math.min(x, (int) ( x + sizeArr[Math.abs(xDifference[(int) angle / 90])] * Math.signum(xDifference[(int) angle / 90])));
+        minY = Math.min(y, (int) (y + sizeArr[Math.abs(yDifference[(int) angle / 90])]* Math.signum(yDifference[(int) angle / 90])));
+        maxX = Math.max(x, (int) ( x + sizeArr[Math.abs(xDifference[(int) angle / 90])] * Math.signum(xDifference[(int) angle / 90])));
+        maxY = Math.max(y, (int) (y + sizeArr[Math.abs(yDifference[(int) angle / 90])]* Math.signum(yDifference[(int) angle / 90])));;
+        this.width = width;
+        this.height = height;
     }
 
     protected String formatText(String in) {
@@ -63,5 +85,30 @@ public class UITile extends Group {
         else {
             return in;
         }
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+
+    public double getHeight() {
+        return height;
+    }
+
+    public int getMinX() {
+        return minX;
+    }
+
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public int getMinY() {
+        return minY;
+    }
+
+    public int getMaxY() {
+        return maxY;
     }
 }
