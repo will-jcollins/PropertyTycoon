@@ -11,6 +11,7 @@ public abstract class Player {
     private int pos = 0; // the player position
     private int prevPos = 0;
     private int money = 1500;
+    private boolean passedGo = false;
 
     public Player(int id, String name){
         this.id = id;
@@ -24,6 +25,9 @@ public abstract class Player {
     public void setPos(int newPos) {
         prevPos = pos;
         pos = newPos;
+        if (prevPos < newPos) {
+            passedGo = true;
+        }
     }
 
     public void changePos(int newPos) {

@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 public class PropertyTile extends BuyableTile {
 
-    public static final int MAX_NO_HOUSES = 6;
+    public static final int MAX_NO_HOUSES = 5;
 
     private final Street street;
     private final int[] rent;
@@ -20,7 +20,7 @@ public class PropertyTile extends BuyableTile {
         this.street = group;
         this.rent = rent;
 
-        if (rent.length != MAX_NO_HOUSES) {
+        if (rent.length != MAX_NO_HOUSES + 1) {
             throw new IllegalArgumentException("array of rents should be " + MAX_NO_HOUSES + ", instead is " + rent.length);
         }
     }
@@ -31,6 +31,10 @@ public class PropertyTile extends BuyableTile {
 
     public int getRent() {
         return rent[noHouses];
+    }
+
+    public int getRent(int i) {
+        return rent[i];
     }
 
     public int getNoHouses() {

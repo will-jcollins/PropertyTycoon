@@ -143,8 +143,6 @@ public class Game {
             default:
                 // TODO :: enumerate rest of cases
         }
-
-        System.out.println(actionable);
     }
 
     private int noStationsOwned(Player p) {
