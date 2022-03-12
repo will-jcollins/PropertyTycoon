@@ -33,9 +33,12 @@ public class UIBoard extends Group {
 
     private HashMap<Player, Circle> tokens;
     private UITile[] tiles;
+    private Board board;
 
     public UIBoard(Board board) {
         super();
+
+        this.board = board;
 
         this.tiles = new UITile[Board.SIZE];
 
@@ -50,7 +53,7 @@ public class UIBoard extends Group {
         TILE_WIDTH = (WIDTH - (2 * TILE_HEIGHT)) / TILESPERSIDE;
         TOKEN_SIZE = TILE_WIDTH;
 
-        drawBoard(board);
+        drawBoard(this.board);
 
         setCache(true);
     }

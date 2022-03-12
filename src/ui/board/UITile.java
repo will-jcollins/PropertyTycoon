@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
