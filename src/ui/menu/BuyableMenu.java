@@ -3,19 +3,20 @@ package ui.menu;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import model.Player.Player;
+import model.board.BuyableTile;
 import model.board.PropertyTile;
 import model.board.Street;
 
-public class PropertyMenu extends GridPane {
+public class BuyableMenu extends GridPane {
 
     private static final int PADDING = 10;
-    private static final Color BACKGROUND_COLOR = new Color(1,1,1,0.75);
+    private static final Color BACKGROUND_COLOR = new Color(1,1,1,1);
 
     private static final int HEIGHT = 300;
     private static final int WIDTH = 300;
@@ -23,12 +24,11 @@ public class PropertyMenu extends GridPane {
     private static final Font TITLE_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 20);
     private static final Font TEXT_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 15);
 
-    private boolean outcome;
+    private boolean outcome = false;
+    private boolean finished = false;
 
-    public PropertyMenu(PropertyTile property, Player player) {
+    public BuyableMenu(BuyableTile property, Player player) {
         super();
-
-        outcome = false;
 
         setStyle("-fx-border-style: solid inside;" +
                  "-fx-border-width: 3;" +
@@ -45,7 +45,7 @@ public class PropertyMenu extends GridPane {
         setRowIndex(title, 0);
         setHalignment(title, HPos.CENTER);
 
-        PropertyCard card = new PropertyCard(property);
+        BuyableCard card = new BuyableCard(property);
         getChildren().add(card);
         setColumnIndex(card, 0);
         setColumnSpan(card, 2);
@@ -65,14 +65,20 @@ public class PropertyMenu extends GridPane {
         getChildren().add(auction);
         setColumnIndex(auction,0);
         setRowIndex(auction,3);
+        auction.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            finished = true;
+        });
 
         TextButton accept;
 
         if (property.getCost() <= player.getMoney()) {
             accept = new TextButton(150,50,Street.GREEN.getColor(), "BUY");
+            accept.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                outcome = true;
+                finished = true;
+            });
         } else {
             accept = new TextButton(150, 50, Color.GRAY, "BUY");
-
             Text alert = new Text("BALANCE TOO LOW");
             alert.setFont(TEXT_FONT);
             getChildren().add(alert);
@@ -97,5 +103,9 @@ public class PropertyMenu extends GridPane {
 
     public boolean getOutcome() {
         return outcome;
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 }

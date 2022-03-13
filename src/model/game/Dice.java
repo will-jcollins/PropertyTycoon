@@ -3,7 +3,6 @@ package model.game;
 import java.util.Arrays;
 import java.util.Random;
 
-// what in the hyperfocus is this class
 public class Dice {
 
     private int[] vals;

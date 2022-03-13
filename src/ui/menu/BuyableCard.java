@@ -1,14 +1,19 @@
 package ui.menu;
 
 import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import model.board.BuyableTile;
 import model.board.PropertyTile;
+import model.board.StationTile;
+import model.board.UtilityTile;
 
-public class PropertyCard extends Group {
+public class BuyableCard extends Group {
 
     public static final int CARD_HEIGHT = 300;
     public static final int CARD_WIDTH = (int) (CARD_HEIGHT / 1.4);
@@ -16,6 +21,7 @@ public class PropertyCard extends Group {
     private static final int PADDING =  CARD_HEIGHT / 40;
     private static final int FONT_SIZE = CARD_HEIGHT / 20;
     private static final Font FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", FONT_SIZE);
+    private static final Font CAPTION_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", FONT_SIZE * 0.9);
     private static final double BOLD_STROKE_SIZE = (double) CARD_HEIGHT / 500;
 
     private static final int INNER_X = PADDING;
@@ -24,6 +30,7 @@ public class PropertyCard extends Group {
     private static final int INNER_WIDTH = CARD_WIDTH - 2 * PADDING;
     private static final double INNER_STROKE_SIZE = (double) CARD_HEIGHT / 300;
 
+    // Property geometry variables
     private static final int HEADER_X = INNER_X + PADDING;
     private static final int HEADER_Y = INNER_Y + PADDING;
     private static final int HEADER_HEIGHT = INNER_HEIGHT / 6;
@@ -35,8 +42,13 @@ public class PropertyCard extends Group {
     private static final int BODY_HEIGHT = INNER_HEIGHT - HEADER_HEIGHT - 2 * PADDING;
     private static final int BODY_WIDTH = HEADER_WIDTH - 2 * PADDING;
 
+    // Utility and Station geometry variables
+    private static final int IMAGE_WIDTH = (int) (HEADER_WIDTH / 1.5);
+    private static final int IMAGE_X = INNER_X + INNER_WIDTH / 2 - IMAGE_WIDTH / 2;
+    private static final int IMAGE_Y = INNER_Y + PADDING;
 
-    public PropertyCard(PropertyTile prop) {
+
+    public BuyableCard(BuyableTile tile) {
         super();
 
         Rectangle back = new Rectangle();
@@ -55,6 +67,16 @@ public class PropertyCard extends Group {
         outline.setFill(Color.TRANSPARENT);
         getChildren().add(outline);
 
+        if (tile instanceof PropertyTile) {
+            drawProperty((PropertyTile) tile);
+        } else if (tile instanceof UtilityTile) {
+            drawUtility((UtilityTile) tile);
+        } else if (tile instanceof StationTile) {
+            drawStation((StationTile) tile);
+        }
+    }
+
+    private void drawProperty(PropertyTile property) {
         Rectangle header = new Rectangle();
         header.setX(HEADER_X);
         header.setY(HEADER_Y);
@@ -62,28 +84,28 @@ public class PropertyCard extends Group {
         header.setWidth(HEADER_WIDTH);
         header.setStrokeWidth(HEADER_STROKE_SIZE);
         header.setStroke(Color.BLACK);
-        header.setFill(prop.getStreet().getColor());
+        header.setFill(property.getStreet().getColor());
         getChildren().add(header);
 
         Text title = new Text("T I T L E  D E E D");
         title.setTextAlignment(TextAlignment.CENTER);
         title.setFont(FONT);
-        title.setFill(getTextColor(prop.getStreet().getColor()));
+        title.setFill(getTextColor(property.getStreet().getColor()));
         title.setX(HEADER_X + (HEADER_WIDTH / 2) - (title.getBoundsInLocal().getWidth() / 2));
         title.setY(HEADER_Y + PADDING * 0.6 + title.getBoundsInLocal().getHeight());
         getChildren().add(title);
 
-        Text propTitle = new Text(prop.getName().toUpperCase());
+        Text propTitle = new Text(property.getName().toUpperCase());
         propTitle.setTextAlignment(TextAlignment.CENTER);
         propTitle.setFont(FONT);
-        propTitle.setFill(getTextColor(prop.getStreet().getColor()));
+        propTitle.setFill(getTextColor(property.getStreet().getColor()));
         propTitle.setX(HEADER_X + (HEADER_WIDTH / 2) - (propTitle.getBoundsInLocal().getWidth() / 2));
         propTitle.setY(HEADER_Y + HEADER_HEIGHT - PADDING);
-        propTitle.setStroke(getTextColor(prop.getStreet().getColor()));
+        propTitle.setStroke(getTextColor(property.getStreet().getColor()));
         propTitle.setStrokeWidth(BOLD_STROKE_SIZE);
         getChildren().add(propTitle);
 
-        Text rent = new Text("RENT    $" + prop.getRent(0));
+        Text rent = new Text("RENT    $" + property.getRent(0));
         rent.setTextAlignment(TextAlignment.CENTER);
         rent.setFont(FONT);
         rent.setFill(Color.BLACK);
@@ -102,7 +124,7 @@ public class PropertyCard extends Group {
             houseRent.setY(BODY_Y + (spacing * i) + rent.getBoundsInLocal().getHeight());
             getChildren().add(houseRent);
 
-            Text amount = new Text("$" + prop.getRent(i));
+            Text amount = new Text("$" + property.getRent(i));
             amount.setTextAlignment(TextAlignment.RIGHT);
             amount.setFont(FONT);
             amount.setFill(Color.BLACK);
@@ -111,7 +133,7 @@ public class PropertyCard extends Group {
             getChildren().add(amount);
         }
 
-        Text hotelRent = new Text("With HOTEL $" + prop.getRent(PropertyTile.MAX_NO_HOUSES));
+        Text hotelRent = new Text("With HOTEL $" + property.getRent(PropertyTile.MAX_NO_HOUSES));
         hotelRent.setTextAlignment(TextAlignment.CENTER);
         hotelRent.setFont(FONT);
         hotelRent.setFill(Color.BLACK);
@@ -119,7 +141,7 @@ public class PropertyCard extends Group {
         hotelRent.setY(BODY_Y + (spacing * PropertyTile.MAX_NO_HOUSES) + rent.getBoundsInLocal().getHeight());
         getChildren().add(hotelRent);
 
-        Text mortgageVal = new Text("Mortgage Value $" + prop.getCost() / 2);
+        Text mortgageVal = new Text("Mortgage Value $" + property.getCost() / 2);
         mortgageVal.setTextAlignment(TextAlignment.CENTER);
         mortgageVal.setFont(FONT);
         mortgageVal.setFill(Color.BLACK);
@@ -142,6 +164,105 @@ public class PropertyCard extends Group {
         hotelCost.setX(BODY_X + (BODY_WIDTH / 2) - (hotelCost.getBoundsInLocal().getWidth() / 2));
         hotelCost.setY(BODY_Y + (spacing * (PropertyTile.MAX_NO_HOUSES + 3)) + rent.getBoundsInLocal().getHeight());
         getChildren().add(hotelCost);
+    }
+
+    private void drawUtility(UtilityTile utility) {
+        ImageView icon = new ImageView(new Image("file:assets/images/utility.png"));
+        icon.setX(IMAGE_X);
+        icon.setY(IMAGE_Y);
+        icon.setFitHeight(IMAGE_WIDTH);
+        icon.setFitWidth(IMAGE_WIDTH);
+        getChildren().add(icon);
+
+        int y = IMAGE_Y + IMAGE_WIDTH + PADDING * 2;
+
+        Text title = new Text(utility.getName().toUpperCase());
+        title.setTextAlignment(TextAlignment.CENTER);
+        title.setFont(FONT);
+        title.setFill(Color.BLACK);
+        title.setStrokeWidth(BOLD_STROKE_SIZE);
+        title.setStroke(Color.BLACK);
+        title.setX(BODY_X + (BODY_WIDTH / 2) - (title.getBoundsInLocal().getWidth() / 2));
+        title.setY(y);
+        getChildren().add(title);
+
+        String[] sents = {"If one Utility is owned","rent is 4 times amount","shown on dice."};
+        y += title.getBoundsInLocal().getHeight() + PADDING * 2;
+
+        for (String sent : sents) {
+            Text caption = new Text(sent);
+            caption.setFont(CAPTION_FONT);
+            caption.setX(BODY_X + (BODY_WIDTH / 2) - (caption.getBoundsInLocal().getWidth() / 2));
+            caption.setY(y);
+            caption.setOpacity(0.75);
+            getChildren().add(caption);
+
+            y += caption.getBoundsInLocal().getHeight();
+        }
+
+        sents = new String[]{"If both Utilities are", "owned rent is 10 times", "amount shown on dice."};
+        y += PADDING;
+
+
+        for (String sent : sents) {
+            Text caption = new Text(sent);
+            caption.setFont(CAPTION_FONT);
+            caption.setX(BODY_X + (BODY_WIDTH / 2) - (caption.getBoundsInLocal().getWidth() / 2));
+            caption.setY(y);
+            caption.setOpacity(0.75);
+            getChildren().add(caption);
+
+            y += caption.getBoundsInLocal().getHeight();
+        }
+
+        y += PADDING * 2;
+
+        Text mortgage = new Text("Mortgage Value       $" + (utility.getCost() / 2));
+        mortgage.setFont(CAPTION_FONT);
+        mortgage.setX(BODY_X + (BODY_WIDTH / 2) - (mortgage.getBoundsInLocal().getWidth() / 2));
+        mortgage.setY(y);
+        mortgage.setOpacity(0.75);
+        getChildren().add(mortgage);
+    }
+
+    private void drawStation(StationTile station) {
+        ImageView icon = new ImageView(new Image("file:assets/images/station.png"));
+        icon.setX(IMAGE_X);
+        icon.setY(IMAGE_Y);
+        icon.setFitHeight(IMAGE_WIDTH);
+        icon.setFitWidth(IMAGE_WIDTH);
+        getChildren().add(icon);
+
+        int spacing = (INNER_HEIGHT - 2 * PADDING - IMAGE_WIDTH) / 6;
+        int textY = IMAGE_X + IMAGE_WIDTH;
+
+        Text title = new Text(station.getName().toUpperCase());
+        title.setTextAlignment(TextAlignment.CENTER);
+        title.setFont(FONT);
+        title.setFill(Color.BLACK);
+        title.setStrokeWidth(BOLD_STROKE_SIZE);
+        title.setStroke(Color.BLACK);
+        title.setX(BODY_X + (BODY_WIDTH / 2) - (title.getBoundsInLocal().getWidth() / 2));
+        title.setY(textY);
+        getChildren().add(title);
+
+        for (int i = 1; i <= StationTile.rent.length; i++) {
+            Text houseRent = new Text(i < 2 ? "Rent" : i + " Stations Owned");
+            houseRent.setTextAlignment(TextAlignment.LEFT);
+            houseRent.setFont(FONT);
+            houseRent.setFill(Color.BLACK);
+            houseRent.setX(BODY_X);
+            houseRent.setY(textY + (spacing * i));
+            getChildren().add(houseRent);
+
+            Text amount = new Text("$" + StationTile.rent[i - 1]);
+            amount.setTextAlignment(TextAlignment.RIGHT);
+            amount.setFont(FONT);
+            amount.setFill(Color.BLACK);
+            amount.setX(BODY_X + BODY_WIDTH - amount.getBoundsInLocal().getWidth());
+            amount.setY(textY + (spacing * i));
+            getChildren().add(amount);
+        }
     }
 
     /**

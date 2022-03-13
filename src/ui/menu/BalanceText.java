@@ -1,0 +1,58 @@
+package ui.menu;
+
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
+public class BalanceText extends Text {
+
+    private int startVal;
+    private int endVal;
+    private int differenceSign;
+
+    private boolean finished = false;
+
+    public BalanceText(int startVal, int endVal, int fontSize) {
+        super();
+
+        this.startVal = startVal;
+        this.endVal = endVal;
+        this.differenceSign = (int) Math.signum(this.endVal - this.startVal);
+
+        setText("$" + this.startVal);
+        setFont(Font.loadFont("file:assets/fonts/Kabel.ttf", fontSize));
+        setFill(Color.BLACK);
+    }
+
+    public void animateText() {
+        Platform.runLater(() -> animateText(startVal + differenceSign));
+    }
+
+    private void animateText(int currentVal) {
+        if (currentVal == endVal) {
+            setText("$" + currentVal);
+            finished = true;
+        } else {
+            setText("$" + currentVal);
+            Task nextTask = new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    Thread.sleep(15);
+                    Platform.runLater(() -> animateText(currentVal + differenceSign));
+                    return null;
+                }
+            };
+            Thread nextThread = new Thread(nextTask);
+            nextThread.setDaemon(true);
+            nextThread.start();
+        }
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+}
