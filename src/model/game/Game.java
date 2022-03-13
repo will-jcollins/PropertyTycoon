@@ -13,6 +13,9 @@ import java.util.ArrayList;
 public class Game {
 
     public static final int TURNS_TO_JAIL = 3;
+    public static final int GO_REWARD = 200;
+
+    private boolean passedGo = false;
 
     // Model
     private Board board = new Board();
@@ -30,7 +33,13 @@ public class Game {
         players = new ArrayList<>();
 
         for (int i = 0; i < noHumans; i++) {
-            players.add(new HumanPlayer(i, "Hello"));
+            if (i == 0) {
+                players.add(new HumanPlayer(i, "Will"));
+            } else if (i == 1) {
+                players.add(new HumanPlayer(i, "Levi"));
+            } else {
+                players.add(new HumanPlayer(i, "Hello"));
+            }
         }
 
         for (int i = 0; i < noAIs; i++) {
@@ -39,6 +48,7 @@ public class Game {
     }
 
     public UITip iterateGame() {
+        // Select next player if needed
         if (!dice.isDouble()) {
             selectNextPlayer();
         }
@@ -50,39 +60,62 @@ public class Game {
             dice.roll();
             Player player = players.get(currentPlayer);
             player.changePos(dice.getRollTotal());
+
+            if (player.getPos() < player.getPrevPos()) {
+                player.pay(-GO_REWARD);
+                passedGo = true;
+            }
+
             return UITip.SHOW_DICE_MENU;
         }
     }
 
     public void selectNextPlayer() {
         currentPlayer = (currentPlayer + 1) % players.size();
+        dice.reset();
     }
 
     public void sendToJail(Player p) {
 
     }
 
-    private void takeTurn(Player p) {
-        // Move the player
-        p.askPlayer("Do you want to move");
-        int prevPos = p.getPos();
-        p.changePos(dice.getRollTotal());
-
-        if (prevPos > p.getPos()) {
-//            executeActionable(new Action(BANKPAY, 10, 0));
-        }
-
+    public UITip takeTurn() {
+        passedGo = false;
+        Player p = getCurrentPlayer();
 
         // Interact with tile landed on
         Tile tile = board.getTile(p.getPos());
-        System.out.println("landed on " + tile.getName());
-        if (tile instanceof ActionTile) {
-            executeActionable((ActionTile) tile);
-        }
-        else if (tile instanceof BuyableTile) {
-            interactWithBuyable(p);
-        }
+        if (tile instanceof BuyableTile) {
+            BuyableTile buyable = (BuyableTile) tile;
+            if (buyable.getOwner() == null) {
+                return UITip.SHOW_BUY_BUYABLE;
+            } else if (!buyable.getOwner().equals(getCurrentPlayer())) {
+                int rentToPay;
+                // Calculate the amount of rent to pay based on tile type
+                if (tile instanceof PropertyTile) {
+                    rentToPay = ((PropertyTile) tile).getRent();
+                } else if (tile instanceof StationTile) {
+                    StationTile station = (StationTile) tile;
+                    // Index rent by number of stations owned by owner
+                    rentToPay = StationTile.rent[noStationsOwned(station.getOwner()) - 1];
+                } else if (tile instanceof UtilityTile) {
+                    UtilityTile utility = (UtilityTile) tile;
+                    // Pay rent as a factor of the number of utilities owned by owner
+                    rentToPay = UtilityTile.rentFactor[noUtilitiesOwned(utility.getOwner()) - 1] * dice.getRollTotal();
+                } else {
+                    throw new IllegalStateException("Case for buyable tile not enumerated");
+                }
 
+                getCurrentPlayer().pay(rentToPay);
+                buyable.getOwner().pay(-rentToPay);
+
+                return UITip.SHOW_RENT_PAY;
+            } else {
+                return UITip.NOP;
+            }
+        } else {
+            return UITip.NOP;
+        }
     }
 
     private void interactWithBuyable(Player p) {
@@ -176,12 +209,26 @@ public class Game {
         return dice;
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public void buyTile(BuyableTile tile) {
+        Player p = getCurrentPlayer();
+        tile.setOwner(p);
+        p.pay(tile.getCost());
+    }
+
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public boolean isPassedGo() {
+        return passedGo;
     }
 
     public Player getCurrentPlayer() {

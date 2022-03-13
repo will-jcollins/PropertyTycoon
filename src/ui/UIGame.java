@@ -5,36 +5,28 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.property.Property;
 import javafx.concurrent.Task;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.Player.AIPlayer;
-import model.Player.Player;
 import model.board.Board;
+import model.board.BuyableTile;
 import model.board.PropertyTile;
 import model.game.Dice;
 import model.game.Game;
 import ui.board.UIBoard;
-import ui.menu.PropertyMenu;
+import ui.menu.*;
 import ui.menu.dice.DiceMenu;
-import ui.menu.dice.UIDie;
 import ui.player.UIPlayers;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class UIGame extends Application {
 
     private static final int MENU_OFFSET = 50;
-
-    private boolean waiting = false;
 
     private StackPane gameStack;
     private UIPlayers players;
@@ -46,7 +38,7 @@ public class UIGame extends Application {
 
         model = new Game(2,0);
 
-        board = new UIBoard(new Board());
+        board = new UIBoard(model.getBoard());
         players = new UIPlayers(model.getPlayers(), board);
 
         gameStack = new StackPane();
@@ -58,21 +50,15 @@ public class UIGame extends Application {
         // Sound setup
         File musicPath = new File("assets/audio/back.mp3");
         Media backMusic = new Media(musicPath.toURI().toString());
-        MediaPlayer player = new MediaPlayer(backMusic);
-        player.setOnEndOfMedia(new Runnable() {
-            @Override
-            public void run() {
-                player.seek(Duration.ZERO);
-                player.play();
-            }
+        MediaPlayer mediaPlayer = new MediaPlayer(backMusic);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
         });
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                player.play();
-                startNextIteration();
-            }
+        Platform.runLater(() -> {
+            mediaPlayer.play();
+            startNextIteration();
         });
 
         // Scene & Stage setup
@@ -82,7 +68,10 @@ public class UIGame extends Application {
     }
 
     private void startNextIteration() {
-        switch (model.iterateGame()) {
+        players.dismissPlayer(model.getCurrentPlayer());
+        UITip tip = model.iterateGame();
+        players.higlightPlayer(model.getCurrentPlayer());
+        switch (tip) {
             case SHOW_DICE_MENU:
                 createDicePopup(model.getDice());
                 break;
@@ -95,8 +84,28 @@ public class UIGame extends Application {
         }
     }
 
+    private void checkGoReward() {
+        if (model.isPassedGo()) {
+            createGoPopup();
+        } else {
+            takeTurn();
+        }
+    }
+
+    private void takeTurn() {
+        switch (model.takeTurn()) {
+            case SHOW_BUY_BUYABLE:
+                createBuyablePopup();
+                break;
+            case SHOW_RENT_PAY:
+                createRentPopup();
+                break;
+            default:
+                startNextIteration();
+        }
+    }
+
     private void createDicePopup(Dice dice) {
-        System.out.println("created dice popup");
         DiceMenu menu = new DiceMenu(dice);
         menu.setOpacity(0);
         gameStack.getChildren().add(menu);
@@ -136,11 +145,10 @@ public class UIGame extends Application {
 
         exitTask.setOnSucceeded(event -> {
             try {
-                players.updatePlayers(model.getCurrentPlayer(), board);
+                players.updatePlayers(model.getCurrentPlayer(), board, event1 -> checkGoReward());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            startNextIteration();
         });
 
         Thread exitThread = new Thread(exitTask);
@@ -148,8 +156,153 @@ public class UIGame extends Application {
         exitThread.start();
     }
 
-    private void createPropertyPopup() {
+    private void createBuyablePopup() {
+        BuyableMenu menu = new BuyableMenu((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()),model.getCurrentPlayer());
+        menu.setOpacity(0);
+        gameStack.getChildren().add(menu);
+        menu.setTranslateY(menu.getTranslateY() + MENU_OFFSET);
 
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(250),menu);
+        fadeTransition.setFromValue(0);
+        fadeTransition.setToValue(1);
+
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(250),menu);
+        translateTransition.setByY(-MENU_OFFSET);
+
+        ParallelTransition transitions = new ParallelTransition(menu,fadeTransition,translateTransition);
+        transitions.play();
+
+        FadeTransition exitFadeTransition = new FadeTransition(Duration.millis(250),menu);
+        exitFadeTransition.setFromValue(1);
+        exitFadeTransition.setToValue(0);
+
+        TranslateTransition exitTranslateTransition = new TranslateTransition(Duration.millis(250),menu);
+        exitTranslateTransition.setByY(MENU_OFFSET);
+
+        ParallelTransition exitTransitions = new ParallelTransition(menu,exitFadeTransition,exitTranslateTransition);
+
+        Task exitTask = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                while (!menu.isFinished()) {
+                    // Thread has to sleep to have enough time to recognise value changes
+                    Thread.sleep(1);
+                }
+                exitTransitions.play();
+                return null;
+            }
+        };
+        Thread exitThread = new Thread(exitTask);
+        exitThread.setDaemon(true);
+        exitThread.start();
+
+        exitTransitions.setOnFinished(event -> {
+            if (menu.getOutcome()) {
+                model.buyTile((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()));
+            } else {
+                // TODO :: trigger auction
+            }
+
+            startNextIteration();
+        });
+    }
+
+    private void createRentPopup() {
+        RentMenu menu = new RentMenu((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()),model.getCurrentPlayer());
+        menu.setOpacity(0);
+        gameStack.getChildren().add(menu);
+        menu.setTranslateY(menu.getTranslateY() + MENU_OFFSET);
+
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(250),menu);
+        fadeTransition.setFromValue(0);
+        fadeTransition.setToValue(1);
+
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(250),menu);
+        translateTransition.setByY(-MENU_OFFSET);
+
+        ParallelTransition transitions = new ParallelTransition(menu,fadeTransition,translateTransition);
+        transitions.setOnFinished(event -> {
+            menu.startAnimation();
+        });
+        transitions.play();
+
+        FadeTransition exitFadeTransition = new FadeTransition(Duration.millis(250),menu);
+        exitFadeTransition.setFromValue(1);
+        exitFadeTransition.setToValue(0);
+
+        TranslateTransition exitTranslateTransition = new TranslateTransition(Duration.millis(250),menu);
+        exitTranslateTransition.setByY(MENU_OFFSET);
+
+        ParallelTransition exitTransitions = new ParallelTransition(menu,exitFadeTransition,exitTranslateTransition);
+
+        Task exitTask = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                while (!menu.isFinished()) {
+                    // Thread has to sleep to have enough time to recognise value changes
+                    Thread.sleep(1);
+                }
+                Thread.sleep(1000);
+                exitTransitions.play();
+                return null;
+            }
+        };
+        Thread exitThread = new Thread(exitTask);
+        exitThread.setDaemon(true);
+        exitThread.start();
+
+        exitTransitions.setOnFinished(event -> {
+            startNextIteration();
+        });
+    }
+
+    private void createGoPopup() {
+        GoMenu menu = new GoMenu(model.getCurrentPlayer());
+        menu.setOpacity(0);
+        gameStack.getChildren().add(menu);
+        menu.setTranslateY(menu.getTranslateY() + MENU_OFFSET);
+
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(250),menu);
+        fadeTransition.setFromValue(0);
+        fadeTransition.setToValue(1);
+
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(250),menu);
+        translateTransition.setByY(-MENU_OFFSET);
+
+        ParallelTransition transitions = new ParallelTransition(menu,fadeTransition,translateTransition);
+        transitions.setOnFinished(event -> {
+            menu.startAnimation();
+        });
+        transitions.play();
+
+        FadeTransition exitFadeTransition = new FadeTransition(Duration.millis(250),menu);
+        exitFadeTransition.setFromValue(1);
+        exitFadeTransition.setToValue(0);
+
+        TranslateTransition exitTranslateTransition = new TranslateTransition(Duration.millis(250),menu);
+        exitTranslateTransition.setByY(MENU_OFFSET);
+
+        ParallelTransition exitTransitions = new ParallelTransition(menu,exitFadeTransition,exitTranslateTransition);
+
+        Task exitTask = new Task() {
+            @Override
+            protected Object call() throws Exception {
+                while (!menu.isFinished()) {
+                    // Thread has to sleep to have enough time to recognise value changes
+                    Thread.sleep(1);
+                }
+                Thread.sleep(1000);
+                exitTransitions.play();
+                return null;
+            }
+        };
+        Thread exitThread = new Thread(exitTask);
+        exitThread.setDaemon(true);
+        exitThread.start();
+
+        exitTransitions.setOnFinished(event -> {
+            takeTurn();
+        });
     }
 
     public static void main(String[] args) {

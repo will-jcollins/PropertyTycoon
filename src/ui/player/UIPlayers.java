@@ -1,8 +1,12 @@
 package ui.player;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -20,6 +24,8 @@ import java.util.List;
 
 public class UIPlayers extends Group {
 
+    private static final double OPACITY = 0.5;
+
     private static final Color[] PLAYER_COLORS = {Color.RED, Color.GRAY, Color.BLUE, Color.GREEN, Color.PINK, Color.PURPLE};
     private HashMap<Player, Circle> tokens;
 
@@ -28,6 +34,7 @@ public class UIPlayers extends Group {
     public UIPlayers(List<Player> players, UIBoard board) {
         this.tokens = new HashMap<>();
 
+        // Forces group to be positioned correctly over board
         Line startBound = new Line();
         startBound.setStartX(0);
         startBound.setStartY(0);
@@ -49,7 +56,7 @@ public class UIPlayers extends Group {
             Circle tempCirc = new Circle();
             tempCirc.setRadius(10);
             tempCirc.setFill(PLAYER_COLORS[i]);
-            tempCirc.setOpacity(0.5);
+            tempCirc.setOpacity(OPACITY);
             getChildren().add(tempCirc);
 
             tokens.put(players.get(i), tempCirc);
@@ -66,7 +73,7 @@ public class UIPlayers extends Group {
         }
     }
 
-    public void updatePlayers(Player player, UIBoard board) throws InterruptedException {
+    public void updatePlayers(Player player, UIBoard board, EventHandler<ActionEvent> finishTask) throws InterruptedException {
         finished = false;
 
         // Move pieces to the correct tile, changing tile player is positioned on by 1 at a time
@@ -90,8 +97,23 @@ public class UIPlayers extends Group {
 
         // Play transitions constructed in sequence
         seqTransition.play();
-        seqTransition.setOnFinished(event -> finished = true);
+        seqTransition.setOnFinished(finishTask);
+    }
 
+    public void higlightPlayer(Player p) {
+        Circle token = tokens.get(p);
+        FadeTransition inFade = new FadeTransition(Duration.millis(500),token);
+        inFade.setFromValue(token.getOpacity());
+        inFade.setToValue(1);
+        inFade.play();
+    }
+
+    public void dismissPlayer(Player p) {
+        Circle token = tokens.get(p);
+        FadeTransition outFade = new FadeTransition(Duration.millis(500),token);
+        outFade.setFromValue(1);
+        outFade.setToValue(OPACITY);
+        outFade.play();
     }
 
     public boolean isFinished() {

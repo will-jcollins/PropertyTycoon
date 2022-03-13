@@ -11,6 +11,7 @@ public abstract class Player {
     private int pos = 0; // the player position
     private int prevPos = 0;
     private int money = 1500;
+    private int prevMoney = 1500;
     private boolean passedGo = false;
 
     public Player(int id, String name){
@@ -34,12 +35,17 @@ public abstract class Player {
         setPos((pos + newPos) % Board.SIZE);
     }
 
+    public int getPrevMoney() {
+        return prevMoney;
+    }
+
     public int getMoney() {
         return money;
     }
 
     public void pay(int amount) {
-        money += amount;
+        prevMoney = money;
+        money -= amount;
     }
 
     public int getId() {
