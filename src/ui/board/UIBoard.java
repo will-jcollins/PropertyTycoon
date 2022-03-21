@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class UIBoard extends Group {
 
-    private static final int DEFAULT_SIZE = 810;
+    private static final int DEFAULT_SIZE = 1000;
 
     // Geometry constants
     private final int SIZE;
@@ -42,7 +42,7 @@ public class UIBoard extends Group {
         }
 
         // Calculate geometry constants
-        SIZE = size;
+        this.SIZE = size;
         TILESPERSIDE = (Board.SIZE - 4) / 4;
         TILE_HEIGHT = SIZE / 8;
         TILE_WIDTH = (SIZE - (2 * TILE_HEIGHT)) / TILESPERSIDE;
@@ -126,5 +126,9 @@ public class UIBoard extends Group {
 
     public int getYTilePos(int pos) {
         return (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2;
+    }
+
+    public int getSIZE() {
+        return SIZE;
     }
 }

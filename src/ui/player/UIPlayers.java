@@ -44,10 +44,10 @@ public class UIPlayers extends Group {
         getChildren().add(startBound);
 
         Line endBound = new Line();
-        endBound.setStartX(810);
-        endBound.setStartY(810);
-        endBound.setEndX(810);
-        endBound.setEndY(810);
+        endBound.setStartX(board.getSIZE());
+        endBound.setStartY(board.getSIZE());
+        endBound.setEndX(board.getSIZE());
+        endBound.setEndY(board.getSIZE());
         endBound.setOpacity(0);
         getChildren().add(endBound);
 
