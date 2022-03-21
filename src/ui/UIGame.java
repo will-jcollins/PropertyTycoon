@@ -6,7 +6,9 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
@@ -174,7 +176,10 @@ public class UIGame extends Application {
         exitTranslateTransition.setByY(MENU_OFFSET);
 
         ParallelTransition exitTransitions = new ParallelTransition(menu,exitFadeTransition,exitTranslateTransition);
-        exitTransitions.setOnFinished(onExit);
+        exitTransitions.setOnFinished(event -> {
+            remove(menu);
+            onExit.handle(new ActionEvent());
+        });
 
         Task exitTask = new Task() {
             @Override
@@ -192,6 +197,10 @@ public class UIGame extends Application {
         Thread exitThread = new Thread(exitTask);
         exitThread.setDaemon(true);
         exitThread.start();
+    }
+
+    private void remove(Node n) {
+        gameStack.getChildren().remove(n);
     }
 
     public static void main(String[] args) {
