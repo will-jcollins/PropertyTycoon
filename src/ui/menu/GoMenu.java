@@ -14,13 +14,7 @@ import model.game.Game;
 
 import java.util.Locale;
 
-public class GoMenu extends VBox {
-
-    private static final Font TITLE_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 20);
-    private static final Font TEXT_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 15);
-
-    private static final int PADDING = 10;
-    private static final Color BACKGROUND_COLOR = new Color(1,1,1,1);
+public class GoMenu extends Menu {
 
     private BalanceText receivingBalance;
     private BalanceText payingBalance;
@@ -35,6 +29,8 @@ public class GoMenu extends VBox {
         title.setStrokeWidth(0.5);
         title.setStroke(Color.BLACK);
         getChildren().add(title);
+        setRowIndex(title,0);
+        setColumnIndex(title,0);
         setMargin(title, new Insets(0,0,PADDING * 2,0));
 
         Text receivingName =  new Text(player.getName().toUpperCase());
@@ -61,18 +57,9 @@ public class GoMenu extends VBox {
 
         HBox captionNodes = new HBox(payingNodes,arrow,receivingNodes);
         getChildren().add(captionNodes);
-        setMargin(captionNodes, new Insets(PADDING * 2,0,0,0));
+        setRowIndex(captionNodes,1);
+        setColumnIndex(captionNodes,0);
         captionNodes.setAlignment(Pos.CENTER);
-
-        setStyle("-fx-border-style: solid inside;" +
-                "-fx-border-width: 3;" +
-                "");
-
-        setPadding(new Insets(0,PADDING * 2,PADDING,PADDING * 2));
-        setBackground(new Background(new BackgroundFill(BACKGROUND_COLOR,null,null)));
-        setAlignment(Pos.BASELINE_CENTER);
-        setMaxHeight(0);
-        setMaxWidth(0);
     }
 
     public void startAnimation() {
@@ -90,6 +77,7 @@ public class GoMenu extends VBox {
         animateThread.start();
     }
 
+    @Override
     public boolean isFinished() {
         return payingBalance.isFinished() && receivingBalance.isFinished();
     }

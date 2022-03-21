@@ -13,26 +13,13 @@ import model.board.BuyableTile;
 import model.board.PropertyTile;
 import model.board.Street;
 
-public class BuyableMenu extends GridPane {
-
-    private static final int PADDING = 10;
-    private static final Color BACKGROUND_COLOR = new Color(1,1,1,1);
-
-    private static final int HEIGHT = 300;
-    private static final int WIDTH = 300;
-
-    private static final Font TITLE_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 20);
-    private static final Font TEXT_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 15);
+public class BuyableMenu extends Menu {
 
     private boolean outcome = false;
     private boolean finished = false;
 
     public BuyableMenu(BuyableTile property, Player player) {
         super();
-
-        setStyle("-fx-border-style: solid inside;" +
-                 "-fx-border-width: 3;" +
-                 "");
 
         Text title =  new Text("PURCHASE " + property.getName().toUpperCase() + "?");
         title.setFont(TITLE_FONT);
@@ -90,21 +77,18 @@ public class BuyableMenu extends GridPane {
         getChildren().add(accept);
         setColumnIndex(accept,1);
         setRowIndex(accept, 3);
-
-
-        setPadding(new Insets(PADDING,PADDING * 2,PADDING,PADDING * 2));
-        setHgap(PADDING);
-        setVgap(PADDING);
-        setBackground(new Background(new BackgroundFill(BACKGROUND_COLOR,null,null)));
-        setAlignment(Pos.BASELINE_CENTER);
-        setMaxHeight(WIDTH);
-        setMaxWidth(HEIGHT);
     }
 
     public boolean getOutcome() {
         return outcome;
     }
 
+    @Override
+    public int getEndLatency() {
+        return 0;
+    }
+
+    @Override
     public boolean isFinished() {
         return finished;
     }

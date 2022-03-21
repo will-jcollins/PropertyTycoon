@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class UIBoard extends Group {
 
-    private static final int DEFAULT_SIZE = 1000;
+    private static final int DEFAULT_SIZE = 810;
 
     // Geometry constants
     private final int SIZE;

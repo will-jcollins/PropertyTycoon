@@ -17,15 +17,7 @@ import javafx.scene.text.Text;
 import model.Player.Player;
 import model.board.BuyableTile;
 
-public class RentMenu extends GridPane {
-
-    private static final int HEIGHT = 300;
-    private static final int WIDTH = 300;
-    private static final int PADDING = 10;
-    private static final Color BACKGROUND_COLOR = new Color(1,1,1,1);
-
-    private static final Font TITLE_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 20);
-    private static final Font TEXT_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 15);
+public class RentMenu extends Menu {
 
     private BalanceText receivingBalance;
     private BalanceText payingBalance;
@@ -86,19 +78,6 @@ public class RentMenu extends GridPane {
         setRowIndex(arrow, 2);
         setHalignment(arrow,HPos.CENTER);
         setValignment(arrow, VPos.CENTER);
-
-
-        setStyle("-fx-border-style: solid inside;" +
-                "-fx-border-width: 3;" +
-                "");
-
-        setPadding(new Insets(PADDING,PADDING * 2,PADDING,PADDING * 2));
-        setHgap(PADDING);
-        setVgap(PADDING);
-        setBackground(new Background(new BackgroundFill(BACKGROUND_COLOR,null,null)));
-        setAlignment(Pos.BASELINE_CENTER);
-        setMaxHeight(0);
-        setMaxWidth(0);
     }
 
     public void startAnimation() {
@@ -116,6 +95,7 @@ public class RentMenu extends GridPane {
         animateThread.start();
     }
 
+    @Override
     public boolean isFinished() {
         return payingBalance.isFinished() && receivingBalance.isFinished();
     }

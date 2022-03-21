@@ -6,6 +6,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
@@ -47,17 +48,17 @@ public class UIGame extends Application {
 
         BorderPane root = new BorderPane(gameStack);
 
-//        // Sound setup
-//        File musicPath = new File("assets/audio/back.mp3");
-//        Media backMusic = new Media(musicPath.toURI().toString());
-//        MediaPlayer mediaPlayer = new MediaPlayer(backMusic);
-//        mediaPlayer.setOnEndOfMedia(() -> {
-//            mediaPlayer.seek(Duration.ZERO);
-//            mediaPlayer.play();
-//        });
+        // Sound setup
+        File musicPath = new File("assets/audio/back.mp3");
+        Media backMusic = new Media(musicPath.toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(backMusic);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+        });
 
         Platform.runLater(() -> {
-//            mediaPlayer.play();
+            mediaPlayer.play();
             startNextIteration();
         });
 
@@ -107,157 +108,49 @@ public class UIGame extends Application {
 
     private void createDicePopup(Dice dice) {
         DiceMenu menu = new DiceMenu(dice);
-        menu.setOpacity(0);
-        gameStack.getChildren().add(menu);
-        menu.setTranslateY(menu.getTranslateY() + MENU_OFFSET);
 
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(250),menu);
-        fadeTransition.setFromValue(0);
-        fadeTransition.setToValue(1);
-
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(250),menu);
-        translateTransition.setByY(-MENU_OFFSET);
-
-        ParallelTransition transitions = new ParallelTransition(menu,fadeTransition,translateTransition);
-        transitions.play();
-
-        FadeTransition exitFadeTransition = new FadeTransition(Duration.millis(250),menu);
-        exitFadeTransition.setFromValue(1);
-        exitFadeTransition.setToValue(0);
-
-        TranslateTransition exitTranslateTransition = new TranslateTransition(Duration.millis(250),menu);
-        exitTranslateTransition.setByY(MENU_OFFSET);
-
-        ParallelTransition exitTransitions = new ParallelTransition(menu,exitFadeTransition,exitTranslateTransition);
-
-        Task exitTask = new Task() {
-            @Override
-            protected Object call() throws Exception {
-                while (!menu.isFinished()) {
-                    // Thread has to sleep to have enough time to recognise value changes
-                    Thread.sleep(1);
-                }
-                Thread.sleep(1000);
-                exitTransitions.play();
-                return null;
-            }
-        };
-
-        exitTask.setOnSucceeded(event -> {
+        showMenu(menu,onShow -> {}, onExit -> {
             try {
-                players.updatePlayers(model.getCurrentPlayer(), board, event1 -> checkGoReward());
+                players.updatePlayers(model.getCurrentPlayer(),board,onFinish -> checkGoReward());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
-
-        Thread exitThread = new Thread(exitTask);
-        exitThread.setDaemon(true);
-        exitThread.start();
     }
 
     private void createBuyablePopup() {
         BuyableMenu menu = new BuyableMenu((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()),model.getCurrentPlayer());
-        menu.setOpacity(0);
-        gameStack.getChildren().add(menu);
-        menu.setTranslateY(menu.getTranslateY() + MENU_OFFSET);
 
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(250),menu);
-        fadeTransition.setFromValue(0);
-        fadeTransition.setToValue(1);
-
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(250),menu);
-        translateTransition.setByY(-MENU_OFFSET);
-
-        ParallelTransition transitions = new ParallelTransition(menu,fadeTransition,translateTransition);
-        transitions.play();
-
-        FadeTransition exitFadeTransition = new FadeTransition(Duration.millis(250),menu);
-        exitFadeTransition.setFromValue(1);
-        exitFadeTransition.setToValue(0);
-
-        TranslateTransition exitTranslateTransition = new TranslateTransition(Duration.millis(250),menu);
-        exitTranslateTransition.setByY(MENU_OFFSET);
-
-        ParallelTransition exitTransitions = new ParallelTransition(menu,exitFadeTransition,exitTranslateTransition);
-
-        Task exitTask = new Task() {
-            @Override
-            protected Object call() throws Exception {
-                while (!menu.isFinished()) {
-                    // Thread has to sleep to have enough time to recognise value changes
-                    Thread.sleep(1);
-                }
-                exitTransitions.play();
-                return null;
-            }
-        };
-        Thread exitThread = new Thread(exitTask);
-        exitThread.setDaemon(true);
-        exitThread.start();
-
-        exitTransitions.setOnFinished(event -> {
+        showMenu(menu,onShow -> {}, onExit -> {
             if (menu.getOutcome()) {
                 model.buyTile((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()));
+                startNextIteration();
             } else {
-                // TODO :: trigger auction
+                // TODO :: Trigger Auction menu
+                startNextIteration(); // Remove once auction menu implemented
             }
-
-            startNextIteration();
         });
     }
 
     private void createRentPopup() {
         RentMenu menu = new RentMenu((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()),model.getCurrentPlayer());
-        menu.setOpacity(0);
-        gameStack.getChildren().add(menu);
-        menu.setTranslateY(menu.getTranslateY() + MENU_OFFSET);
 
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(250),menu);
-        fadeTransition.setFromValue(0);
-        fadeTransition.setToValue(1);
-
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(250),menu);
-        translateTransition.setByY(-MENU_OFFSET);
-
-        ParallelTransition transitions = new ParallelTransition(menu,fadeTransition,translateTransition);
-        transitions.setOnFinished(event -> {
-            menu.startAnimation();
-        });
-        transitions.play();
-
-        FadeTransition exitFadeTransition = new FadeTransition(Duration.millis(250),menu);
-        exitFadeTransition.setFromValue(1);
-        exitFadeTransition.setToValue(0);
-
-        TranslateTransition exitTranslateTransition = new TranslateTransition(Duration.millis(250),menu);
-        exitTranslateTransition.setByY(MENU_OFFSET);
-
-        ParallelTransition exitTransitions = new ParallelTransition(menu,exitFadeTransition,exitTranslateTransition);
-
-        Task exitTask = new Task() {
-            @Override
-            protected Object call() throws Exception {
-                while (!menu.isFinished()) {
-                    // Thread has to sleep to have enough time to recognise value changes
-                    Thread.sleep(1);
-                }
-                Thread.sleep(1000);
-                exitTransitions.play();
-                return null;
-            }
-        };
-        Thread exitThread = new Thread(exitTask);
-        exitThread.setDaemon(true);
-        exitThread.start();
-
-        exitTransitions.setOnFinished(event -> {
-            startNextIteration();
-        });
+        showMenu(menu,
+                onShow -> menu.startAnimation(),
+                onExit -> startNextIteration()
+        );
     }
 
     private void createGoPopup() {
         GoMenu menu = new GoMenu(model.getCurrentPlayer());
+
+        showMenu(menu,
+                onShow -> menu.startAnimation(),
+                onExit -> takeTurn()
+        );
+    }
+
+    private void showMenu(Menu menu, EventHandler onShow, EventHandler onExit) {
         menu.setOpacity(0);
         gameStack.getChildren().add(menu);
         menu.setTranslateY(menu.getTranslateY() + MENU_OFFSET);
@@ -270,9 +163,7 @@ public class UIGame extends Application {
         translateTransition.setByY(-MENU_OFFSET);
 
         ParallelTransition transitions = new ParallelTransition(menu,fadeTransition,translateTransition);
-        transitions.setOnFinished(event -> {
-            menu.startAnimation();
-        });
+        transitions.setOnFinished(onShow);
         transitions.play();
 
         FadeTransition exitFadeTransition = new FadeTransition(Duration.millis(250),menu);
@@ -283,6 +174,7 @@ public class UIGame extends Application {
         exitTranslateTransition.setByY(MENU_OFFSET);
 
         ParallelTransition exitTransitions = new ParallelTransition(menu,exitFadeTransition,exitTranslateTransition);
+        exitTransitions.setOnFinished(onExit);
 
         Task exitTask = new Task() {
             @Override
@@ -291,18 +183,15 @@ public class UIGame extends Application {
                     // Thread has to sleep to have enough time to recognise value changes
                     Thread.sleep(1);
                 }
-                Thread.sleep(1000);
+                Thread.sleep(menu.getEndLatency());
                 exitTransitions.play();
                 return null;
             }
         };
+
         Thread exitThread = new Thread(exitTask);
         exitThread.setDaemon(true);
         exitThread.start();
-
-        exitTransitions.setOnFinished(event -> {
-            takeTurn();
-        });
     }
 
     public static void main(String[] args) {

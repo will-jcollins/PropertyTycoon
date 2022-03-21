@@ -11,13 +11,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.board.Street;
 import model.game.Dice;
+import ui.menu.Menu;
 import ui.menu.TextButton;
 
 
-public class DiceMenu extends GridPane {
-
-    private static final int PADDING = 10;
-    private static final Font TITLE_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 20);
+public class DiceMenu extends Menu {
 
     private UIDie die1;
     private UIDie die2;
@@ -26,10 +24,6 @@ public class DiceMenu extends GridPane {
 
     public DiceMenu(Dice dice) {
         super();
-
-        setStyle("-fx-border-style: solid inside;" +
-                "-fx-border-width: 3;" +
-                "");
 
         Text title =  new Text("ROLL THE DICE");
         title.setFont(TITLE_FONT);
@@ -65,15 +59,9 @@ public class DiceMenu extends GridPane {
                 die2.animateRoll(dice.getRoll()[1]);
             }
         });
-
-        setHgap(PADDING);
-        setVgap(PADDING);
-        setPadding(new Insets(PADDING,PADDING,PADDING,PADDING));
-        setBackground(new Background(new BackgroundFill(Color.WHITE,null,null)));
-        setMaxHeight(0);
-        setMaxWidth(0);
     }
 
+    @Override
     public boolean isFinished() {
         return die1.isFinished() && die2.isFinished();
     }
