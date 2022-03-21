@@ -1,26 +1,20 @@
 package ui.board;
 
-import javafx.animation.TranslateTransition;
-import javafx.geometry.Bounds;
-import javafx.scene.CacheHint;
 import javafx.scene.Group;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 import model.Player.Player;
 import model.board.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UIBoard extends Group {
 
-    private static final int HEIGHT = 810;
-    private static final int WIDTH = 810;
+    private static final int DEFAULT_SIZE = 810;
 
+    // Geometry constants
+    private final int SIZE;
     private final int TILESPERSIDE;
     private final int TILE_HEIGHT;
     private final int TILE_WIDTH;
@@ -35,6 +29,30 @@ public class UIBoard extends Group {
     private UITile[] tiles;
     private Board board;
 
+    public UIBoard(Board board, int size) {
+        super();
+
+        this.board = board;
+
+        this.tiles = new UITile[Board.SIZE];
+
+        // Not possible to draw a monopoly board with tile count that isn't a factor of 4
+        if (Board.SIZE % 4 != 0) {
+            throw new IllegalArgumentException("No of tiles on board must be divisible by 4");
+        }
+
+        // Calculate geometry constants
+        SIZE = size;
+        TILESPERSIDE = (Board.SIZE - 4) / 4;
+        TILE_HEIGHT = SIZE / 8;
+        TILE_WIDTH = (SIZE - (2 * TILE_HEIGHT)) / TILESPERSIDE;
+        TOKEN_SIZE = TILE_WIDTH;
+
+        drawBoard(this.board);
+
+        setCache(true);
+    }
+
     public UIBoard(Board board) {
         super();
 
@@ -48,9 +66,10 @@ public class UIBoard extends Group {
         }
 
         // Calculate geometry constants
+        SIZE = DEFAULT_SIZE;
         TILESPERSIDE = (Board.SIZE - 4) / 4;
-        TILE_HEIGHT = HEIGHT / 8;
-        TILE_WIDTH = (WIDTH - (2 * TILE_HEIGHT)) / TILESPERSIDE;
+        TILE_HEIGHT = SIZE / 8;
+        TILE_WIDTH = (SIZE - (2 * TILE_HEIGHT)) / TILESPERSIDE;
         TOKEN_SIZE = TILE_WIDTH;
 
         drawBoard(this.board);
@@ -62,15 +81,15 @@ public class UIBoard extends Group {
         final int[] xDirections = new int[] {-1, 0, 1, 0};
         final int[] yDirections = new int[] {0, -1, 0, 1};
         // Tracks position where elements are placed on the screen
-        int x = WIDTH - TILE_HEIGHT, y = HEIGHT - TILE_HEIGHT;
+        int x = SIZE - TILE_HEIGHT, y = SIZE - TILE_HEIGHT;
         int angle = 0;
 
         // Draw centre of the board
         Rectangle background = new Rectangle();
         background.setX(TILE_HEIGHT);
         background.setY(TILE_HEIGHT);
-        background.setWidth(WIDTH - (2 * TILE_HEIGHT));
-        background.setHeight(HEIGHT - (2 * TILE_HEIGHT));
+        background.setWidth(SIZE - (2 * TILE_HEIGHT));
+        background.setHeight(SIZE - (2 * TILE_HEIGHT));
         background.setFill(BACKCOLOR);
         getChildren().add(background);
 

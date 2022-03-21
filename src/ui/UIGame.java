@@ -47,17 +47,17 @@ public class UIGame extends Application {
 
         BorderPane root = new BorderPane(gameStack);
 
-        // Sound setup
-        File musicPath = new File("assets/audio/back.mp3");
-        Media backMusic = new Media(musicPath.toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(backMusic);
-        mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer.seek(Duration.ZERO);
-            mediaPlayer.play();
-        });
+//        // Sound setup
+//        File musicPath = new File("assets/audio/back.mp3");
+//        Media backMusic = new Media(musicPath.toURI().toString());
+//        MediaPlayer mediaPlayer = new MediaPlayer(backMusic);
+//        mediaPlayer.setOnEndOfMedia(() -> {
+//            mediaPlayer.seek(Duration.ZERO);
+//            mediaPlayer.play();
+//        });
 
         Platform.runLater(() -> {
-            mediaPlayer.play();
+//            mediaPlayer.play();
             startNextIteration();
         });
 
