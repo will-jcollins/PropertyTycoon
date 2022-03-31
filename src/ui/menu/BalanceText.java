@@ -32,6 +32,12 @@ public class BalanceText extends Text {
         Platform.runLater(() -> animateText(startVal + differenceSign));
     }
 
+    public void update(int startVal, int endVal) {
+        this.startVal = startVal;
+        this.endVal = endVal;
+        this.differenceSign = (int) Math.signum(this.endVal - this.startVal);
+    }
+
     private void animateText(int currentVal) {
         if (currentVal == endVal) {
             setText("$" + currentVal);
@@ -50,6 +56,10 @@ public class BalanceText extends Text {
             nextThread.setDaemon(true);
             nextThread.start();
         }
+    }
+
+    public int getEndVal() {
+        return endVal;
     }
 
     public boolean isFinished() {

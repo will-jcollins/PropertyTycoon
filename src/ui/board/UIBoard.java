@@ -44,8 +44,8 @@ public class UIBoard extends Group {
         // Calculate geometry constants
         this.SIZE = size;
         TILESPERSIDE = (Board.SIZE - 4) / 4;
-        TILE_HEIGHT = SIZE / 8;
-        TILE_WIDTH = (SIZE - (2 * TILE_HEIGHT)) / TILESPERSIDE;
+        TILE_HEIGHT = this.SIZE / 8;
+        TILE_WIDTH = (this.SIZE - (2 * TILE_HEIGHT)) / TILESPERSIDE;
         TOKEN_SIZE = TILE_WIDTH;
 
         drawBoard(this.board);
@@ -128,7 +128,7 @@ public class UIBoard extends Group {
         return (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2;
     }
 
-    public int getSIZE() {
+    public int getSize() {
         return SIZE;
     }
 }

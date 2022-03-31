@@ -26,7 +26,7 @@ public abstract class Player {
     public void setPos(int newPos) {
         prevPos = pos;
         pos = newPos;
-        if (prevPos < newPos) {
+        if (prevPos > newPos) {
             passedGo = true;
         }
     }
@@ -63,6 +63,10 @@ public abstract class Player {
     public boolean askPlayer(String message) {
         System.out.println(message);
         return true;
+    }
+
+    public boolean hasPassedGo() {
+        return passedGo;
     }
 
     @Override

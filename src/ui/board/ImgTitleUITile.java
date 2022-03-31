@@ -12,7 +12,6 @@ public class ImgTitleUITile extends UITile {
     protected static final Image OPPURTUNITYIMG = new Image("file:assets/images/opportunity.png");
     protected static final Image POTLUCKIMG = new Image("file:assets/images/potluck.png");
 
-
     public ImgTitleUITile(int x, int y, double width, double height, double angle, ActionTile action) {
         super(x, y, width, height, angle);
 

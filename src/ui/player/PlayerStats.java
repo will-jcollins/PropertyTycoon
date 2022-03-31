@@ -1,5 +1,6 @@
 package ui.player;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -7,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.Player.Player;
+import ui.menu.BalanceText;
 
 public class PlayerStats extends GridPane {
 
@@ -19,7 +21,13 @@ public class PlayerStats extends GridPane {
     protected static final Font NAME_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 20);
     protected static final Font MONEY_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 17);
 
+    private Player player;
+    private BalanceText balance;
+
     public PlayerStats(Player player) {
+
+        this.player = player;
+
         ImageView iconImage = new ImageView();
         iconImage.setFitHeight(ICON_LENGTH);
         iconImage.setFitWidth(ICON_LENGTH);
@@ -43,14 +51,14 @@ public class PlayerStats extends GridPane {
         setColumnIndex(nameDisplay,1);
         setMargin(nameDisplay, new Insets(PADDING, PADDING, 0, PADDING));
 
-        Text moneyDisplay = new Text("$" + player.getMoney());
-        moneyDisplay.maxHeight(ICON_LENGTH);
-        moneyDisplay.setFont(MONEY_FONT);
-        getChildren().add(moneyDisplay);
-        setRowIndex(moneyDisplay, 1);
-        setColumnIndex(moneyDisplay, 0);
-        setColumnSpan(moneyDisplay, 2);
-        setMargin(moneyDisplay, new Insets(PADDING, PADDING, PADDING, PADDING));
+        balance = new BalanceText(player.getMoney(),player.getMoney(),20);
+        balance.maxHeight(ICON_LENGTH);
+        balance.setFont(MONEY_FONT);
+        getChildren().add(balance);
+        setRowIndex(balance, 1);
+        setColumnIndex(balance, 0);
+        setColumnSpan(balance, 2);
+        setMargin(balance, new Insets(PADDING, PADDING, PADDING, PADDING));
 
         setBackground(new Background(new BackgroundFill(BACKCOLOR, CornerRadii.EMPTY, Insets.EMPTY)));
         setStyle("-fx-border-color: black;\n" +
@@ -58,8 +66,15 @@ public class PlayerStats extends GridPane {
                 "-fx-border-width: " + ICON_STROKE + ";");
 
         setMaxHeight(100);
-        setPrefHeight(100);
         setMaxWidth(200);
-        setPrefWidth(200);
+    }
+
+    public void update() {
+
+        if (player.getMoney() != balance.getEndVal()) {
+            balance.update(balance.getEndVal(),player.getMoney());
+            Platform.runLater(() -> balance.animateText());
+        }
+
     }
 }

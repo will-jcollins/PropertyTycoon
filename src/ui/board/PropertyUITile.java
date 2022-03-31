@@ -35,7 +35,7 @@ public class PropertyUITile extends UITile {
         title.setStrokeWidth(0.4);
         getChildren().add(title);
 
-        Text caption = new Text("M" + property.getCost());
+        Text caption = new Text("$" + property.getCost());
         caption.setX(x);
         caption.setY(y + height - (height / 12));
         caption.setWrappingWidth(width);

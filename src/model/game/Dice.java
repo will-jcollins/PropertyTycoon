@@ -21,8 +21,7 @@ public class Dice {
 
     public int[] roll() {
         for (int i = 0; i < vals.length; i++) {
-//            vals[i] = rand.nextInt(range) + 1;
-            vals[i] = 6;
+            vals[i] = rand.nextInt(range) + 1;
         }
 
         doubles = isDouble() ? (doubles + 1) : 0;

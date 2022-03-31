@@ -35,7 +35,7 @@ public class ImgCostUITile extends UITile {
         getChildren().add(title);
 
         // Draw cost
-        Text caption = new Text("M" + tile.getCost());
+        Text caption = new Text("$" + tile.getCost());
         caption.setX(x);
         caption.setY(y + height - (height / 12));
         caption.setWrappingWidth(width);
@@ -87,7 +87,7 @@ public class ImgCostUITile extends UITile {
         switch (action.getAction().getActCode()) {
             case PAYFINE:
                 img = new ImageView(FINEIMGPATH);
-                capText = formatText("PAY M" + action.getAction().getVal1());
+                capText = formatText("PAY $" + action.getAction().getVal1());
                 break;
             default:
                 throw new IllegalStateException("Action not enumerated in UI");

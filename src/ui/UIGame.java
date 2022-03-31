@@ -8,30 +8,39 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.board.Board;
+import model.Player.Player;
 import model.board.BuyableTile;
-import model.board.PropertyTile;
 import model.game.Dice;
 import model.game.Game;
 import ui.board.UIBoard;
 import ui.menu.*;
 import ui.menu.dice.DiceMenu;
+import ui.player.PlayerStats;
 import ui.player.UIPlayers;
 
+
 import java.io.File;
+import java.util.ArrayList;
 
 public class UIGame extends Application {
 
     private static final int MENU_OFFSET = 50;
 
     private StackPane gameStack;
+    private ArrayList<PlayerStats> playerStats;
+
     private UIPlayers players;
     private UIBoard board;
     private Game model;
@@ -40,33 +49,47 @@ public class UIGame extends Application {
     public void start(Stage primaryStage) {
 
         model = new Game(2,0);
-
-        board = new UIBoard(model.getBoard());
+        Rectangle2D bounds = Screen.getPrimary().getBounds();
+        board = new UIBoard(model.getBoard(),(int) (bounds.getHeight() * 0.9));
         players = new UIPlayers(model.getPlayers(), board);
 
         gameStack = new StackPane();
         gameStack.getChildren().add(board);
         gameStack.getChildren().add(players);
 
-        BorderPane root = new BorderPane(gameStack);
+        VBox statsVBox = new VBox();
+        statsVBox.setSpacing(10);
 
-        // Sound setup
-        File musicPath = new File("assets/audio/back.mp3");
-        Media backMusic = new Media(musicPath.toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(backMusic);
-        mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer.seek(Duration.ZERO);
-            mediaPlayer.play();
-        });
+        playerStats = new ArrayList<>();
+
+        for (Player player : model.getPlayers()){
+            PlayerStats stats = new PlayerStats(player);
+            playerStats.add(stats);
+            statsVBox.getChildren().add(stats);
+        }
+
+        BorderPane root = new BorderPane(gameStack);
+//        root.setLeft(statsVBox);
+
+//        // Sound setup
+//        File musicPath = new File("assets/audio/back.mp3");
+//        Media backMusic = new Media(musicPath.toURI().toString());
+//        MediaPlayer mediaPlayer = new MediaPlayer(backMusic);
+//        mediaPlayer.setOnEndOfMedia(() -> {
+//            mediaPlayer.seek(Duration.ZERO);
+//            mediaPlayer.play();
+//        });
 
         Platform.runLater(() -> {
-            mediaPlayer.play();
+//            mediaPlayer.play();
             startNextIteration();
         });
 
         // Scene & Stage setup
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        primaryStage.setFullScreen(true);
+        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         primaryStage.show();
     }
 
@@ -123,7 +146,9 @@ public class UIGame extends Application {
     private void createBuyablePopup() {
         BuyableMenu menu = new BuyableMenu((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()),model.getCurrentPlayer());
 
-        showMenu(menu,onShow -> {}, onExit -> {
+        showMenu(menu,
+                onShow -> {},
+                onExit -> {
             if (menu.getOutcome()) {
                 model.buyTile((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()));
                 startNextIteration();
@@ -148,8 +173,7 @@ public class UIGame extends Application {
 
         showMenu(menu,
                 onShow -> menu.startAnimation(),
-                onExit -> takeTurn()
-        );
+                onExit -> takeTurn());
     }
 
     private void showMenu(Menu menu, EventHandler onShow, EventHandler onExit) {
@@ -178,6 +202,7 @@ public class UIGame extends Application {
         ParallelTransition exitTransitions = new ParallelTransition(menu,exitFadeTransition,exitTranslateTransition);
         exitTransitions.setOnFinished(event -> {
             remove(menu);
+            Platform.runLater(() -> updatePlayerStats());
             onExit.handle(new ActionEvent());
         });
 
@@ -197,6 +222,12 @@ public class UIGame extends Application {
         Thread exitThread = new Thread(exitTask);
         exitThread.setDaemon(true);
         exitThread.start();
+    }
+
+    private void updatePlayerStats() {
+        for (PlayerStats stats : playerStats) {
+            stats.update();
+        }
     }
 
     private void remove(Node n) {

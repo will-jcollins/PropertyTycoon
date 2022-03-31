@@ -88,7 +88,8 @@ public class Game {
         if (tile instanceof BuyableTile) {
             BuyableTile buyable = (BuyableTile) tile;
             if (buyable.getOwner() == null) {
-                return UITip.SHOW_BUY_BUYABLE;
+                // If player has passed go, give them opportunity to buy
+                return p.hasPassedGo() ? UITip.SHOW_BUY_BUYABLE : UITip.NOP;
             } else if (!buyable.getOwner().equals(getCurrentPlayer())) {
                 int rentToPay;
                 // Calculate the amount of rent to pay based on tile type
@@ -118,42 +119,42 @@ public class Game {
         }
     }
 
-    private void interactWithBuyable(Player p) {
-        BuyableTile tile = (BuyableTile) board.getTile(p.getPos());
-        Player owner = tile.getOwner();
-
-        // If the property is not owned by anyone yet prompt player to buy it
-        if (tile.canBuy()) {
-            boolean toBuy = p.askPlayer("wanna buy "+ tile.getName()+" for "+ tile.getCost()+"?");
-            if (toBuy){
-                tile.buy(p);
-            } else {
-                // TODO :: Auction mechanics
-            }
-        } else if (owner != p) {
-            int rentToPay;
-
-            // Calculate the amount of rent to pay based on tile type
-            if (tile instanceof PropertyTile) {
-                rentToPay = ((PropertyTile) tile).getRent();
-            } else if (tile instanceof StationTile) {
-                StationTile station = (StationTile) tile;
-                // Index rent by number of stations owned by owner
-                rentToPay = StationTile.rent[noStationsOwned(station.getOwner())];
-            } else if (tile instanceof UtilityTile) {
-                UtilityTile utility = (UtilityTile) tile;
-                // Pay rent as a factor of the number of utilities owned by owner
-                rentToPay = UtilityTile.rentFactor[noUtilitiesOwned(utility.getOwner())] * dice.getRollTotal();
-            } else {
-                throw new IllegalStateException("Case for tile not enumerated");
-            }
-
-
-            System.out.println("pay " + rentToPay);
-
-            tile.payRent(p, rentToPay);
-        }
-    }
+//    private void interactWithBuyable(Player p) {
+//        BuyableTile tile = (BuyableTile) board.getTile(p.getPos());
+//        Player owner = tile.getOwner();
+//
+//        // If the property is not owned by anyone yet prompt player to buy it
+//        if (tile.canBuy()) {
+//            boolean toBuy = p.askPlayer("wanna buy "+ tile.getName()+" for "+ tile.getCost()+"?");
+//            if (toBuy){
+//                tile.buy(p);
+//            } else {
+//                // TODO :: Auction mechanics
+//            }
+//        } else if (owner != p) {
+//            int rentToPay;
+//
+//            // Calculate the amount of rent to pay based on tile type
+//            if (tile instanceof PropertyTile) {
+//                rentToPay = ((PropertyTile) tile).getRent();
+//            } else if (tile instanceof StationTile) {
+//                StationTile station = (StationTile) tile;
+//                // Index rent by number of stations owned by owner
+//                rentToPay = StationTile.rent[noStationsOwned(station.getOwner())];
+//            } else if (tile instanceof UtilityTile) {
+//                UtilityTile utility = (UtilityTile) tile;
+//                // Pay rent as a factor of the number of utilities owned by owner
+//                rentToPay = UtilityTile.rentFactor[noUtilitiesOwned(utility.getOwner())] * dice.getRollTotal();
+//            } else {
+//                throw new IllegalStateException("Case for tile not enumerated");
+//            }
+//
+//
+//            System.out.println("pay " + rentToPay);
+//
+//            tile.payRent(p, rentToPay);
+//        }
+//    }
 
     private void executeActionable(Actionable actionable) {
         Action action = actionable.getAction();

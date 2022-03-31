@@ -2,23 +2,18 @@ package ui.player;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 import model.Player.Player;
 import model.board.Board;
 import ui.board.UIBoard;
-import ui.board.UITile;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,18 +31,18 @@ public class UIPlayers extends Group {
 
         // Forces group to be positioned correctly over board
         Line startBound = new Line();
-        startBound.setStartX(0);
-        startBound.setStartY(0);
-        startBound.setEndX(0);
-        startBound.setEndY(0);
-        startBound.setOpacity(0);
+        startBound.setStartX(2);
+        startBound.setStartY(2);
+        startBound.setEndX(2);
+        startBound.setEndY(2);
+        startBound.setOpacity(2);
         getChildren().add(startBound);
 
         Line endBound = new Line();
-        endBound.setStartX(board.getSIZE());
-        endBound.setStartY(board.getSIZE());
-        endBound.setEndX(board.getSIZE());
-        endBound.setEndY(board.getSIZE());
+        endBound.setStartX(board.getSize() - 2);
+        endBound.setStartY(board.getSize() - 2);
+        endBound.setEndX(board.getSize() - 2);
+        endBound.setEndY(board.getSize() - 2);
         endBound.setOpacity(0);
         getChildren().add(endBound);
 
@@ -73,7 +68,7 @@ public class UIPlayers extends Group {
         }
     }
 
-    public void updatePlayers(Player player, UIBoard board, EventHandler<ActionEvent> finishTask) throws InterruptedException {
+    public void updatePlayers(Player player, UIBoard board, EventHandler onFinish) throws InterruptedException {
         finished = false;
 
         // Move pieces to the correct tile, changing tile player is positioned on by 1 at a time
@@ -97,7 +92,7 @@ public class UIPlayers extends Group {
 
         // Play transitions constructed in sequence
         seqTransition.play();
-        seqTransition.setOnFinished(finishTask);
+        seqTransition.setOnFinished(onFinish);
     }
 
     public void higlightPlayer(Player p) {
