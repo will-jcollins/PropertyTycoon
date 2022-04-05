@@ -15,7 +15,7 @@ import model.board.UtilityTile;
 
 public class BuyableCard extends Group {
 
-    public static final int CARD_HEIGHT = 300;
+    public static final int CARD_HEIGHT = 250;
     public static final int CARD_WIDTH = (int) (CARD_HEIGHT / 1.4);
 
     private static final int PADDING =  CARD_HEIGHT / 40;
@@ -149,7 +149,7 @@ public class BuyableCard extends Group {
         mortgageVal.setY(BODY_Y + (spacing * (PropertyTile.MAX_NO_HOUSES + 1)) + rent.getBoundsInLocal().getHeight());
         getChildren().add(mortgageVal);
 
-        Text housesCost = new Text("Houses cost $150. each");
+        Text housesCost = new Text("Houses cost $" + property.getStreet().getDevelopCost() + ". each");
         housesCost.setTextAlignment(TextAlignment.CENTER);
         housesCost.setFont(FONT);
         housesCost.setFill(Color.BLACK);
@@ -157,7 +157,7 @@ public class BuyableCard extends Group {
         housesCost.setY(BODY_Y + (spacing * (PropertyTile.MAX_NO_HOUSES + 2)) + rent.getBoundsInLocal().getHeight());
         getChildren().add(housesCost);
 
-        Text hotelCost = new Text("Hotels, $150. plus 4 houses");
+        Text hotelCost = new Text("Hotels, $" + property.getStreet().getDevelopCost() + ". plus 4 houses");
         hotelCost.setTextAlignment(TextAlignment.CENTER);
         hotelCost.setFont(FONT);
         hotelCost.setFill(Color.BLACK);

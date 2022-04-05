@@ -12,7 +12,7 @@ public abstract class Player {
     private int prevPos = 0;
     private int money = 1500;
     private int prevMoney = 1500;
-    private boolean passedGo = false;
+    private boolean passedGo = true;
 
     public Player(int id, String name){
         this.id = id;

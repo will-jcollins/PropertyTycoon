@@ -15,13 +15,12 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Player.Player;
 import model.board.BuyableTile;
+import model.board.PropertyTile;
 import model.game.Dice;
 import model.game.Game;
 import ui.board.UIBoard;
@@ -31,7 +30,7 @@ import ui.player.PlayerStats;
 import ui.player.UIPlayers;
 
 
-import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class UIGame extends Application {
@@ -62,11 +61,14 @@ public class UIGame extends Application {
 
         playerStats = new ArrayList<>();
 
-        for (Player player : model.getPlayers()){
+        for (Player player : model.getPlayers()) {
             PlayerStats stats = new PlayerStats(player);
             playerStats.add(stats);
             statsVBox.getChildren().add(stats);
         }
+
+        ArrayList<PropertyTile> temp = new ArrayList<>();
+        temp.add((PropertyTile) model.getBoard().getTile(1));
 
         BorderPane root = new BorderPane(gameStack);
 //        root.setLeft(statsVBox);
@@ -110,8 +112,40 @@ public class UIGame extends Application {
         }
     }
 
+    private void createTurnEndPopup() {
+        if (model.isPlayersLastRoll()) {
+            TurnEndMenu menu = new TurnEndMenu();
+
+            showMenu(menu,
+                    onShow -> {
+                    },
+                    onExit -> {
+                        if (menu.getOutcome()) {
+                            startNextIteration();
+                        } else {
+                            createDevelopPopup();
+                        }
+                    });
+        } else {
+            startNextIteration();
+        }
+    }
+
+    private void createDevelopPopup() {
+        ArrayList<PropertyTile> developProperties = model.getDevelopProperties();
+        DevelopMenu menu = new DevelopMenu(developProperties);
+
+        showMenu(menu,onShow -> {}, onExit -> {
+            if (menu.getSelectedProperty() != null) {
+                model.developProperty(menu.getSelectedProperty());
+            }
+            board.update();
+            createTurnEndPopup();
+        });
+    }
+
     private void checkGoReward() {
-        if (model.isPassedGo()) {
+        if (model.hasPassedGo()) {
             createGoPopup();
         } else {
             takeTurn();
@@ -127,7 +161,7 @@ public class UIGame extends Application {
                 createRentPopup();
                 break;
             default:
-                startNextIteration();
+                createTurnEndPopup();
         }
     }
 
@@ -151,10 +185,10 @@ public class UIGame extends Application {
                 onExit -> {
             if (menu.getOutcome()) {
                 model.buyTile((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()));
-                startNextIteration();
+                createTurnEndPopup();
             } else {
                 // TODO :: Trigger Auction menu
-                startNextIteration(); // Remove once auction menu implemented
+                createTurnEndPopup(); // Remove once auction menu implemented
             }
         });
     }
@@ -164,7 +198,7 @@ public class UIGame extends Application {
 
         showMenu(menu,
                 onShow -> menu.startAnimation(),
-                onExit -> startNextIteration()
+                onExit -> createTurnEndPopup()
         );
     }
 

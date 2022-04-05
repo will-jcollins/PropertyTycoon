@@ -8,7 +8,10 @@ import model.actions.Actionable;
 import model.board.*;
 import ui.menu.UITip;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class Game {
 
@@ -49,7 +52,7 @@ public class Game {
 
     public UITip iterateGame() {
         // Select next player if needed
-        if (!dice.isDouble()) {
+        if (isPlayersLastRoll()) {
             selectNextPlayer();
         }
 
@@ -73,10 +76,6 @@ public class Game {
     public void selectNextPlayer() {
         currentPlayer = (currentPlayer + 1) % players.size();
         dice.reset();
-    }
-
-    public void sendToJail(Player p) {
-
     }
 
     public UITip takeTurn() {
@@ -200,6 +199,54 @@ public class Game {
         return noStations;
     }
 
+    public ArrayList<PropertyTile> getDevelopProperties() {
+        Player p = getCurrentPlayer();
+        ArrayList<PropertyTile> out = new ArrayList<>();
+
+        for (Street street : streetsOwnedByPlayer()) {
+            ArrayList<PropertyTile> props = board.getStreetTiles(street);
+
+            // Find minimum number of houses
+            int minNoHouses = PropertyTile.MAX_NO_HOUSES + 1;
+            for (PropertyTile prop : props) {
+                minNoHouses = Math.min(minNoHouses, prop.getNoHouses());
+            }
+
+            // Exclude properties that are greater than or equal to minimum number of houses plus 1
+            for (PropertyTile prop : props) {
+                if (prop.getNoHouses() < (minNoHouses + 1) && p.getMoney() >= prop.getStreet().getDevelopCost() && prop.getNoHouses() < PropertyTile.MAX_NO_HOUSES) {
+                    out.add(prop);
+                }
+            }
+        }
+
+        return out;
+    }
+
+    private ArrayList<Street> streetsOwnedByPlayer() {
+        Player p = getCurrentPlayer();
+        ArrayList<Street> streets = new ArrayList<>(Arrays.asList(Street.values()));
+
+        for (Street street : Street.values()) {
+            ArrayList<PropertyTile> properties = board.getStreetTiles(street);
+
+            for (PropertyTile prop : properties) {
+                if (prop.getOwner() != p) {
+                    streets.remove(street);
+                    break;
+                }
+            }
+        }
+
+        return streets;
+    }
+
+    public void developProperty(PropertyTile prop) {
+        Player p = getCurrentPlayer();
+        p.pay(prop.getStreet().getDevelopCost());
+        prop.setNoHouses(prop.getNoHouses() + 1);
+    }
+
     private void removePlayer(Player p) {
         players.remove(p);
         currentPlayer = currentPlayer % players.size();
@@ -228,12 +275,16 @@ public class Game {
         return gameOver;
     }
 
-    public boolean isPassedGo() {
+    public boolean hasPassedGo() {
         return passedGo;
     }
 
     public Player getCurrentPlayer() {
         return players.get(currentPlayer);
+    }
+
+    public boolean isPlayersLastRoll() {
+        return !dice.isDouble();
     }
 
     public static void main(String[] args){

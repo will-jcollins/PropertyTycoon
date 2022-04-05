@@ -10,11 +10,10 @@ import ui.board.UITile;
 public class ActionTile extends Tile implements Actionable {
 
     private Action action;
-    private String tileType;
+
     public ActionTile(String name, Action action) {
 
         super(name);
-        this.tileType = "action";
         this.action = action;
     }
 

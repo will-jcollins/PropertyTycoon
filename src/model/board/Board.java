@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
@@ -122,6 +123,19 @@ public class Board {
             }
         }
         return null;
+    }
+
+    public ArrayList<PropertyTile> getStreetTiles(Street street) {
+        ArrayList<PropertyTile> out = new ArrayList<>();
+        for (Tile t : tiles) {
+            if (t instanceof PropertyTile) {
+                PropertyTile prop = (PropertyTile) t;
+                if (prop.getStreet() == street) {
+                    out.add(prop);
+                }
+            }
+        }
+        return out;
     }
 
     public void freeProperties(Player p) {

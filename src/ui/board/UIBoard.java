@@ -12,6 +12,7 @@ import java.util.HashMap;
 public class UIBoard extends Group {
 
     private static final int DEFAULT_SIZE = 810;
+    private static final int JAIL_POS = 10;
 
     // Geometry constants
     private final int SIZE;
@@ -121,14 +122,22 @@ public class UIBoard extends Group {
     }
 
     public int getXTilePos(int pos) {
-        return (tiles[pos].getMinX() + tiles[pos].getMaxX()) / 2;
+        return (pos != JAIL_POS) ? (tiles[pos].getMinX() + tiles[pos].getMaxX()) / 2 : (tiles[pos].getMinX() + tiles[pos].getMaxX()) / 2 - TILE_HEIGHT / 3;
     }
 
     public int getYTilePos(int pos) {
-        return (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2;
+        return (pos != JAIL_POS) ? (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2 : (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2 + TILE_HEIGHT / 3;
     }
 
     public int getSize() {
         return SIZE;
+    }
+
+    public void update() {
+        for (UITile t : tiles) {
+            if (t instanceof PropertyUITile) {
+                ((PropertyUITile) t).update();
+            }
+        }
     }
 }
