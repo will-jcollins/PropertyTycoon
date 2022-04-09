@@ -1,5 +1,6 @@
 package model.game;
 
+import javafx.scene.paint.Color;
 import model.Player.AIPlayer;
 import model.Player.HumanPlayer;
 import model.Player.Player;
@@ -93,7 +94,14 @@ public class Game {
                 int rentToPay;
                 // Calculate the amount of rent to pay based on tile type
                 if (tile instanceof PropertyTile) {
-                    rentToPay = ((PropertyTile) tile).getRent();
+                    PropertyTile prop = (PropertyTile) tile;
+                    rentToPay = prop.getRent();
+
+                    // If all properties in street and there are no houses, rent multiplied by 2
+                    if (streetsOwnedByPlayer(prop.getOwner()).contains(prop.getStreet()) && prop.getNoHouses() < 1) {
+                        rentToPay = rentToPay * 2;
+                    }
+
                 } else if (tile instanceof StationTile) {
                     StationTile station = (StationTile) tile;
                     // Index rent by number of stations owned by owner
@@ -118,49 +126,12 @@ public class Game {
         }
     }
 
-//    private void interactWithBuyable(Player p) {
-//        BuyableTile tile = (BuyableTile) board.getTile(p.getPos());
-//        Player owner = tile.getOwner();
-//
-//        // If the property is not owned by anyone yet prompt player to buy it
-//        if (tile.canBuy()) {
-//            boolean toBuy = p.askPlayer("wanna buy "+ tile.getName()+" for "+ tile.getCost()+"?");
-//            if (toBuy){
-//                tile.buy(p);
-//            } else {
-//                // TODO :: Auction mechanics
-//            }
-//        } else if (owner != p) {
-//            int rentToPay;
-//
-//            // Calculate the amount of rent to pay based on tile type
-//            if (tile instanceof PropertyTile) {
-//                rentToPay = ((PropertyTile) tile).getRent();
-//            } else if (tile instanceof StationTile) {
-//                StationTile station = (StationTile) tile;
-//                // Index rent by number of stations owned by owner
-//                rentToPay = StationTile.rent[noStationsOwned(station.getOwner())];
-//            } else if (tile instanceof UtilityTile) {
-//                UtilityTile utility = (UtilityTile) tile;
-//                // Pay rent as a factor of the number of utilities owned by owner
-//                rentToPay = UtilityTile.rentFactor[noUtilitiesOwned(utility.getOwner())] * dice.getRollTotal();
-//            } else {
-//                throw new IllegalStateException("Case for tile not enumerated");
-//            }
-//
-//
-//            System.out.println("pay " + rentToPay);
-//
-//            tile.payRent(p, rentToPay);
-//        }
-//    }
-
     private void executeActionable(Actionable actionable) {
         Action action = actionable.getAction();
 
         switch (action.getActCode()) {
             case BANKPAY:
-                players.get(currentPlayer).pay(action.getVal1());
+                getCurrentPlayer().pay(action.getVal1());
                 break;
             default:
                 // TODO :: enumerate rest of cases
@@ -199,11 +170,10 @@ public class Game {
         return noStations;
     }
 
-    public ArrayList<PropertyTile> getDevelopProperties() {
-        Player p = getCurrentPlayer();
+    public ArrayList<PropertyTile> getDevelopProperties(Player p) {
         ArrayList<PropertyTile> out = new ArrayList<>();
 
-        for (Street street : streetsOwnedByPlayer()) {
+        for (Street street : streetsOwnedByPlayer(p)) {
             ArrayList<PropertyTile> props = board.getStreetTiles(street);
 
             // Find minimum number of houses
@@ -214,7 +184,7 @@ public class Game {
 
             // Exclude properties that are greater than or equal to minimum number of houses plus 1
             for (PropertyTile prop : props) {
-                if (prop.getNoHouses() < (minNoHouses + 1) && p.getMoney() >= prop.getStreet().getDevelopCost() && prop.getNoHouses() < PropertyTile.MAX_NO_HOUSES) {
+                if (prop.getNoHouses() < (minNoHouses + 1) && prop.getNoHouses() < PropertyTile.MAX_NO_HOUSES) {
                     out.add(prop);
                 }
             }
@@ -223,8 +193,7 @@ public class Game {
         return out;
     }
 
-    private ArrayList<Street> streetsOwnedByPlayer() {
-        Player p = getCurrentPlayer();
+    private ArrayList<Street> streetsOwnedByPlayer(Player p) {
         ArrayList<Street> streets = new ArrayList<>(Arrays.asList(Street.values()));
 
         for (Street street : Street.values()) {

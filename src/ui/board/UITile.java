@@ -25,10 +25,10 @@ public class UITile extends Group {
 
     private final double width;
     private final double height;
-    private final int minX;
-    private final int maxX;
-    private final int minY;
-    private final int maxY;
+    private final double minX;
+    private final double maxX;
+    private final double minY;
+    private final double maxY;
 
     public UITile(int x, int y, double width, double height, double angle) {
         Rectangle back = new Rectangle();
@@ -53,10 +53,10 @@ public class UITile extends Group {
         int[] xDifference = {1,-2,-1,2};
         int[] yDifference = {2,1,-2,-1};
 
-        minX = Math.min(x, (int) ( x + sizeArr[Math.abs(xDifference[(int) angle / 90])] * Math.signum(xDifference[(int) angle / 90])));
-        minY = Math.min(y, (int) (y + sizeArr[Math.abs(yDifference[(int) angle / 90])]* Math.signum(yDifference[(int) angle / 90])));
-        maxX = Math.max(x, (int) ( x + sizeArr[Math.abs(xDifference[(int) angle / 90])] * Math.signum(xDifference[(int) angle / 90])));
-        maxY = Math.max(y, (int) (y + sizeArr[Math.abs(yDifference[(int) angle / 90])]* Math.signum(yDifference[(int) angle / 90])));;
+        minX = Math.min(x, (x + sizeArr[Math.abs(xDifference[(int) angle / 90])] * Math.signum(xDifference[(int) angle / 90])));
+        minY = Math.min(y, (y + sizeArr[Math.abs(yDifference[(int) angle / 90])] * Math.signum(yDifference[(int) angle / 90])));
+        maxX = Math.max(x, (x + sizeArr[Math.abs(xDifference[(int) angle / 90])] * Math.signum(xDifference[(int) angle / 90])));
+        maxY = Math.max(y, (y + sizeArr[Math.abs(yDifference[(int) angle / 90])] * Math.signum(yDifference[(int) angle / 90])));;
         this.width = width;
         this.height = height;
     }
@@ -97,19 +97,19 @@ public class UITile extends Group {
         return height;
     }
 
-    public int getMinX() {
+    public double getMinX() {
         return minX;
     }
 
-    public int getMaxX() {
+    public double getMaxX() {
         return maxX;
     }
 
-    public int getMinY() {
+    public double getMinY() {
         return minY;
     }
 
-    public int getMaxY() {
+    public double getMaxY() {
         return maxY;
     }
 }

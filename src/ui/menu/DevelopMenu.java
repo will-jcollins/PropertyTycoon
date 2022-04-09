@@ -7,9 +7,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
+import model.Player.Player;
 import model.board.PropertyTile;
 import model.board.Street;
 import model.game.Game;
@@ -21,7 +23,7 @@ public class DevelopMenu extends Menu {
     private PropertyTile selectedProperty;
     private boolean finished = false;
 
-    public DevelopMenu(ArrayList<PropertyTile> properties) {
+    public DevelopMenu(ArrayList<PropertyTile> properties, Player p) {
         super();
         ScrollPane scrollView = new ScrollPane();
         scrollView.setFitToHeight(true);
@@ -53,12 +55,25 @@ public class DevelopMenu extends Menu {
             buttonAndText.setAlignment(Pos.CENTER);
             buttonAndText.setSpacing(PADDING);
 
-            TextButton develop = new TextButton(150,50, Street.GREEN.getColor(),"DEVELOP");
-            develop.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                selectedProperty = prop;
-                finished = true;
-            });
-            buttonAndText.getChildren().add(develop);
+            TextButton develop;
+
+            if (p.getMoney() >= prop.getStreet().getDevelopCost()) {
+                develop = new TextButton(150,50, Street.GREEN.getColor(),"DEVELOP");
+                develop.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                    selectedProperty = prop;
+                    finished = true;
+                });
+                buttonAndText.getChildren().add(develop);
+            } else {
+                develop = new TextButton(150,50, Color.GRAY,"DEVELOP");
+                buttonAndText.getChildren().add(develop);
+
+                Text lowBalanceTxt = new Text("BALANCE TOO LOW");
+                lowBalanceTxt.setFont(TEXT_FONT);
+                buttonAndText.getChildren().add(lowBalanceTxt);
+            }
+
+
 
             int houses = Math.min(prop.getNoHouses(),PropertyTile.MAX_NO_HOUSES - 1);
             int hotels = prop.getNoHouses() / 5;

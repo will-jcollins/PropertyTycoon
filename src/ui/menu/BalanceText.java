@@ -19,9 +19,7 @@ public class BalanceText extends Text {
     public BalanceText(int startVal, int endVal, int fontSize) {
         super();
 
-        this.startVal = startVal;
-        this.endVal = endVal;
-        this.differenceSign = (int) Math.signum(this.endVal - this.startVal);
+        update(startVal,endVal);
 
         setText("$" + this.startVal);
         setFont(Font.loadFont("file:assets/fonts/Kabel.ttf", fontSize));

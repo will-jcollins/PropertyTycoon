@@ -12,9 +12,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -23,12 +22,12 @@ import model.board.BuyableTile;
 import model.board.PropertyTile;
 import model.game.Dice;
 import model.game.Game;
+import ui.board.OwnerRibbon;
 import ui.board.UIBoard;
 import ui.menu.*;
 import ui.menu.dice.DiceMenu;
 import ui.player.PlayerStats;
 import ui.player.UIPlayers;
-
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ import java.util.ArrayList;
 public class UIGame extends Application {
 
     private static final int MENU_OFFSET = 50;
+    private static final Color BACK_COLOR = new Color(0.84,0.73,0.67,1);
 
     private StackPane gameStack;
     private ArrayList<PlayerStats> playerStats;
@@ -67,23 +67,10 @@ public class UIGame extends Application {
             statsVBox.getChildren().add(stats);
         }
 
-        ArrayList<PropertyTile> temp = new ArrayList<>();
-        temp.add((PropertyTile) model.getBoard().getTile(1));
-
         BorderPane root = new BorderPane(gameStack);
-//        root.setLeft(statsVBox);
-
-//        // Sound setup
-//        File musicPath = new File("assets/audio/back.mp3");
-//        Media backMusic = new Media(musicPath.toURI().toString());
-//        MediaPlayer mediaPlayer = new MediaPlayer(backMusic);
-//        mediaPlayer.setOnEndOfMedia(() -> {
-//            mediaPlayer.seek(Duration.ZERO);
-//            mediaPlayer.play();
-//        });
+        root.setLeft(statsVBox);
 
         Platform.runLater(() -> {
-//            mediaPlayer.play();
             startNextIteration();
         });
 
@@ -132,14 +119,14 @@ public class UIGame extends Application {
     }
 
     private void createDevelopPopup() {
-        ArrayList<PropertyTile> developProperties = model.getDevelopProperties();
-        DevelopMenu menu = new DevelopMenu(developProperties);
+        ArrayList<PropertyTile> developProperties = model.getDevelopProperties(model.getCurrentPlayer());
+        DevelopMenu menu = new DevelopMenu(developProperties, model.getCurrentPlayer());
 
         showMenu(menu,onShow -> {}, onExit -> {
             if (menu.getSelectedProperty() != null) {
                 model.developProperty(menu.getSelectedProperty());
             }
-            board.update();
+            Platform.runLater(() -> board.update());
             createTurnEndPopup();
         });
     }
@@ -190,6 +177,8 @@ public class UIGame extends Application {
                 // TODO :: Trigger Auction menu
                 createTurnEndPopup(); // Remove once auction menu implemented
             }
+            Platform.runLater(() -> updatePlayerStats());
+            Platform.runLater(() -> board.update());
         });
     }
 
@@ -198,7 +187,10 @@ public class UIGame extends Application {
 
         showMenu(menu,
                 onShow -> menu.startAnimation(),
-                onExit -> createTurnEndPopup()
+                onExit -> {
+                    Platform.runLater(() -> updatePlayerStats());
+                    createTurnEndPopup();
+        }
         );
     }
 
@@ -207,7 +199,10 @@ public class UIGame extends Application {
 
         showMenu(menu,
                 onShow -> menu.startAnimation(),
-                onExit -> takeTurn());
+                onExit -> {
+                    Platform.runLater(() -> updatePlayerStats());
+                    takeTurn();
+        });
     }
 
     private void showMenu(Menu menu, EventHandler onShow, EventHandler onExit) {
@@ -215,16 +210,16 @@ public class UIGame extends Application {
         gameStack.getChildren().add(menu);
         menu.setTranslateY(menu.getTranslateY() + MENU_OFFSET);
 
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(250),menu);
-        fadeTransition.setFromValue(0);
-        fadeTransition.setToValue(1);
+        FadeTransition showFadeTransition = new FadeTransition(Duration.millis(250),menu);
+        showFadeTransition.setFromValue(0);
+        showFadeTransition.setToValue(1);
 
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(250),menu);
-        translateTransition.setByY(-MENU_OFFSET);
+        TranslateTransition showTranslateTransition = new TranslateTransition(Duration.millis(250),menu);
+        showTranslateTransition.setByY(-MENU_OFFSET);
 
-        ParallelTransition transitions = new ParallelTransition(menu,fadeTransition,translateTransition);
-        transitions.setOnFinished(onShow);
-        transitions.play();
+        ParallelTransition showTransition = new ParallelTransition(menu,showFadeTransition,showTranslateTransition);
+        showTransition.setOnFinished(onShow);
+        showTransition.play();
 
         FadeTransition exitFadeTransition = new FadeTransition(Duration.millis(250),menu);
         exitFadeTransition.setFromValue(1);
@@ -236,7 +231,6 @@ public class UIGame extends Application {
         ParallelTransition exitTransitions = new ParallelTransition(menu,exitFadeTransition,exitTranslateTransition);
         exitTransitions.setOnFinished(event -> {
             remove(menu);
-            Platform.runLater(() -> updatePlayerStats());
             onExit.handle(new ActionEvent());
         });
 

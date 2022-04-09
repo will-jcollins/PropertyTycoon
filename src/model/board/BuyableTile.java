@@ -1,6 +1,7 @@
 package model.board;
 
 import model.Player.Player;
+import ui.board.AssetUITile;
 import ui.board.ImgCostUITile;
 import ui.board.UITile;
 
@@ -50,6 +51,6 @@ public abstract class BuyableTile extends Tile {
 
     @Override
     public UITile getUITile(int x, int y, int width, int height, int angle) {
-        return new ImgCostUITile(x, y, width, height, angle, this);
+        return new AssetUITile(x,y,width,height,angle,this);
     }
 }

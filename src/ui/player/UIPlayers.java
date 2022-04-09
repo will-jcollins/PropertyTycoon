@@ -6,6 +6,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -21,8 +22,9 @@ public class UIPlayers extends Group {
 
     private static final double OPACITY = 0.5;
 
-    private static final Color[] PLAYER_COLORS = {Color.RED, Color.GRAY, Color.BLUE, Color.GREEN, Color.PINK, Color.PURPLE};
-    private HashMap<Player, Circle> tokens;
+    public static final Color[] PLAYER_COLORS = {new Color(0.58,0.67,0.59,1), Color.GRAY, Color.BLUE, Color.GREEN, Color.PINK, Color.PURPLE};
+    public static final String[] PLAYER_IMGS = {"file:assets/images/token1.png","file:assets/images/token2.png","file:assets/images/token3.png","file:assets/images/token4.png","file:assets/images/token5.png","file:assets/images/token6.png",};
+    private HashMap<Player, ImageView> tokens;
 
     private boolean finished = false;
 
@@ -48,13 +50,19 @@ public class UIPlayers extends Group {
 
 
         for (int i = 0; i < players.size(); i++) {
-            Circle tempCirc = new Circle();
-            tempCirc.setRadius(10);
-            tempCirc.setFill(PLAYER_COLORS[i]);
-            tempCirc.setOpacity(OPACITY);
-            getChildren().add(tempCirc);
+//            Circle tempCirc = new Circle();
+//            tempCirc.setRadius(10);
+//            tempCirc.setFill(PLAYER_COLORS[i]);
+//            tempCirc.setOpacity(OPACITY);
+//            getChildren().add(tempCirc);
 
-            tokens.put(players.get(i), tempCirc);
+            ImageView tempImg = new ImageView(PLAYER_IMGS[players.get(i).getId()]);
+            tempImg.setFitWidth(35);
+            tempImg.setFitHeight(35);
+            tempImg.setOpacity(OPACITY);
+            getChildren().add(tempImg);
+
+            tokens.put(players.get(i), tempImg);
         }
 
         initPlayers(board);
@@ -62,9 +70,9 @@ public class UIPlayers extends Group {
 
     private void initPlayers(UIBoard board) {
         for (Player player : tokens.keySet()) {
-            Circle token = tokens.get(player);
-            token.setCenterX(board.getXTilePos(player.getPos()));
-            token.setCenterY(board.getYTilePos(player.getPos()));
+            ImageView token = tokens.get(player);
+            token.setX(board.getXTilePos(player.getPos()) - token.getBoundsInLocal().getWidth() / 2);
+            token.setY(board.getYTilePos(player.getPos()) - token.getBoundsInLocal().getHeight() / 2);
         }
     }
 
@@ -72,7 +80,7 @@ public class UIPlayers extends Group {
         finished = false;
 
         // Move pieces to the correct tile, changing tile player is positioned on by 1 at a time
-        Circle token = tokens.get(player);
+        ImageView token = tokens.get(player);
         SequentialTransition seqTransition = new SequentialTransition(token);
 
         // Build all transitions required to move token to next position one by one
@@ -96,7 +104,7 @@ public class UIPlayers extends Group {
     }
 
     public void higlightPlayer(Player p) {
-        Circle token = tokens.get(p);
+        ImageView token = tokens.get(p);
         FadeTransition inFade = new FadeTransition(Duration.millis(500),token);
         inFade.setFromValue(token.getOpacity());
         inFade.setToValue(1);
@@ -104,7 +112,7 @@ public class UIPlayers extends Group {
     }
 
     public void dismissPlayer(Player p) {
-        Circle token = tokens.get(p);
+        ImageView token = tokens.get(p);
         FadeTransition outFade = new FadeTransition(Duration.millis(500),token);
         outFade.setFromValue(1);
         outFade.setToValue(OPACITY);

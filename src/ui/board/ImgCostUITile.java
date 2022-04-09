@@ -1,5 +1,6 @@
 package ui.board;
 
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -9,6 +10,7 @@ import model.board.ActionTile;
 import model.board.BuyableTile;
 import model.board.StationTile;
 import model.board.UtilityTile;
+import ui.player.UIPlayers;
 
 public class ImgCostUITile extends UITile {
 
@@ -45,6 +47,7 @@ public class ImgCostUITile extends UITile {
         caption.setStrokeWidth(0.4);
         getChildren().add(caption);
 
+        // Draw image
         ImageView img;
 
         if (tile instanceof StationTile) {
@@ -54,7 +57,6 @@ public class ImgCostUITile extends UITile {
         } else {
             img = new ImageView();
         }
-
 
         img.setX(x + (width - width / 1.4) / 2);
         img.setY(y + 1.25 * height / 4);
@@ -69,7 +71,7 @@ public class ImgCostUITile extends UITile {
         // Replace space chars with newline
         String name = formatText(action.getName()).toUpperCase();
 
-        // Draw station's name
+        // Draw action's name
         Text title = new Text(name);
         title.setX(x);
         title.setY(y + 1.7 * (height / 10));

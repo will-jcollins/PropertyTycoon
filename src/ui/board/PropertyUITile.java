@@ -1,14 +1,21 @@
 package ui.board;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 import model.board.PropertyTile;
 import ui.menu.BuyableCard;
+import ui.player.UIPlayers;
+
+import java.security.acl.Owner;
 
 public class PropertyUITile extends UITile {
 
@@ -21,6 +28,8 @@ public class PropertyUITile extends UITile {
     private Text houseCount;
 
     private ImageView hotelIcon;
+
+    private Polygon ribbon;
 
     private PropertyTile property;
 
@@ -87,6 +96,13 @@ public class PropertyUITile extends UITile {
         caption.setStroke(Color.BLACK);
         caption.setStrokeWidth(0.4);
         getChildren().add(caption);
+
+        ribbon = new OwnerRibbon(x + width / 2 - width / 16, y + height, width / 8, height / 4);
+        ribbon.setOpacity(0);
+        ribbon.setStroke(Color.BLACK);
+        ribbon.setStrokeWidth(STROKEWIDTH / 2);
+        ribbon.toBack();
+        getChildren().add(ribbon);
     }
 
     public void update() {
@@ -99,6 +115,11 @@ public class PropertyUITile extends UITile {
 
         if (property.getNoHouses() >= PropertyTile.MAX_NO_HOUSES) {
             hotelIcon.setVisible(true);
+        }
+
+        if (property.getOwner() != null && ribbon.getOpacity() < 1) {
+            ribbon.setFill(UIPlayers.PLAYER_COLORS[property.getOwner().getId()]);
+            ribbon.setOpacity(1);
         }
     }
 }

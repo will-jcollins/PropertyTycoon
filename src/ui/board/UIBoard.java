@@ -121,11 +121,11 @@ public class UIBoard extends Group {
         }
     }
 
-    public int getXTilePos(int pos) {
+    public double getXTilePos(int pos) {
         return (pos != JAIL_POS) ? (tiles[pos].getMinX() + tiles[pos].getMaxX()) / 2 : (tiles[pos].getMinX() + tiles[pos].getMaxX()) / 2 - TILE_HEIGHT / 3;
     }
 
-    public int getYTilePos(int pos) {
+    public double getYTilePos(int pos) {
         return (pos != JAIL_POS) ? (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2 : (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2 + TILE_HEIGHT / 3;
     }
 
@@ -137,6 +137,8 @@ public class UIBoard extends Group {
         for (UITile t : tiles) {
             if (t instanceof PropertyUITile) {
                 ((PropertyUITile) t).update();
+            } else if (t instanceof AssetUITile) {
+                ((AssetUITile) t).update();
             }
         }
     }
