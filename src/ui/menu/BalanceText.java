@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import ui.Sizes;
 
 public class BalanceText extends Text {
 
@@ -16,13 +17,13 @@ public class BalanceText extends Text {
 
     private boolean finished = false;
 
-    public BalanceText(int startVal, int endVal, int fontSize) {
+    public BalanceText(int startVal, int endVal) {
         super();
 
         update(startVal,endVal);
 
         setText("$" + this.startVal);
-        setFont(Font.loadFont("file:assets/fonts/Kabel.ttf", fontSize));
+        setFont(Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontBody()));
         setFill(Color.BLACK);
     }
 

@@ -7,6 +7,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.board.Street;
+import ui.Sizes;
 
 public class TurnEndMenu extends Menu {
 
@@ -16,7 +17,7 @@ public class TurnEndMenu extends Menu {
     public TurnEndMenu() {
         super();
 
-        TextButton endTurn = new TextButton(150, 50, Street.GREEN.getColor(), "END TURN");
+        TextButton endTurn = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.GREEN.getColor(), "END TURN");
         getChildren().add(endTurn);
         setColumnIndex(endTurn,1);
         setRowIndex(endTurn, 0);
@@ -26,7 +27,7 @@ public class TurnEndMenu extends Menu {
             }
         );
 
-        TextButton develop = new TextButton(150, 50, Street.DEEPBLUE.getColor(), "DEVELOP");
+        TextButton develop = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.DEEPBLUE.getColor(), "DEVELOP");
         getChildren().add(develop);
         setColumnIndex(develop,0);
         setRowIndex(develop, 0);

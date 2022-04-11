@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import model.board.PropertyTile;
+import ui.Sizes;
 import ui.menu.BuyableCard;
 import ui.player.UIPlayers;
 
@@ -22,7 +23,7 @@ public class PropertyUITile extends UITile {
     private static final String HOUSE_PATH = "file:assets/images/house.png";
     private static final String HOTEL_PATH = "file:assets/images/hotel.png";
 
-    private static final Font HOUSE_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 15);
+    private static final Font HOUSE_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontBody());
 
     private ImageView houseIcon;
     private Text houseCount;
@@ -45,15 +46,15 @@ public class PropertyUITile extends UITile {
         group.setHeight(height / 4);
         group.setFill(property.getStreet().getColor());
         group.setStroke(STROKECOLOR);
-        group.setStrokeWidth(STROKEWIDTH);
+        group.setStrokeWidth(Sizes.getLargeStroke());
         getChildren().add(group);
 
         // Setup house and hotel icons
         houseIcon = new ImageView(HOUSE_PATH);
-        houseIcon.setX(x + STROKEWIDTH);
-        houseIcon.setY(y + STROKEWIDTH);
-        houseIcon.setFitWidth(height / 4 - (2 * STROKEWIDTH));
-        houseIcon.setFitHeight(height / 4 - (2 * STROKEWIDTH));
+        houseIcon.setX(x + Sizes.getLargeStroke());
+        houseIcon.setY(y + Sizes.getLargeStroke());
+        houseIcon.setFitWidth(height / 4 - (2 * Sizes.getLargeStroke()));
+        houseIcon.setFitHeight(height / 4 - (2 * Sizes.getLargeStroke()));
         houseIcon.setVisible(false);
         getChildren().add(houseIcon);
 
@@ -67,9 +68,9 @@ public class PropertyUITile extends UITile {
 
         hotelIcon = new ImageView(HOTEL_PATH);
         hotelIcon.setX(houseCount.getX() + houseCount.getBoundsInLocal().getWidth() * 2);
-        hotelIcon.setY(y + STROKEWIDTH);
-        hotelIcon.setFitWidth(height / 4 - (2 * STROKEWIDTH));
-        hotelIcon.setFitHeight(height / 4 - (2 * STROKEWIDTH));
+        hotelIcon.setY(y + Sizes.getLargeStroke());
+        hotelIcon.setFitWidth(height / 4 - (2 * Sizes.getLargeStroke()));
+        hotelIcon.setFitHeight(height / 4 - (2 * Sizes.getLargeStroke()));
         hotelIcon.setVisible(false);
         getChildren().add(hotelIcon);
 
@@ -83,8 +84,6 @@ public class PropertyUITile extends UITile {
         title.setTextAlignment(TextAlignment.CENTER);
         title.setLineSpacing(-7.5);
         title.setFont(TITLEFONT);
-        title.setStroke(Color.BLACK);
-        title.setStrokeWidth(0.4);
         getChildren().add(title);
 
         Text caption = new Text("$" + property.getCost());
@@ -93,14 +92,12 @@ public class PropertyUITile extends UITile {
         caption.setWrappingWidth(width);
         caption.setTextAlignment(TextAlignment.CENTER);
         caption.setFont(CAPTIONFONT);
-        caption.setStroke(Color.BLACK);
-        caption.setStrokeWidth(0.4);
         getChildren().add(caption);
 
         ribbon = new OwnerRibbon(x + width / 2 - width / 16, y + height, width / 8, height / 4);
         ribbon.setOpacity(0);
         ribbon.setStroke(Color.BLACK);
-        ribbon.setStrokeWidth(STROKEWIDTH / 2);
+        ribbon.setStrokeWidth(Sizes.getSmallStroke());
         ribbon.toBack();
         getChildren().add(ribbon);
     }

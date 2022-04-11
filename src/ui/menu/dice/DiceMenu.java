@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.board.Street;
 import model.game.Dice;
+import ui.Sizes;
 import ui.menu.Menu;
 import ui.menu.TextButton;
 
@@ -28,25 +29,23 @@ public class DiceMenu extends Menu {
         Text title =  new Text("ROLL THE DICE");
         title.setFont(TITLE_FONT);
         title.setFill(Color.BLACK);
-        title.setStrokeWidth(0.5);
-        title.setStroke(Color.BLACK);
         getChildren().add(title);
         setColumnIndex(title,0);
         setColumnSpan(title,2);
         setRowIndex(title, 0);
         setHalignment(title, HPos.CENTER);
 
-        die1 = new UIDie(75);
+        die1 = new UIDie(Sizes.getDiceSize());
         getChildren().add(die1);
         setColumnIndex(die1,0);
         setRowIndex(die1,1);
 
-        die2 = new UIDie(75);
+        die2 = new UIDie(Sizes.getDiceSize());
         getChildren().add(die2);
         setColumnIndex(die2,1);
         setRowIndex(die2,1);
 
-        TextButton accept = new TextButton(150,50, Street.GREEN.getColor(), "ROLL");
+        TextButton accept = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.GREEN.getColor(), "ROLL");
         getChildren().add(accept);
         setColumnIndex(accept,0);
         setColumnSpan(accept,2);

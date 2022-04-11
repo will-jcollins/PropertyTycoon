@@ -6,7 +6,7 @@ import javafx.scene.shape.Line;
 
 public class Arrow extends Group {
 
-    public Arrow(int width, int height) {
+    public Arrow(double width, double height) {
         super();
 
         Line line1 = new Line();

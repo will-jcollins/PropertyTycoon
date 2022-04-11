@@ -13,6 +13,7 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import model.Player.Player;
 import model.board.Board;
+import ui.Sizes;
 import ui.board.UIBoard;
 
 import java.util.HashMap;
@@ -31,9 +32,10 @@ public class UIPlayers extends Group {
     public UIPlayers(List<Player> players, UIBoard board) {
         this.tokens = new HashMap<>();
 
-        // Forces group to be positioned correctly over board
+        // Invisible nodes at top left and bottom right corner
+        // Forces player tokens into correct position
         Line startBound = new Line();
-        startBound.setStartX(2);
+        startBound.setStartX(1);
         startBound.setStartY(2);
         startBound.setEndX(2);
         startBound.setEndY(2);
@@ -41,24 +43,19 @@ public class UIPlayers extends Group {
         getChildren().add(startBound);
 
         Line endBound = new Line();
-        endBound.setStartX(board.getSize() - 2);
-        endBound.setStartY(board.getSize() - 2);
-        endBound.setEndX(board.getSize() - 2);
-        endBound.setEndY(board.getSize() - 2);
+        endBound.setStartX(board.getSize() - 1);
+        endBound.setStartY(board.getSize() - 1);
+        endBound.setEndX(board.getSize() - 1);
+        endBound.setEndY(board.getSize() - 1);
         endBound.setOpacity(0);
         getChildren().add(endBound);
 
 
         for (int i = 0; i < players.size(); i++) {
-//            Circle tempCirc = new Circle();
-//            tempCirc.setRadius(10);
-//            tempCirc.setFill(PLAYER_COLORS[i]);
-//            tempCirc.setOpacity(OPACITY);
-//            getChildren().add(tempCirc);
 
             ImageView tempImg = new ImageView(PLAYER_IMGS[players.get(i).getId()]);
-            tempImg.setFitWidth(35);
-            tempImg.setFitHeight(35);
+            tempImg.setFitWidth(Sizes.getTokenSize());
+            tempImg.setFitHeight(Sizes.getTokenSize());
             tempImg.setOpacity(OPACITY);
             getChildren().add(tempImg);
 
@@ -105,6 +102,7 @@ public class UIPlayers extends Group {
 
     public void higlightPlayer(Player p) {
         ImageView token = tokens.get(p);
+        token.toFront();
         FadeTransition inFade = new FadeTransition(Duration.millis(500),token);
         inFade.setFromValue(token.getOpacity());
         inFade.setToValue(1);

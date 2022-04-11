@@ -9,6 +9,8 @@ import ui.board.UITile;
 
 public class ActionTile extends Tile implements Actionable {
 
+    private static final String FINEIMGPATH = "file:assets/images/tax.png";
+
     private Action action;
 
     public ActionTile(String name, Action action) {
@@ -28,7 +30,7 @@ public class ActionTile extends Tile implements Actionable {
             case POTLUCK:
                 return new ImgTitleUITile(x, y, width, height, angle, this);
             case PAYFINE:
-                return new ImgCostUITile(x,y,width,height,angle,this);
+                return new ImgCostUITile(x,y,width,height,angle,getName(),action.getVal1(),FINEIMGPATH);
             case FINEPAY:
             case JAIL:
                 return new ImgUITile(x,y,width,height,angle,this);

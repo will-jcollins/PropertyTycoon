@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.Player.Player;
 import model.board.BuyableTile;
+import ui.Sizes;
 
 public class RentMenu extends Menu {
 
@@ -28,15 +29,13 @@ public class RentMenu extends Menu {
         Text title =  new Text("PAY RENT TO " + tile.getOwner().getName().toUpperCase());
         title.setFont(TITLE_FONT);
         title.setFill(Color.BLACK);
-        title.setStrokeWidth(0.5);
-        title.setStroke(Color.BLACK);
         getChildren().add(title);
         setColumnIndex(title,0);
         setColumnSpan(title,3);
         setRowIndex(title, 0);
         setHalignment(title, HPos.CENTER);
 
-        BuyableCard card = new BuyableCard(tile);
+        BuyableCard card = new BuyableCard(tile,Sizes.getCardSize());
         getChildren().add(card);
         setColumnIndex(card, 1);
         setRowIndex(card, 1);
@@ -45,10 +44,8 @@ public class RentMenu extends Menu {
         Text receivingName =  new Text(tile.getOwner().getName().toUpperCase());
         receivingName.setFont(TITLE_FONT);
         receivingName.setFill(Color.BLACK);
-        receivingName.setStrokeWidth(0.5);
-        receivingName.setStroke(Color.BLACK);
 
-        receivingBalance =  new BalanceText(tile.getOwner().getPrevMoney(),tile.getOwner().getMoney(),15);
+        receivingBalance =  new BalanceText(tile.getOwner().getPrevMoney(),tile.getOwner().getMoney());
 
         VBox receivingNodes = new VBox(receivingName,receivingBalance);
         getChildren().add(receivingNodes);
@@ -60,10 +57,8 @@ public class RentMenu extends Menu {
         Text payingName =  new Text(payingPlayer.getName().toUpperCase());
         payingName.setFont(TITLE_FONT);
         payingName.setFill(Color.BLACK);
-        payingName.setStrokeWidth(0.5);
-        payingName.setStroke(Color.BLACK);
 
-        payingBalance =  new BalanceText(payingPlayer.getPrevMoney(),payingPlayer.getMoney(),15);
+        payingBalance =  new BalanceText(payingPlayer.getPrevMoney(),payingPlayer.getMoney());
 
         VBox payingNodes = new VBox(payingName,payingBalance);
         getChildren().add(payingNodes);
@@ -72,12 +67,13 @@ public class RentMenu extends Menu {
         setHalignment(payingNodes, HPos.CENTER);
         setValignment(payingNodes, VPos.BOTTOM);
 
-        Arrow arrow = new Arrow(100, 20);
+        Arrow arrow = new Arrow(Sizes.getArrowWidth(), Sizes.getArrowHeight());
         getChildren().add(arrow);
         setColumnIndex(arrow, 1);
         setRowIndex(arrow, 2);
         setHalignment(arrow,HPos.CENTER);
         setValignment(arrow, VPos.CENTER);
+        setMargin(arrow, new Insets(0,PADDING,0,PADDING));
     }
 
     public void startAnimation() {

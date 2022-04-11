@@ -12,6 +12,7 @@ import model.Player.Player;
 import model.board.BuyableTile;
 import model.board.PropertyTile;
 import model.board.Street;
+import ui.Sizes;
 
 public class BuyableMenu extends Menu {
 
@@ -24,15 +25,13 @@ public class BuyableMenu extends Menu {
         Text title =  new Text("PURCHASE " + property.getName().toUpperCase() + "?");
         title.setFont(TITLE_FONT);
         title.setFill(Color.BLACK);
-        title.setStrokeWidth(0.5);
-        title.setStroke(Color.BLACK);
         getChildren().add(title);
         setColumnIndex(title,0);
         setColumnSpan(title,2);
         setRowIndex(title, 0);
         setHalignment(title, HPos.CENTER);
 
-        BuyableCard card = new BuyableCard(property);
+        BuyableCard card = new BuyableCard(property,Sizes.getCardSize());
         getChildren().add(card);
         setColumnIndex(card, 0);
         setColumnSpan(card, 2);
@@ -48,7 +47,7 @@ public class BuyableMenu extends Menu {
         setRowIndex(costBalance, 2);
         setHalignment(costBalance, HPos.CENTER);
 
-        TextButton auction = new TextButton(150,50, Street.RED.getColor(), "AUCTION");
+        TextButton auction = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.RED.getColor(), "AUCTION");
         getChildren().add(auction);
         setColumnIndex(auction,0);
         setRowIndex(auction,3);
@@ -59,13 +58,13 @@ public class BuyableMenu extends Menu {
         TextButton accept;
 
         if (property.getCost() <= player.getMoney()) {
-            accept = new TextButton(150,50,Street.GREEN.getColor(), "BUY");
+            accept = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(),Street.GREEN.getColor(), "BUY");
             accept.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 outcome = true;
                 finished = true;
             });
         } else {
-            accept = new TextButton(150, 50, Color.GRAY, "BUY");
+            accept = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Color.GRAY, "BUY");
             Text alert = new Text("BALANCE TOO LOW");
             alert.setFont(TEXT_FONT);
             getChildren().add(alert);

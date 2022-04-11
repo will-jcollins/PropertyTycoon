@@ -8,11 +8,11 @@ import java.util.Random;
 public abstract class Player {
     private final int id;
     private final String name;
-    private int pos = 0; // the player position
+    private int pos = 0; // Player position
     private int prevPos = 0;
     private int money = 1500;
-    private int prevMoney = 1500;
-    private boolean passedGo = true;
+    private int prevMoney = money;
+    private boolean passedGo = true; // Whether the player has EVER passed go
 
     public Player(int id, String name){
         this.id = id;

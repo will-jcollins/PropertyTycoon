@@ -51,7 +51,7 @@ public class PlayerStats extends GridPane {
         setColumnIndex(nameDisplay,1);
         setMargin(nameDisplay, new Insets(PADDING, PADDING, 0, PADDING));
 
-        balance = new BalanceText(player.getMoney(),player.getMoney(),20);
+        balance = new BalanceText(player.getMoney(),player.getMoney());
         balance.maxHeight(ICON_LENGTH);
         balance.setFont(MONEY_FONT);
         getChildren().add(balance);

@@ -7,21 +7,21 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import ui.Sizes;
 
 public abstract class Menu extends GridPane {
 
-    protected static final int PADDING = 10;
-    protected static final Color BACKGROUND_COLOR = new Color(1,1,1,1);
+    protected static final int PADDING = Sizes.getPadding();
+    protected static final Color BACKGROUND_COLOR = Color.WHITE;
 
-    protected static final Font TITLE_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 20);
-    protected static final Font TEXT_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 15);
+    protected static final Font TITLE_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontHeading());
+    protected static final Font TEXT_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontBody());
 
     public Menu() {
         super();
 
         setStyle("-fx-border-style: solid inside;" +
-                "-fx-border-width: 3;" +
-                "");
+                "-fx-border-width: " + Sizes.getLargeStroke() + ";");
 
         setPadding(new Insets(PADDING,PADDING * 2,PADDING,PADDING * 2));
         setHgap(PADDING);

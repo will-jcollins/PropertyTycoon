@@ -20,13 +20,9 @@ public class UIBoard extends Group {
     private final int TILE_HEIGHT;
     private final int TILE_WIDTH;
 
-    public static final String[] TOKEN_IMG = {"file:assets/images/tax.png"};
-    public final int TOKEN_SIZE;
-
     // Color constants
     private static final Color BACKCOLOR = new Color(0.75,0.86,0.68,1.0);
 
-    private HashMap<Player, Circle> tokens;
     private UITile[] tiles;
     private Board board;
 
@@ -47,7 +43,6 @@ public class UIBoard extends Group {
         TILESPERSIDE = (Board.SIZE - 4) / 4;
         TILE_HEIGHT = this.SIZE / 8;
         TILE_WIDTH = (this.SIZE - (2 * TILE_HEIGHT)) / TILESPERSIDE;
-        TOKEN_SIZE = TILE_WIDTH;
 
         drawBoard(this.board);
 
@@ -71,7 +66,6 @@ public class UIBoard extends Group {
         TILESPERSIDE = (Board.SIZE - 4) / 4;
         TILE_HEIGHT = SIZE / 8;
         TILE_WIDTH = (SIZE - (2 * TILE_HEIGHT)) / TILESPERSIDE;
-        TOKEN_SIZE = TILE_WIDTH;
 
         drawBoard(this.board);
 

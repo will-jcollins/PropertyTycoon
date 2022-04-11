@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import ui.Sizes;
 
 import java.util.Random;
 
@@ -17,25 +18,25 @@ public class UIDie extends Group {
     private static final int PADDING = 10;
 
     private final int dotRadius;
-    private final int width;
+    private final double width;
 
     private Circle dot1,dot2,dot3,dot4,dot5,dot6;
 
     private boolean finished = false;
 
-    public UIDie(int width) {
+    public UIDie(double width) {
 
         Rectangle back = new Rectangle();
         back.setWidth(width);
         back.setHeight(width);
         back.setStroke(Color.BLACK);
-        back.setStrokeWidth(width / 20);
+        back.setStrokeWidth(Sizes.getSmallStroke());
         back.setFill(Color.WHITE);
         getChildren().add(back);
 
 
         this.width = width;
-        dotRadius = width / 10;
+        dotRadius = (int) width / 10;
         displayNum(1);
     }
 
@@ -173,7 +174,7 @@ public class UIDie extends Group {
 
                 break;
             default:
-//                throw new IllegalStateException("Dice can not display a number outside the bounds of 1-6");
+                throw new IllegalStateException("Dice can not display a number outside the bounds of 1-6");
         }
     }
 

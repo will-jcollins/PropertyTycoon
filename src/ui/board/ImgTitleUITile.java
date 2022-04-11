@@ -26,8 +26,6 @@ public class ImgTitleUITile extends UITile {
         title.setTextAlignment(TextAlignment.CENTER);
         title.setLineSpacing(-7.5);
         title.setFont(TITLEFONT);
-        title.setStroke(Color.BLACK);
-        title.setStrokeWidth(0.4);
         getChildren().add(title);
 
         ImageView img;

@@ -11,6 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.Player.Player;
 import model.game.Game;
+import ui.Sizes;
 
 import java.util.Locale;
 
@@ -26,8 +27,6 @@ public class GoMenu extends Menu {
         Text title =  new Text(player.getName().toUpperCase() + ", COLLECT $" + Game.GO_REWARD + " FOR PASSING GO");
         title.setFont(TITLE_FONT);
         title.setFill(Color.BLACK);
-        title.setStrokeWidth(0.5);
-        title.setStroke(Color.BLACK);
         getChildren().add(title);
         setRowIndex(title,0);
         setColumnIndex(title,0);
@@ -36,24 +35,21 @@ public class GoMenu extends Menu {
         Text receivingName =  new Text(player.getName().toUpperCase());
         receivingName.setFont(TITLE_FONT);
         receivingName.setFill(Color.BLACK);
-        receivingName.setStrokeWidth(0.5);
-        receivingName.setStroke(Color.BLACK);
 
-        receivingBalance = new BalanceText(player.getPrevMoney(),player.getMoney(),15);
+        receivingBalance = new BalanceText(player.getPrevMoney(),player.getMoney());
 
         VBox receivingNodes = new VBox(receivingName,receivingBalance);
 
         Text payingName =  new Text("BANK");
         payingName.setFont(TITLE_FONT);
         payingName.setFill(Color.BLACK);
-        payingName.setStrokeWidth(0.5);
-        payingName.setStroke(Color.BLACK);
 
-        payingBalance =  new BalanceText(Game.GO_REWARD,0,15);
+        payingBalance =  new BalanceText(Game.GO_REWARD,0);
 
         VBox payingNodes = new VBox(payingName,payingBalance);
 
-        Arrow arrow = new Arrow(100, 20);
+        Arrow arrow = new Arrow(Sizes.getArrowWidth(), Sizes.getArrowHeight());
+        setMargin(arrow, new Insets(0,PADDING,0,PADDING));
 
         HBox captionNodes = new HBox(payingNodes,arrow,receivingNodes);
         getChildren().add(captionNodes);

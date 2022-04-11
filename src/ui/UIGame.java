@@ -35,7 +35,6 @@ import java.util.ArrayList;
 public class UIGame extends Application {
 
     private static final int MENU_OFFSET = 50;
-    private static final Color BACK_COLOR = new Color(0.84,0.73,0.67,1);
 
     private StackPane gameStack;
     private ArrayList<PlayerStats> playerStats;
@@ -47,18 +46,25 @@ public class UIGame extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        Sizes.computeSizes();
+
+        // Create monopoly model from options selected in menu
         model = new Game(2,0);
-        Rectangle2D bounds = Screen.getPrimary().getBounds();
-        board = new UIBoard(model.getBoard(),(int) (bounds.getHeight() * 0.9));
+
+        // Create a board that is 9/10 the size of the screen height
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        board = new UIBoard(model.getBoard(),(int) (screenBounds.getHeight() * 0.9));
+
         players = new UIPlayers(model.getPlayers(), board);
 
+        // Stack player tokens on top of board
         gameStack = new StackPane();
         gameStack.getChildren().add(board);
         gameStack.getChildren().add(players);
 
+        // Create vertical list of player information
         VBox statsVBox = new VBox();
-        statsVBox.setSpacing(10);
-
+        statsVBox.setSpacing(Sizes.getPadding());
         playerStats = new ArrayList<>();
 
         for (Player player : model.getPlayers()) {
@@ -67,9 +73,11 @@ public class UIGame extends Application {
             statsVBox.getChildren().add(stats);
         }
 
+        // Create layout with board in center and player stats to the left
         BorderPane root = new BorderPane(gameStack);
         root.setLeft(statsVBox);
 
+        // Trigger game logic after UI has loaded
         Platform.runLater(() -> {
             startNextIteration();
         });

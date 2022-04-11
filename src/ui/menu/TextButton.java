@@ -16,17 +16,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import ui.Sizes;
 
 public class TextButton extends Group {
 
-    private static final int PADDING = 5;
-    private static final double OUTLINE_WIDTH = 2.5;
+    private static final int PADDING = Sizes.getPadding() / 2;
+    private static final double OUTLINE_WIDTH = Sizes.getSmallStroke();
 
-    private static final Font FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 20);
+    private static final Font FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontHeading());
 
     private Text buttonText;
 
-    public TextButton(int width, int height, Color color, String text) {
+    public TextButton(double width, double height, Color color, String text) {
         super();
 
         Rectangle back = new Rectangle();
@@ -49,8 +50,6 @@ public class TextButton extends Group {
         buttonText.setTextAlignment(TextAlignment.CENTER);
         buttonText.setFont(FONT);
         buttonText.setFill(Color.WHITE);
-        buttonText.setStrokeWidth(0.5);
-        buttonText.setStroke(Color.WHITE);
         buttonText.setX(width / 2 - (buttonText.getBoundsInLocal().getWidth() / 2));
         buttonText.setY(height / 2 + (buttonText.getBoundsInLocal().getHeight() / 3));
         getChildren().add(buttonText);

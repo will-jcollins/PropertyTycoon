@@ -15,6 +15,7 @@ import model.Player.Player;
 import model.board.PropertyTile;
 import model.board.Street;
 import model.game.Game;
+import ui.Sizes;
 
 import java.util.ArrayList;
 
@@ -38,9 +39,9 @@ public class DevelopMenu extends Menu {
         root.setAlignment(Pos.CENTER);
 
         if (properties.size() <= 0) {
-            Text noPropertiesTxt = new Text("NOTHING TO DEVELOP");
-            noPropertiesTxt.setFont(TITLE_FONT);
-            root.getChildren().add(noPropertiesTxt);
+            Text noDevelopTxt = new Text("NOTHING TO DEVELOP");
+            noDevelopTxt.setFont(TITLE_FONT);
+            root.getChildren().add(noDevelopTxt);
         }
 
         for (PropertyTile prop : properties) {
@@ -48,7 +49,7 @@ public class DevelopMenu extends Menu {
             row.setAlignment(Pos.CENTER);
             row.setSpacing(PADDING);
 
-            BuyableCard card = new BuyableCard(prop);
+            BuyableCard card = new BuyableCard(prop,Sizes.getCardSize());
             row.getChildren().add(card);
 
             VBox buttonAndText = new VBox();
@@ -58,14 +59,14 @@ public class DevelopMenu extends Menu {
             TextButton develop;
 
             if (p.getMoney() >= prop.getStreet().getDevelopCost()) {
-                develop = new TextButton(150,50, Street.GREEN.getColor(),"DEVELOP");
+                develop = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.GREEN.getColor(),"DEVELOP");
                 develop.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                     selectedProperty = prop;
                     finished = true;
                 });
                 buttonAndText.getChildren().add(develop);
             } else {
-                develop = new TextButton(150,50, Color.GRAY,"DEVELOP");
+                develop = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Color.GRAY,"DEVELOP");
                 buttonAndText.getChildren().add(develop);
 
                 Text lowBalanceTxt = new Text("BALANCE TOO LOW");
@@ -92,7 +93,7 @@ public class DevelopMenu extends Menu {
         setColumnSpan(scrollView,2);
         setRowSpan(scrollView,2);
 
-        TextButton exitButton = new TextButton(150,50,Street.RED.getColor(), "CANCEL");
+        TextButton exitButton = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(),Street.RED.getColor(), "CANCEL");
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
             selectedProperty = null;
             finished = true;

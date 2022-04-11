@@ -11,15 +11,15 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
+import ui.Sizes;
 
 public class UITile extends Group {
 
-    protected static final int STROKEWIDTH = 4;
     protected static final Color BACKCOLOR = new Color(0.75,0.86,0.68,1.0);
     protected static final Color STROKECOLOR = Color.BLACK;
 
-    protected static final Font TITLEFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 9);
-    protected static final Font CAPTIONFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 7);
+    protected static final Font TITLEFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontPropTitle());
+    protected static final Font CAPTIONFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontPropCost());
 
     protected static final int MAXCHARSPERLINE = 7;
 
@@ -38,7 +38,7 @@ public class UITile extends Group {
         back.setHeight(height);
         back.setFill(BACKCOLOR);
         back.setStroke(STROKECOLOR);
-        back.setStrokeWidth(STROKEWIDTH);
+        back.setStrokeWidth(Sizes.getLargeStroke());
         back.setCache(true);
         getChildren().add(back);
 

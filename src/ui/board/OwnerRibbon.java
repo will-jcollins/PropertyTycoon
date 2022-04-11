@@ -8,8 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
-import static ui.board.UITile.STROKEWIDTH;
+import ui.Sizes;
 
 public class OwnerRibbon extends Polygon {
 
@@ -25,6 +24,6 @@ public class OwnerRibbon extends Polygon {
                 x + width, y
         });
         setStroke(Color.BLACK);
-        setStrokeWidth(STROKEWIDTH / 2);
+        setStrokeWidth(Sizes.getSmallStroke());
     }
 }

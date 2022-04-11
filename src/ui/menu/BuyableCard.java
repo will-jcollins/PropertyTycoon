@@ -15,41 +15,72 @@ import model.board.UtilityTile;
 
 public class BuyableCard extends Group {
 
-    public static final int CARD_HEIGHT = 250;
-    public static final int CARD_WIDTH = (int) (CARD_HEIGHT / 1.4);
+    public double CARD_HEIGHT;
+    public double CARD_WIDTH;
 
-    private static final int PADDING =  CARD_HEIGHT / 40;
-    private static final int FONT_SIZE = CARD_HEIGHT / 20;
-    private static final Font FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", FONT_SIZE);
-    private static final Font CAPTION_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", FONT_SIZE * 0.9);
-    private static final double BOLD_STROKE_SIZE = (double) CARD_HEIGHT / 500;
+    private double PADDING;
+    private double FONT_SIZE;
+    private Font FONT;
+    private Font CAPTION_FONT;
 
-    private static final int INNER_X = PADDING;
-    private static final int INNER_Y = PADDING;
-    private static final int INNER_HEIGHT = CARD_HEIGHT - 2 * PADDING;
-    private static final int INNER_WIDTH = CARD_WIDTH - 2 * PADDING;
-    private static final double INNER_STROKE_SIZE = (double) CARD_HEIGHT / 300;
+    private double INNER_X;
+    private double INNER_Y;
+    private double INNER_HEIGHT;
+    private double INNER_WIDTH;
+    private double INNER_STROKE_SIZE;
 
     // Property geometry variables
-    private static final int HEADER_X = INNER_X + PADDING;
-    private static final int HEADER_Y = INNER_Y + PADDING;
-    private static final int HEADER_HEIGHT = INNER_HEIGHT / 6;
-    private static final int HEADER_WIDTH = INNER_WIDTH - 2 * PADDING;
-    private static final double HEADER_STROKE_SIZE = (double) CARD_HEIGHT / 150;
+    private double HEADER_X;
+    private double HEADER_Y;
+    private double HEADER_HEIGHT;
+    private double HEADER_WIDTH;
+    private double HEADER_STROKE_SIZE;
 
-    private static final int BODY_X = HEADER_X + PADDING;
-    private static final int BODY_Y = HEADER_Y + HEADER_HEIGHT + 2 * PADDING;
-    private static final int BODY_HEIGHT = INNER_HEIGHT - HEADER_HEIGHT - 2 * PADDING;
-    private static final int BODY_WIDTH = HEADER_WIDTH - 2 * PADDING;
+    private double BODY_X;
+    private double BODY_Y;
+    private double BODY_HEIGHT;
+    private double BODY_WIDTH;
 
     // Utility and Station geometry variables
-    private static final int IMAGE_WIDTH = (int) (HEADER_WIDTH / 1.5);
-    private static final int IMAGE_X = INNER_X + INNER_WIDTH / 2 - IMAGE_WIDTH / 2;
-    private static final int IMAGE_Y = INNER_Y + PADDING;
+    private double IMAGE_WIDTH;
+    private double IMAGE_X;
+    private double IMAGE_Y;
 
 
-    public BuyableCard(BuyableTile tile) {
+    public BuyableCard(BuyableTile tile, double height) {
         super();
+
+        // Calculate sizes and spacing from height
+        CARD_HEIGHT = height;
+        CARD_WIDTH = CARD_HEIGHT / 1.4;
+
+        PADDING =  CARD_HEIGHT / 40;
+        FONT_SIZE = CARD_HEIGHT / 20;
+        FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", FONT_SIZE);
+        CAPTION_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", FONT_SIZE * 0.9);
+
+        INNER_X = PADDING;
+        INNER_Y = PADDING;
+        INNER_HEIGHT = CARD_HEIGHT - 2 * PADDING;
+        INNER_WIDTH = CARD_WIDTH - 2 * PADDING;
+        INNER_STROKE_SIZE = CARD_HEIGHT / 300;
+
+        // Property geometry variables
+        HEADER_X = INNER_X + PADDING;
+        HEADER_Y = INNER_Y + PADDING;
+        HEADER_HEIGHT = INNER_HEIGHT / 6;
+        HEADER_WIDTH = INNER_WIDTH - 2 * PADDING;
+        HEADER_STROKE_SIZE = CARD_HEIGHT / 150;
+
+        BODY_X = HEADER_X + PADDING;
+        BODY_Y = HEADER_Y + HEADER_HEIGHT + 2 * PADDING;
+        BODY_HEIGHT = INNER_HEIGHT - HEADER_HEIGHT - 2 * PADDING;
+        BODY_WIDTH = HEADER_WIDTH - 2 * PADDING;
+
+        // Utility and Station geometry variables
+        IMAGE_WIDTH = HEADER_WIDTH / 1.5;
+        IMAGE_X = INNER_X + INNER_WIDTH / 2 - IMAGE_WIDTH / 2;
+        IMAGE_Y = INNER_Y + PADDING;
 
         Rectangle back = new Rectangle();
         back.setHeight(CARD_HEIGHT);
@@ -101,8 +132,6 @@ public class BuyableCard extends Group {
         propTitle.setFill(getTextColor(property.getStreet().getColor()));
         propTitle.setX(HEADER_X + (HEADER_WIDTH / 2) - (propTitle.getBoundsInLocal().getWidth() / 2));
         propTitle.setY(HEADER_Y + HEADER_HEIGHT - PADDING);
-        propTitle.setStroke(getTextColor(property.getStreet().getColor()));
-        propTitle.setStrokeWidth(BOLD_STROKE_SIZE);
         getChildren().add(propTitle);
 
         Text rent = new Text("RENT    $" + property.getRent(0));
@@ -113,7 +142,7 @@ public class BuyableCard extends Group {
         rent.setY(BODY_Y + rent.getBoundsInLocal().getHeight());
         getChildren().add(rent);
 
-        int spacing = BODY_HEIGHT / 10;
+        double spacing = BODY_HEIGHT / 10;
 
         for (int i = 1; i < PropertyTile.MAX_NO_HOUSES; i++) {
             Text houseRent = new Text("With " + i + " House" + (i > 1 ? "s" : ""));
@@ -174,14 +203,12 @@ public class BuyableCard extends Group {
         icon.setFitWidth(IMAGE_WIDTH);
         getChildren().add(icon);
 
-        int y = IMAGE_Y + IMAGE_WIDTH + PADDING * 2;
+        double y = IMAGE_Y + IMAGE_WIDTH + PADDING * 2;
 
         Text title = new Text(utility.getName().toUpperCase());
         title.setTextAlignment(TextAlignment.CENTER);
         title.setFont(FONT);
         title.setFill(Color.BLACK);
-        title.setStrokeWidth(BOLD_STROKE_SIZE);
-        title.setStroke(Color.BLACK);
         title.setX(BODY_X + (BODY_WIDTH / 2) - (title.getBoundsInLocal().getWidth() / 2));
         title.setY(y);
         getChildren().add(title);
@@ -233,15 +260,13 @@ public class BuyableCard extends Group {
         icon.setFitWidth(IMAGE_WIDTH);
         getChildren().add(icon);
 
-        int spacing = (INNER_HEIGHT - 2 * PADDING - IMAGE_WIDTH) / 6;
-        int textY = IMAGE_X + IMAGE_WIDTH;
+        double spacing = (INNER_HEIGHT - 2 * PADDING - IMAGE_WIDTH) / 6;
+        double textY = IMAGE_X + IMAGE_WIDTH;
 
         Text title = new Text(station.getName().toUpperCase());
         title.setTextAlignment(TextAlignment.CENTER);
         title.setFont(FONT);
         title.setFill(Color.BLACK);
-        title.setStrokeWidth(BOLD_STROKE_SIZE);
-        title.setStroke(Color.BLACK);
         title.setX(BODY_X + (BODY_WIDTH / 2) - (title.getBoundsInLocal().getWidth() / 2));
         title.setY(textY);
         getChildren().add(title);
