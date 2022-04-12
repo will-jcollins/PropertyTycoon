@@ -16,6 +16,7 @@ public class Sizes {
     private static double FONT_BODY;
     private static double FONT_PROP_TITLE;
     private static double FONT_PROP_COST;
+    private static double LINE_SPACING;
 
     // Stroke sizes
     private static double LARGE_STROKE;
@@ -41,13 +42,16 @@ public class Sizes {
     // Player token sizes
     private static double TOKEN_SIZE;
 
+    // Min menu size
+    private static double MENU_SIZE;
+
     /**
      * Calculates sizes of elements based on display's properties
      * @Author Will Collins
      */
     public static void computeSizes() {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        double height = screenBounds.getHeight();
+        double height = 400;
 
         // Unfortunate use of magic numbers,
         // Calculated from sizes on MacBook Pro 13" 2020 (scaled to 1440x900)
@@ -59,6 +63,7 @@ public class Sizes {
         // Property Font sizes
         FONT_PROP_TITLE = height / 100;
         FONT_PROP_COST = height / 128;
+        LINE_SPACING = -(height / 120);
 
         // Stroke widths
         LARGE_STROKE = height / 225;
@@ -83,6 +88,9 @@ public class Sizes {
 
         // Player token size
         TOKEN_SIZE = height / 26;
+
+        // Minimum menu size (Mainly for develop menu since scrollPane shrinks by default)
+        MENU_SIZE = height / 2;
     }
 
     public static double getFontHeading() {
@@ -99,6 +107,10 @@ public class Sizes {
 
     public static double getFontPropCost() {
         return FONT_PROP_COST;
+    }
+
+    public static double getLineSpacing() {
+        return LINE_SPACING;
     }
 
     public static double getLargeStroke() {
@@ -139,5 +151,9 @@ public class Sizes {
 
     public static double getTokenSize() {
         return TOKEN_SIZE;
+    }
+
+    public static double getMenuSize() {
+        return MENU_SIZE;
     }
 }

@@ -3,6 +3,7 @@ package ui.menu;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import ui.Sizes;
 
 public class Arrow extends Group {
 
@@ -15,7 +16,7 @@ public class Arrow extends Group {
         line1.setEndX(width);
         line1.setEndY(height / 2);
         line1.setStroke(Color.BLACK);
-        line1.setStrokeWidth(1.5);
+        line1.setStrokeWidth(Sizes.getSmallStroke());
         getChildren().add(line1);
 
         Line line2 = new Line();
@@ -24,7 +25,7 @@ public class Arrow extends Group {
         line2.setEndX(width - width / 8);
         line2.setEndY(0);
         line2.setStroke(Color.BLACK);
-        line2.setStrokeWidth(1.5);
+        line2.setStrokeWidth(Sizes.getSmallStroke());
         getChildren().add(line2);
     }
 }

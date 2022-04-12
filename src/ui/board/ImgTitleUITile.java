@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.board.ActionTile;
+import ui.Sizes;
 
 public class ImgTitleUITile extends UITile {
 
@@ -24,7 +25,7 @@ public class ImgTitleUITile extends UITile {
         title.setY(y + 1.7 * (height / 10));
         title.setWrappingWidth(width);
         title.setTextAlignment(TextAlignment.CENTER);
-        title.setLineSpacing(-7.5);
+        title.setLineSpacing(Sizes.getLineSpacing());
         title.setFont(TITLEFONT);
         getChildren().add(title);
 

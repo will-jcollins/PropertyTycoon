@@ -174,7 +174,7 @@ public class UIDie extends Group {
 
                 break;
             default:
-                throw new IllegalStateException("Dice can not display a number outside the bounds of 1-6");
+//                throw new IllegalStateException("Dice can not display a number outside the bounds of 1-6");
         }
     }
 

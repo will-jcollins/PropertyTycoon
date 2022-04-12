@@ -31,8 +31,8 @@ public class DevelopMenu extends Menu {
         scrollView.setFitToWidth(true);
         scrollView.hbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
         scrollView.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollView.setMinViewportHeight(Screen.getPrimary().getBounds().getWidth() / 4);
-        scrollView.setMinViewportWidth(Screen.getPrimary().getBounds().getWidth() / 4);
+        scrollView.setMinViewportHeight(Sizes.getMenuSize());
+        scrollView.setMinViewportWidth(Sizes.getMenuSize());
         scrollView.setStyle("-fx-background: transparent; -fx-background-color: transparent; ");
 
         VBox root = new VBox();
