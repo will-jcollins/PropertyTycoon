@@ -6,7 +6,7 @@ import javafx.stage.Screen;
 
 /**
  * Container for static attributes
- * Used to adjust element's sizes for different displays when explicit values are needed
+ * Used to adjust element's sizes for different displays when explicit values are needed by JavaFX
  * @Author Will Collins
  */
 public class Sizes {
@@ -51,7 +51,7 @@ public class Sizes {
      */
     public static void computeSizes() {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        double height = 400;
+        double height = screenBounds.getHeight();
 
         // Unfortunate use of magic numbers,
         // Calculated from sizes on MacBook Pro 13" 2020 (scaled to 1440x900)
@@ -60,7 +60,7 @@ public class Sizes {
         FONT_HEADING = height / 45;
         FONT_BODY = height / 60;
 
-        // Property Font sizes
+        // Property font sizes and spacing
         FONT_PROP_TITLE = height / 100;
         FONT_PROP_COST = height / 128;
         LINE_SPACING = -(height / 120);

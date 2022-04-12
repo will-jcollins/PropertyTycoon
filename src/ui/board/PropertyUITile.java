@@ -3,6 +3,7 @@ package ui.board;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -50,11 +51,9 @@ public class PropertyUITile extends UITile {
         getChildren().add(group);
 
         // Setup house and hotel icons
-        houseIcon = new ImageView(HOUSE_PATH);
+        houseIcon = new ImageView(new Image(HOUSE_PATH,height / 4 - (2 * Sizes.getLargeStroke()),height / 4 - (2 * Sizes.getLargeStroke()),false,true));
         houseIcon.setX(x + Sizes.getLargeStroke());
         houseIcon.setY(y + Sizes.getLargeStroke());
-        houseIcon.setFitWidth(height / 4 - (2 * Sizes.getLargeStroke()));
-        houseIcon.setFitHeight(height / 4 - (2 * Sizes.getLargeStroke()));
         houseIcon.setVisible(false);
         getChildren().add(houseIcon);
 
@@ -66,11 +65,9 @@ public class PropertyUITile extends UITile {
         houseCount.setVisible(false);
         getChildren().add(houseCount);
 
-        hotelIcon = new ImageView(HOTEL_PATH);
+        hotelIcon = new ImageView(new Image(HOTEL_PATH,height / 4 - (2 * Sizes.getLargeStroke()),height / 4 - (2 * Sizes.getLargeStroke()),false,true));
         hotelIcon.setX(houseCount.getX() + houseCount.getBoundsInLocal().getWidth() * 2);
         hotelIcon.setY(y + Sizes.getLargeStroke());
-        hotelIcon.setFitWidth(height / 4 - (2 * Sizes.getLargeStroke()));
-        hotelIcon.setFitHeight(height / 4 - (2 * Sizes.getLargeStroke()));
         hotelIcon.setVisible(false);
         getChildren().add(hotelIcon);
 

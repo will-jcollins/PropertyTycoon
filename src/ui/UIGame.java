@@ -53,7 +53,7 @@ public class UIGame extends Application {
 
         // Create a board that is 9/10 the size of the screen height
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        board = new UIBoard(model.getBoard(),(int) (400 * 0.9));
+        board = new UIBoard(model.getBoard(),(int) (screenBounds.getHeight() * 0.9));
 
         players = new UIPlayers(model.getPlayers(), board);
 

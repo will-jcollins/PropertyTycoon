@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.Player.Player;
+import ui.Sizes;
 import ui.menu.BalanceText;
 
 public class PlayerStats extends GridPane {
@@ -16,10 +17,10 @@ public class PlayerStats extends GridPane {
     private final static int ICON_STROKE = 5;
     private final static int PADDING = 5;
 
-    protected static final Color BACKCOLOR = new Color(0.75,0.86,0.68,1.0);
+    private static final Color BACKCOLOR = new Color(0.75,0.86,0.68,1.0);
 
-    protected static final Font NAME_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 20);
-    protected static final Font MONEY_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", 17);
+    private static final Font NAME_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontHeading());
+    private static final Font MONEY_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontBody());
 
     private Player player;
     private BalanceText balance;
@@ -27,21 +28,6 @@ public class PlayerStats extends GridPane {
     public PlayerStats(Player player) {
 
         this.player = player;
-
-        ImageView iconImage = new ImageView();
-        iconImage.setFitHeight(ICON_LENGTH);
-        iconImage.setFitWidth(ICON_LENGTH);
-
-        BorderPane icon = new BorderPane(iconImage);
-        icon.setStyle("-fx-border-color: black;\n" +
-        "-fx-border-style: solid;\n" +
-        "-fx-border-width: " + ICON_STROKE + ";");
-        icon.maxHeight(ICON_LENGTH);
-        icon.maxHeight(ICON_LENGTH);
-        getChildren().add(icon);
-        setColumnIndex(icon, 0);
-        setRowIndex(icon, 0);
-        setMargin(icon, new Insets(PADDING, PADDING, PADDING, PADDING));
 
         Text nameDisplay = new Text(player.getName().toUpperCase());
         nameDisplay.maxHeight(ICON_LENGTH);

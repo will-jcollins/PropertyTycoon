@@ -5,6 +5,8 @@ import ui.board.UITile;
 
 public abstract class Tile {
     private final String name;
+    private static final String GOIMG = "file:assets/images/go.png";
+    private static final String JAILIMG = "file:assets/images/jail.png";
 
     /**
      * Constructor assigns attributes from parameter
@@ -26,8 +28,9 @@ public abstract class Tile {
     public UITile getUITile(int x, int y, int width, int height, int angle) {
         switch (name) {
             case "Go":
+                return new ImgUITile(x,y,width,height,angle,GOIMG);
             case "Jail":
-                return new ImgUITile(x,y,width,height,angle, this);
+                return new ImgUITile(x,y,width,height,angle,JAILIMG);
             default:
                 return new UITile(x, y, width, height, angle);
         }

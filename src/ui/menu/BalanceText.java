@@ -27,22 +27,24 @@ public class BalanceText extends Text {
         setFill(Color.BLACK);
     }
 
-    public void animateText() {
-        Platform.runLater(() -> animateText(startVal + differenceSign));
-    }
-
     public void update(int startVal, int endVal) {
         this.startVal = startVal;
         this.endVal = endVal;
         this.differenceSign = (int) Math.signum(this.endVal - this.startVal);
     }
 
+    public void animateText() {
+        Platform.runLater(() -> animateText(startVal + differenceSign));
+    }
+
     private void animateText(int currentVal) {
+        // Termination condition
         if (currentVal == endVal) {
             setText("$" + currentVal);
             finished = true;
         } else {
             setText("$" + currentVal);
+            // Spawn new thread to wait on in order to not block the UI thread
             Task nextTask = new Task() {
                 @Override
                 protected Object call() throws Exception {

@@ -10,14 +10,11 @@ import ui.Sizes;
 
 public class ImgTitleUITile extends UITile {
 
-    protected static final Image OPPURTUNITYIMG = new Image("file:assets/images/opportunity.png");
-    protected static final Image POTLUCKIMG = new Image("file:assets/images/potluck.png");
-
-    public ImgTitleUITile(int x, int y, double width, double height, double angle, ActionTile action) {
+    public ImgTitleUITile(int x, int y, double width, double height, double angle, String name, String imgPath) {
         super(x, y, width, height, angle);
 
         // Replace space chars with newline
-        String name = formatText(action.getName()).toUpperCase();
+        name = formatText(name).toUpperCase();
 
         // Draw name
         Text title = new Text(name);
@@ -29,23 +26,9 @@ public class ImgTitleUITile extends UITile {
         title.setFont(TITLEFONT);
         getChildren().add(title);
 
-        ImageView img;
-
-        switch (action.getAction().getActCode()) {
-            case OPPORTUNITY:
-                img = new ImageView(OPPURTUNITYIMG);
-                break;
-            case POTLUCK:
-                img = new ImageView(POTLUCKIMG);
-                break;
-            default:
-                throw new IllegalStateException("Action not enumerated in UI");
-        }
-
+        ImageView img = new ImageView(new Image(imgPath,width / 1.4,width / 1.4,false,true));
         img.setX(x + (width - width / 1.4) / 2);
         img.setY(y + 1.25 * height / 3.5);
-        img.setFitWidth(width / 1.4);
-        img.setFitHeight(width / 1.4);
         getChildren().add(img);
     }
 }

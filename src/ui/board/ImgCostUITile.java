@@ -1,5 +1,6 @@
 package ui.board;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -33,12 +34,9 @@ public class ImgCostUITile extends UITile {
         getChildren().add(caption);
 
         // Draw image
-        ImageView img = new ImageView(imgPath);
-
+        ImageView img = new ImageView(new Image(imgPath,width / 1.4, width / 1.4,false,true));
         img.setX(x + (width - width / 1.4) / 2);
         img.setY(y + 1.25 * height / 4);
-        img.setFitWidth(width / 1.4);
-        img.setFitHeight(width / 1.4);
         getChildren().add(img);
     }
 }
