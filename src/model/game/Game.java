@@ -121,12 +121,15 @@ public class Game {
             } else {
                 return UITip.NOP;
             }
-        } else {
+        } else if (tile instanceof ActionTile) {
+            return executeActionable((ActionTile) tile);
+        }
+        else {
             return UITip.NOP;
         }
     }
 
-    private void executeActionable(Actionable actionable) {
+    private UITip executeActionable(Actionable actionable) {
         Action action = actionable.getAction();
 
         switch (action.getActCode()) {
@@ -136,6 +139,8 @@ public class Game {
             default:
                 // TODO :: enumerate rest of cases
         }
+
+        return UITip.NOP;
     }
 
     private int noStationsOwned(Player p) {
