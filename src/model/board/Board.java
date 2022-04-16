@@ -151,6 +151,42 @@ public class Board {
         }
     }
 
+    /**
+     * Determines number of houses a player owns
+     * @param p player to analyse
+     * @return number of houses owned by player p
+     */
+    public int getNoHouses(Player p) {
+        int houses = 0;
+
+        for (Tile tile : tiles) {
+            if (tile instanceof PropertyTile) {
+                houses += Math.max(((PropertyTile) tile).getNoHouses(),PropertyTile.MAX_NO_HOUSES-1);
+            }
+        }
+
+        return houses;
+    }
+
+    /**
+     * Determines number of hotels a player owns
+     * @param p player to analyse
+     * @return number of hotels owned by player p
+     */
+    public int getNoHotels(Player p) {
+        int hotels = 0;
+
+        for (Tile tile : tiles) {
+            if (tile instanceof PropertyTile) {
+                if (((PropertyTile) tile).getNoHouses() == PropertyTile.MAX_NO_HOUSES) {
+                    hotels += 1;
+                }
+            }
+        }
+
+        return hotels;
+    }
+
     @Override
     public String toString() {
         return "Board{" +

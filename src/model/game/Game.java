@@ -19,7 +19,7 @@ public class Game {
     public static final int TURNS_TO_JAIL = 3;
     public static final int GO_REWARD = 200;
 
-    private boolean passedGo = false;
+    private boolean passedGo = false; // Whether current player passed go on this turn
 
     // Model
     private Board board = new Board();
@@ -27,11 +27,10 @@ public class Game {
     private int currentPlayer = 0;
     private Deck potLuck = new Deck("PotLuck.json");
     private Deck opportunity = new Deck("Opportunity.json");
-    private int freeParking =0;
+    private int freeParking = 0;
+    private boolean gameOver = false;
     // RNG
     private Dice dice = new Dice(2,6);
-
-    private boolean gameOver = false;
 
 
     public Game(int noHumans, int noAIs) {
@@ -39,6 +38,8 @@ public class Game {
         players = new ArrayList<>();
 
         for (int i = 0; i < noHumans; i++) {
+
+            // Testing with 2 human players
             if (i == 0) {
                 players.add(new HumanPlayer(i, "Will"));
             } else if (i == 1) {
@@ -54,6 +55,8 @@ public class Game {
     }
 
     public UITip iterateGame() {
+        passedGo = false;
+
         // Select next player if needed
         if (isPlayersLastRoll()) {
             selectNextPlayer();
@@ -142,10 +145,10 @@ public class Game {
                 Card tempCard;
                 switch (action.getActCode()) {
                     case BANKPAY:
-                        getCurrentPlayer().pay(action.getVal1());
+                        getCurrentPlayer().pay(-action.getVal1());
                         break;
                     case PAYBANK:
-                        players.get(currentPlayer).pay(-action.getVal1());
+                        getCurrentPlayer().pay(action.getVal1());
                         break;
                     case JAIL:
                         sendToJail(players.get(currentPlayer));
@@ -154,7 +157,8 @@ public class Game {
                         tempPlayer = players.get(currentPlayer);
                         tempPlayer.setPos(action.getVal1());
                         if (tempPlayer.getPos() < tempPlayer.getPrevPos()){
-                            tempPlayer.pay(400*action.getVal2());
+                            tempPlayer.pay(GO_REWARD * action.getVal2());
+                            passedGo = action.getVal2() == 1;
                         }
                         break;
                     case MOVEN:
@@ -162,41 +166,36 @@ public class Game {
                         int currentPos = tempPlayer.getPos();
                         tempPlayer.setPos(currentPos + action.getVal1());
                         if (tempPlayer.getPos() < tempPlayer.getPrevPos()){
-                            tempPlayer.pay(400*action.getVal2());
+                            tempPlayer.pay(GO_REWARD * action.getVal2());
+                            passedGo = action.getVal2() == 1;
                         }
                         break;
                     case PAYASSETS:
-
+                        tempPlayer = getCurrentPlayer();
+                        tempPlayer.pay(action.getVal1() * board.getNoHouses(tempPlayer) + action.getVal2() * board.getNoHotels(tempPlayer));
                         break;
                     case PAYFINE:
-                        tempPlayer = players.get(currentPlayer);
-                        tempPlayer.pay(-action.getVal1());
+                        getCurrentPlayer().pay(action.getVal1());
                         freeParking += action.getVal1();
                         break;
                     case FINEPAY:
-                        tempPlayer = players.get(currentPlayer);
-                        tempPlayer.pay(freeParking);
+                        getCurrentPlayer().pay(-freeParking);
                         freeParking = 0;
                         break;
                     case POTLUCK:
                         tempCard = potLuck.draw();
-                        System.out.println(tempCard.text);
                         executeActionable(new Action(tempCard.action, tempCard.amount));
                         break;
                     case OPPORTUNITY:
                         tempCard = opportunity.draw();
-                        System.console().printf(tempCard.text);
                         executeActionable(new Action(tempCard.action, tempCard.amount));
-                        break;
-                    case NOP:
-                        //no instruction
                         break;
                     case JAILCARD:
                         tempPlayer = players.get(currentPlayer);
                         tempPlayer.addJailCard();
                         break;
                     default:
-                        // TODO :: enumerate rest of cases
+                        return UITip.NOP;
                 }
 
                 return UITip.NOP;

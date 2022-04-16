@@ -9,13 +9,16 @@ import java.util.Random;
  * Class defining player
  */
 public abstract class Player {
+
     private final int id;
     private final String name;
     private int pos = 0; // Player position
     private int prevPos = 0;
     private int money = 1500;
     private int prevMoney = money;
+    private int jailCards = 0;
     private boolean passedGo = true; // Whether the player has EVER passed go
+
     /**
      * Costructor of class player
      * @param id player id
@@ -87,7 +90,7 @@ public abstract class Player {
     }
 
     public void addJailCard(){
-        ;
+        jailCards += 1;
     }
 
     /**

@@ -30,8 +30,9 @@ public class BalanceText extends Text {
         setFont(Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontBody()));
         setFill(Color.BLACK);
     }
+
     /**
-     * Function dethermines if the transaction is positive or negative
+     * Function determines if the transaction is positive or negative
      * This means whether a player is gaining or losing money
      * @param startVal - starting value
      * @param endVal - ending value
@@ -45,6 +46,7 @@ public class BalanceText extends Text {
     public void animateText() {
         Platform.runLater(() -> animateText(startVal + differenceSign));
     }
+
     /**
      * Method responsible for animating text
      * @param currentVal

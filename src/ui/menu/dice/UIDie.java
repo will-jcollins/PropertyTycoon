@@ -25,9 +25,10 @@ public class UIDie extends Group {
     private Circle dot1,dot2,dot3,dot4,dot5,dot6;
 
     private boolean finished = false;
+
     /**
      * Constructor of class UIDie
-     * @param width width of the dot radius
+     * @param width width of the die graphic
      */
     public UIDie(double width) {
 
