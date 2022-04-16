@@ -110,11 +110,11 @@ public class Game {
                 } else if (tile instanceof StationTile) {
                     StationTile station = (StationTile) tile;
                     // Index rent by number of stations owned by owner
-                    rentToPay = StationTile.rent[noStationsOwned(station.getOwner()) - 1];
+                    rentToPay = StationTile.rent[board.noStationsOwned(station.getOwner()) - 1];
                 } else if (tile instanceof UtilityTile) {
                     UtilityTile utility = (UtilityTile) tile;
                     // Pay rent as a factor of the number of utilities owned by owner
-                    rentToPay = UtilityTile.rentFactor[noUtilitiesOwned(utility.getOwner()) - 1] * dice.getRollTotal();
+                    rentToPay = UtilityTile.rentFactor[board.noUtilitiesOwned(utility.getOwner()) - 1] * dice.getRollTotal();
                 } else {
                     throw new IllegalStateException("Case for buyable tile not enumerated");
                 }
@@ -200,39 +200,6 @@ public class Game {
 
                 return UITip.NOP;
             }
-    
-
-    private int noStationsOwned(Player p) {
-        int noStations = 0;
-
-        for (int i = 0; i < Board.SIZE; i++) {
-            Tile tile = board.getTile(i);
-
-            if (tile instanceof StationTile) {
-                if (((StationTile) tile).getOwner() == p) {
-                    noStations++;
-                }
-            }
-        }
-
-        return noStations;
-    }
-
-    private int noUtilitiesOwned(Player p) {
-        int noStations = 0;
-
-        for (int i = 0; i < Board.SIZE; i++) {
-            Tile tile = board.getTile(i);
-
-            if (tile instanceof UtilityTile) {
-                if (((UtilityTile) tile).getOwner() == p) {
-                    noStations++;
-                }
-            }
-        }
-
-        return noStations;
-    }
 
     public ArrayList<PropertyTile> getDevelopProperties(Player p) {
         ArrayList<PropertyTile> out = new ArrayList<>();

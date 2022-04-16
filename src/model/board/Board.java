@@ -187,6 +187,38 @@ public class Board {
         return hotels;
     }
 
+    public int noStationsOwned(Player p) {
+        int noStations = 0;
+
+        for (int i = 0; i < Board.SIZE; i++) {
+            Tile tile = getTile(i);
+
+            if (tile instanceof StationTile) {
+                if (((StationTile) tile).getOwner() == p) {
+                    noStations++;
+                }
+            }
+        }
+
+        return noStations;
+    }
+
+    public int noUtilitiesOwned(Player p) {
+        int noStations = 0;
+
+        for (int i = 0; i < Board.SIZE; i++) {
+            Tile tile = getTile(i);
+
+            if (tile instanceof UtilityTile) {
+                if (((UtilityTile) tile).getOwner() == p) {
+                    noStations++;
+                }
+            }
+        }
+
+        return noStations;
+    }
+
     @Override
     public String toString() {
         return "Board{" +
