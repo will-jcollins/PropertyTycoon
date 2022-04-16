@@ -52,6 +52,10 @@ public abstract class Player {
         return id;
     }
 
+    public void addJailCard(){
+        ;
+    }
+
     public int getPrevPos() {
         return prevPos;
     }

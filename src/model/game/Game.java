@@ -25,7 +25,9 @@ public class Game {
     private Board board = new Board();
     private ArrayList<Player> players;
     private int currentPlayer = 0;
-
+    private Deck potLuck = new Deck("PotLuck.json");
+    private Deck opportunity = new Deck("Opportunity.json");
+    private int freeParking =0;
     // RNG
     private Dice dice = new Dice(2,6);
 
@@ -129,19 +131,77 @@ public class Game {
         }
     }
 
-    private UITip executeActionable(Actionable actionable) {
-        Action action = actionable.getAction();
-
-        switch (action.getActCode()) {
-            case BANKPAY:
-                getCurrentPlayer().pay(action.getVal1());
-                break;
-            default:
-                // TODO :: enumerate rest of cases
-        }
-
-        return UITip.NOP;
+    private void sendToJail(Player player) {
+    player.setPos(10);
     }
+
+    private UITip executeActionable(Actionable actionable) {
+
+                Action action = actionable.getAction();
+                Player tempPlayer;
+                Card tempCard;
+                switch (action.getActCode()) {
+                    case BANKPAY:
+                        getCurrentPlayer().pay(action.getVal1());
+                        break;
+                    case PAYBANK:
+                        players.get(currentPlayer).pay(-action.getVal1());
+                        break;
+                    case JAIL:
+                        sendToJail(players.get(currentPlayer));
+                        break;
+                    case MOVETO:
+                        tempPlayer = players.get(currentPlayer);
+                        tempPlayer.setPos(action.getVal1());
+                        if (tempPlayer.getPos() < tempPlayer.getPrevPos()){
+                            tempPlayer.pay(400*action.getVal2());
+                        }
+                        break;
+                    case MOVEN:
+                        tempPlayer = players.get(currentPlayer);
+                        int currentPos = tempPlayer.getPos();
+                        tempPlayer.setPos(currentPos + action.getVal1());
+                        if (tempPlayer.getPos() < tempPlayer.getPrevPos()){
+                            tempPlayer.pay(400*action.getVal2());
+                        }
+                        break;
+                    case PAYASSETS:
+
+                        break;
+                    case PAYFINE:
+                        tempPlayer = players.get(currentPlayer);
+                        tempPlayer.pay(-action.getVal1());
+                        freeParking += action.getVal1();
+                        break;
+                    case FINEPAY:
+                        tempPlayer = players.get(currentPlayer);
+                        tempPlayer.pay(freeParking);
+                        freeParking = 0;
+                        break;
+                    case POTLUCK:
+                        tempCard = potLuck.draw();
+                        System.out.println(tempCard.text);
+                        executeActionable(new Action(tempCard.action, tempCard.amount));
+                        break;
+                    case OPPORTUNITY:
+                        tempCard = opportunity.draw();
+                        System.console().printf(tempCard.text);
+                        executeActionable(new Action(tempCard.action, tempCard.amount));
+                        break;
+                    case NOP:
+                        //no instruction
+                        break;
+                    case JAILCARD:
+                        tempPlayer = players.get(currentPlayer);
+                        tempPlayer.addJailCard();
+                        break;
+                    default:
+                        // TODO :: enumerate rest of cases
+                }
+
+                return UITip.NOP;
+            }
+    
 
     private int noStationsOwned(Player p) {
         int noStations = 0;
