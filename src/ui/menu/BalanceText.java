@@ -16,7 +16,11 @@ public class BalanceText extends Text {
     private int differenceSign;
 
     private boolean finished = false;
-
+    /**
+     * Constructor sets the beginning value and the value which is supposed to be shown at the end
+     * @param startVal - starting value
+     * @param endVal - ending value
+     */
     public BalanceText(int startVal, int endVal) {
         super();
 
@@ -26,7 +30,12 @@ public class BalanceText extends Text {
         setFont(Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontBody()));
         setFill(Color.BLACK);
     }
-
+    /**
+     * Function dethermines if the transaction is positive or negative
+     * This means whether a player is gaining or losing money
+     * @param startVal - starting value
+     * @param endVal - ending value
+     */
     public void update(int startVal, int endVal) {
         this.startVal = startVal;
         this.endVal = endVal;
@@ -36,7 +45,10 @@ public class BalanceText extends Text {
     public void animateText() {
         Platform.runLater(() -> animateText(startVal + differenceSign));
     }
-
+    /**
+     * Method responsible for animating text
+     * @param currentVal
+     */
     private void animateText(int currentVal) {
         // Termination condition
         if (currentVal == endVal) {

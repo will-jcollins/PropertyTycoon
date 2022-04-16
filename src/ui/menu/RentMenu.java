@@ -17,12 +17,18 @@ import javafx.scene.text.Text;
 import model.Player.Player;
 import model.board.BuyableTile;
 import ui.Sizes;
-
+/**
+ * Class responisible for building RentMenu
+ */
 public class RentMenu extends Menu {
 
     private BalanceText receivingBalance;
     private BalanceText payingBalance;
-
+    /**
+     * Constructor of RentMenu class
+     * @param tile Instance of BuyableTile
+     * @param payingPlayer Instance of Player, this person has to pay rent
+     */
     public RentMenu(BuyableTile tile, Player payingPlayer) {
         super();
 
@@ -75,7 +81,9 @@ public class RentMenu extends Menu {
         setValignment(arrow, VPos.CENTER);
         setMargin(arrow, new Insets(0,PADDING,0,PADDING));
     }
-
+    /**
+     * Method responisble for showing animation of paying the rent between players
+     */
     public void startAnimation() {
         Task animateTask = new Task() {
             @Override
@@ -90,7 +98,10 @@ public class RentMenu extends Menu {
         animateThread.setDaemon(true);
         animateThread.start();
     }
-
+    /**
+     * Method responisible for determining if the animation is finished
+     * @return true if it is finished false otherwise
+     */
     @Override
     public boolean isFinished() {
         return payingBalance.isFinished() && receivingBalance.isFinished();

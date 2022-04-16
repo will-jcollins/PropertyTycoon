@@ -8,7 +8,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import ui.Sizes;
-
+/**
+ * Abstract class which sets the style of the menu as well as
+ * padding and background color
+ */
 public abstract class Menu extends GridPane {
 
     protected static final int PADDING = Sizes.getPadding();
@@ -17,6 +20,9 @@ public abstract class Menu extends GridPane {
     protected static final Font TITLE_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontHeading());
     protected static final Font TEXT_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontBody());
 
+    /**
+     * Constructor of Menu class
+     */
     public Menu() {
         super();
 

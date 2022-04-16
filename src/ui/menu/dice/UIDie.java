@@ -9,7 +9,9 @@ import javafx.scene.shape.Rectangle;
 import ui.Sizes;
 
 import java.util.Random;
-
+/**
+ * Class responisible for visualizing the dice roll
+ */
 public class UIDie extends Group {
 
     private static final int DEPTH_BEFORE_FINISH = 50;
@@ -23,7 +25,10 @@ public class UIDie extends Group {
     private Circle dot1,dot2,dot3,dot4,dot5,dot6;
 
     private boolean finished = false;
-
+    /**
+     * Constructor of class UIDie
+     * @param width width of the dot radius
+     */
     public UIDie(double width) {
 
         Rectangle back = new Rectangle();
@@ -65,7 +70,10 @@ public class UIDie extends Group {
             });
         }
     }
-
+    /**
+     * Method for displaying dots on the dice when animating
+     * @param i numebr of dots to display
+     */
     private void displayNum(int i) {
 
         // Reset dice display to nothing

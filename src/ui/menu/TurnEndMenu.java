@@ -8,12 +8,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.board.Street;
 import ui.Sizes;
-
+/**
+ * Class responisible for building End turn menu
+ * This class persents player with the option to end turn or to develop any of the properties which they own
+ */
 public class TurnEndMenu extends Menu {
 
     private boolean outcome = false;
     private boolean finished = false;
-
+    /**
+     * Constructor of the TurnEndMenu class
+     */
     public TurnEndMenu() {
         super();
 

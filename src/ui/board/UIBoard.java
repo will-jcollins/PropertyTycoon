@@ -8,7 +8,9 @@ import model.Player.Player;
 import model.board.*;
 
 import java.util.HashMap;
-
+/**
+ * Class which is responsible for building the board
+ */
 public class UIBoard extends Group {
 
     private static final int DEFAULT_SIZE = 810;
@@ -25,7 +27,11 @@ public class UIBoard extends Group {
 
     private UITile[] tiles;
     private Board board;
-
+    /**
+     * Costructor of class UIBoard
+     * @param board Instance of class Board from model.board
+     * @param size size of the row in the board
+     */
     public UIBoard(Board board, int size) {
         super();
 
@@ -71,7 +77,10 @@ public class UIBoard extends Group {
 
         setCache(true);
     }
-
+    /**
+     * Method responsible for drawing the board
+     * @param board instance of class Board from model.board
+     */
     public void drawBoard(Board board) {
         final int[] xDirections = new int[] {-1, 0, 1, 0};
         final int[] yDirections = new int[] {0, -1, 0, 1};

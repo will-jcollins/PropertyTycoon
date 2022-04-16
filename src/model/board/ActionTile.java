@@ -8,8 +8,13 @@ import ui.board.ImgTitleUITile;
 import ui.board.ImgUITile;
 import ui.board.UITile;
 
+/**
+ * Class for implementing action tiles
+ */
 public class ActionTile extends Tile implements Actionable {
-
+    /**
+     * Connect png image files into variables
+     */
     private static final String OPPURTUNITYIMG = "file:assets/images/opportunity.png";
     private static final String POTLUCKIMG = "file:assets/images/potluck.png";
     private static final String FINEIMGPATH = "file:assets/images/tax.png";
@@ -18,6 +23,10 @@ public class ActionTile extends Tile implements Actionable {
 
     private Action action;
 
+    /**
+     * Constructor of ActionTile class
+     * @param name name of action
+     */
     public ActionTile(String name, Action action) {
 
         super(name);
@@ -28,6 +37,15 @@ public class ActionTile extends Tile implements Actionable {
         return action;
     }
 
+    /**
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param width width value
+     * @param height height value
+     * @param angle angle in which the image is positioned
+     * @return the appropriate image into the appropriate space in the board
+     */
     @Override
     public UITile getUITile(int x, int y, int width, int height, int angle) {
         switch (action.getActCode()) {

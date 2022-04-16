@@ -14,7 +14,9 @@ import model.board.StationTile;
 import model.board.UtilityTile;
 
 public class BuyableCard extends Group {
-
+    /**
+     * Parameters for the design of buyable cards
+     */
     public double CARD_HEIGHT;
     public double CARD_WIDTH;
 
@@ -46,7 +48,11 @@ public class BuyableCard extends Group {
     private double IMAGE_X;
     private double IMAGE_Y;
 
-
+    /**
+     * Constructor of BuyableCard class
+     * @param tile BuyableTile inscance
+     * @param height height value
+     */
     public BuyableCard(BuyableTile tile, double height) {
         super();
 
@@ -107,6 +113,10 @@ public class BuyableCard extends Group {
         }
     }
 
+    /**
+     * Mehtod responisble for drawing property
+     * @param property Instance of PropertyTile
+     */
     private void drawProperty(PropertyTile property) {
         Rectangle header = new Rectangle();
         header.setX(HEADER_X);
@@ -195,6 +205,10 @@ public class BuyableCard extends Group {
         getChildren().add(hotelCost);
     }
 
+    /**
+     * Method responisble for drawing utilityTiles
+     * @param utility Instance of UtilityTile
+     */
     private void drawUtility(UtilityTile utility) {
         ImageView icon = new ImageView(new Image("file:assets/images/utility.png"));
         icon.setX(IMAGE_X);
@@ -252,6 +266,10 @@ public class BuyableCard extends Group {
         getChildren().add(mortgage);
     }
 
+    /**
+     * Method responsible for drawing StationTile
+     * @param station Instance of StationTile
+     */
     private void drawStation(StationTile station) {
         ImageView icon = new ImageView(new Image("file:assets/images/station.png"));
         icon.setX(IMAGE_X);

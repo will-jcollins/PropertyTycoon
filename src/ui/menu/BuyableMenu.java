@@ -13,12 +13,18 @@ import model.board.BuyableTile;
 import model.board.PropertyTile;
 import model.board.Street;
 import ui.Sizes;
-
+/**
+ * Class responisible for buying menu
+ */
 public class BuyableMenu extends Menu {
 
     private boolean outcome = false;
     private boolean finished = false;
-
+    /**
+     * Constructor of buying menu class
+     * @param property instance of BuyableTile
+     * @param player INstance of Player
+     */
     public BuyableMenu(BuyableTile property, Player player) {
         super();
 

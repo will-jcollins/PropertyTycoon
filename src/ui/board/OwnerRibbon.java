@@ -9,9 +9,13 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import ui.Sizes;
-
+/**
+ * Class defining ribbons which appear after player buys a tile
+ */
 public class OwnerRibbon extends Polygon {
-
+    /**
+     * Constructor of OwnerRibbon Class
+     */
     public OwnerRibbon(double x, double y, double width, double height) {
         super();
         getPoints().addAll(new Double[]{

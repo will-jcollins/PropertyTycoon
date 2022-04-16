@@ -12,7 +12,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
 import ui.Sizes;
-
+/**
+ * Class defining the parameters used to create board tiles
+ */
 public class UITile extends Group {
 
     protected static final Color BACKCOLOR = new Color(0.75,0.86,0.68,1.0);
@@ -29,7 +31,14 @@ public class UITile extends Group {
     private final double maxX;
     private final double minY;
     private final double maxY;
-
+    /**
+     * Costructor of class UITile
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param width width value
+     * @param height height value
+     * @param angle angle value
+     */
     public UITile(int x, int y, double width, double height, double angle) {
         Rectangle back = new Rectangle();
         back.setX(x);
@@ -60,7 +69,11 @@ public class UITile extends Group {
         this.width = width;
         this.height = height;
     }
-
+    /**
+     * Method responsible for formating text inside UITile
+     * @param in text to format
+     * @return formated text
+     */
     protected String formatText(String in) {
         String[] words = in.split("( )+");
 
@@ -88,27 +101,52 @@ public class UITile extends Group {
         }
     }
 
+    /**
+     * Width getter
+     * @return width value
+     */
     public double getWidth() {
         return width;
     }
 
+    /**
+     * Height getter
+     * @return height value
+     */
 
     public double getHeight() {
         return height;
     }
 
+    /**
+     * minX getter
+     * @return minX value
+     */
     public double getMinX() {
         return minX;
     }
 
+    /**
+     * maxX getter
+     * @return maxX value
+     */
     public double getMaxX() {
         return maxX;
     }
+
+    /**
+     * minY getter
+     * @return minY value
+     */
 
     public double getMinY() {
         return minY;
     }
 
+    /**
+     * maxY getter
+     * @return maxY value
+     */
     public double getMaxY() {
         return maxY;
     }

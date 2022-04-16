@@ -14,13 +14,18 @@ import model.game.Game;
 import ui.Sizes;
 
 import java.util.Locale;
-
+/**
+ * Class creats window which opens when player crosses starting tile.
+ */
 public class GoMenu extends Menu {
 
     private BalanceText receivingBalance;
     private BalanceText payingBalance;
 
-
+    /**
+     * Constructor creates parameters for popup window
+     * @param player Instance of class player
+     */
     public GoMenu(Player player) {
         super();
 
@@ -57,7 +62,9 @@ public class GoMenu extends Menu {
         setColumnIndex(captionNodes,0);
         captionNodes.setAlignment(Pos.CENTER);
     }
-
+    /**
+     * Method animates money transfer between bank and player(it is show at the bottom of popup window)
+     */
     public void startAnimation() {
         Task animateTask = new Task() {
             @Override

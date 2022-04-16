@@ -10,7 +10,9 @@ import javafx.scene.text.Text;
 import model.Player.Player;
 import ui.Sizes;
 import ui.menu.BalanceText;
-
+/**
+ * Class responisble for showing player info in the top left corner
+ */
 public class PlayerStats extends GridPane {
 
     private final static int ICON_LENGTH = 50;
@@ -24,7 +26,10 @@ public class PlayerStats extends GridPane {
 
     private Player player;
     private BalanceText balance;
-
+    /**
+     * Constructor of class PlayerStats
+     * @param player Instance of class Player
+     */
     public PlayerStats(Player player) {
 
         this.player = player;
@@ -54,7 +59,9 @@ public class PlayerStats extends GridPane {
         setMaxHeight(100);
         setMaxWidth(200);
     }
-
+    /**
+     * Method for updating players money
+     */
     public void update() {
 
         if (player.getMoney() != balance.getEndVal()) {

@@ -15,14 +15,19 @@ import ui.Sizes;
 import ui.menu.Menu;
 import ui.menu.TextButton;
 
-
+/**
+ * Class which builds rolling dice menu
+ */
 public class DiceMenu extends Menu {
 
     private UIDie die1;
     private UIDie die2;
 
     private boolean started = false;
-
+    /**
+     * Constructor of class DiceMenu
+     * @param dice Instance of class Dice from model.game
+     */
     public DiceMenu(Dice dice) {
         super();
 
@@ -59,7 +64,10 @@ public class DiceMenu extends Menu {
             }
         });
     }
-
+    /**
+     * Method checks if rolling animation is finished
+     * @return true if the animation is finished, false otherwise
+     */
     @Override
     public boolean isFinished() {
         return die1.isFinished() && die2.isFinished();

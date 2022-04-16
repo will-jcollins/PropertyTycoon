@@ -18,12 +18,19 @@ import model.game.Game;
 import ui.Sizes;
 
 import java.util.ArrayList;
-
+/**
+ * Class for building develop menu, used to build houses and hotels on the property
+ */
 public class DevelopMenu extends Menu {
 
     private PropertyTile selectedProperty;
     private boolean finished = false;
 
+    /**
+     * Constructor of DevelopMenu class
+     * @param properties ArrrayList of properties
+     * @param p Instance of Player class
+     */
     public DevelopMenu(ArrayList<PropertyTile> properties, Player p) {
         super();
         ScrollPane scrollView = new ScrollPane();

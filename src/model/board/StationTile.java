@@ -1,7 +1,9 @@
 package model.board;
 
 import ui.board.UITile;
-
+/**
+ * Class which describes 4 station tiles on the board
+ */
 public class StationTile extends BuyableTile {
 
     public static int[] rent = new int[] {25,50,100,200};

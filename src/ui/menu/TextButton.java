@@ -17,7 +17,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import ui.Sizes;
-
+/**
+ * Class responisible for building button with text
+ */
 public class TextButton extends Group {
 
     private static final int PADDING = Sizes.getPadding() / 2;
@@ -27,6 +29,13 @@ public class TextButton extends Group {
 
     private Text buttonText;
 
+    /**
+     * Constructor of TextButton class
+     * @param width width value
+     * @param height height value
+     * @param color color value
+     * @param text text in the button
+     */
     public TextButton(double width, double height, Color color, String text) {
         super();
 

@@ -4,7 +4,9 @@ import ui.board.PropertyUITile;
 import ui.board.UITile;
 
 import java.util.Arrays;
-
+/**
+ * Class which describes PropertyTiles
+ */
 public class PropertyTile extends BuyableTile {
 
     public static final int MAX_NO_HOUSES = 5;
@@ -13,6 +15,12 @@ public class PropertyTile extends BuyableTile {
     private final int[] rent;
     private int noHouses = 0;
 
+    /**
+     * Constructor of PropertyTile class
+     * @param name name of the tile
+     * @param cost cost of the tile
+     * @param rent array of rents of the tile
+     */
     public PropertyTile(String name, int cost, int[] rent, Street group) {
         super(name,cost);
 
@@ -25,9 +33,14 @@ public class PropertyTile extends BuyableTile {
         }
     }
 
+    /**
+     * Street getter
+     * @return street
+     */
     public Street getStreet() {
         return street;
     }
+
 
     public int getRent() {
         return rent[noHouses];

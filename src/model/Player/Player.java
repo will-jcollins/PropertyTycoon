@@ -5,6 +5,9 @@ import model.board.Board;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * Class defining player
+ */
 public abstract class Player {
     private final int id;
     private final String name;
@@ -13,16 +16,27 @@ public abstract class Player {
     private int money = 1500;
     private int prevMoney = money;
     private boolean passedGo = true; // Whether the player has EVER passed go
-
+    /**
+     * Costructor of class player
+     * @param id player id
+     * @param name player name
+     */
     public Player(int id, String name){
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * @return return player position
+     */
     public int getPos(){
         return pos;
     }
 
+    /**
+     * Set player position
+     * @param newPos players new position
+     */
     public void setPos(int newPos) {
         prevPos = pos;
         pos = newPos;
@@ -31,23 +45,43 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Changes players position
+     * @param newPos new position after change
+     */
     public void changePos(int newPos) {
         setPos((pos + newPos) % Board.SIZE);
     }
 
+    /**
+     * get money before action
+     * @return money before action
+     */
     public int getPrevMoney() {
         return prevMoney;
     }
 
+    /**
+     * get current money
+     * @return current money value
+     */
     public int getMoney() {
         return money;
     }
 
+    /**
+     * Edits money value after paying
+     * @param amount amount which has to be paid
+     */
     public void pay(int amount) {
         prevMoney = money;
         money -= amount;
     }
 
+    /**
+     * Get player id
+     * @return player id
+     */
     public int getId() {
         return id;
     }
@@ -56,10 +90,18 @@ public abstract class Player {
         ;
     }
 
+    /**
+     * get player position before move
+     * @return player starting postion in a turn
+     */
     public int getPrevPos() {
         return prevPos;
     }
 
+    /**
+     * get player name
+     * @return player name
+     */
     public String getName() {
         return name;
     }
@@ -69,6 +111,10 @@ public abstract class Player {
         return true;
     }
 
+    /**
+     * Checks if player passed starting tile
+     * @return true if passed, false otherwise
+     */
     public boolean hasPassedGo() {
         return passedGo;
     }

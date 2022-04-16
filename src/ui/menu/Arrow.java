@@ -4,9 +4,15 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import ui.Sizes;
-
+/**
+ * Class responsible for drawing an arrow
+ */
 public class Arrow extends Group {
-
+    /**
+     * Arrow class Constructor
+     * @param width width value
+     * @param height height value
+     */
     public Arrow(double width, double height) {
         super();
 

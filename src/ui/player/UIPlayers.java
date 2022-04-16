@@ -18,7 +18,9 @@ import ui.board.UIBoard;
 
 import java.util.HashMap;
 import java.util.List;
-
+/**
+ * Class responsible for crating and moving player tokens
+ */
 public class UIPlayers extends Group {
 
     private static final double OPACITY = 0.5;
@@ -28,7 +30,11 @@ public class UIPlayers extends Group {
     private HashMap<Player, ImageView> tokens;
 
     private boolean finished = false;
-
+    /**
+     * Constructor of UIPlayers class
+     * @param players List of players in the game
+     * @param board Instance of UIBoard
+     */
     public UIPlayers(List<Player> players, UIBoard board) {
         this.tokens = new HashMap<>();
 
@@ -64,7 +70,10 @@ public class UIPlayers extends Group {
 
         initPlayers(board);
     }
-
+    /**
+     * Method responsible for matching player with tokens
+     * @param board
+     */
     private void initPlayers(UIBoard board) {
         for (Player player : tokens.keySet()) {
             ImageView token = tokens.get(player);
@@ -72,7 +81,13 @@ public class UIPlayers extends Group {
             token.setY(board.getYTilePos(player.getPos()) - token.getBoundsInLocal().getHeight() / 2);
         }
     }
-
+    /**
+     * Method responisble for updating player position on the board
+     * @param player Instance of class Player
+     * @param board Instance of class UIBoard
+     * @param onFinish EventHandler responisble for animation of the player movement
+     * @throws InterruptedException
+     */
     public void updatePlayers(Player player, UIBoard board, EventHandler onFinish) throws InterruptedException {
         finished = false;
 
@@ -99,7 +114,10 @@ public class UIPlayers extends Group {
         seqTransition.play();
         seqTransition.setOnFinished(onFinish);
     }
-
+    /**
+     * Method responisible for highlighting player whose move is currently on
+     * @param p Instance of class Player
+     */
     public void higlightPlayer(Player p) {
         ImageView token = tokens.get(p);
         token.toFront();
