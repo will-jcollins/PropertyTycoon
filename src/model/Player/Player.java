@@ -12,7 +12,7 @@ public abstract class Player {
 
     private final int id;
     private final String name;
-    private int pos = 0; // Player position
+    private int pos = 39; // Player position
     private int prevPos = 0;
     private int money = 1500;
     private int prevMoney = money;

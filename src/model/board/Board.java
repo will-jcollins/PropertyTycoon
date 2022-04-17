@@ -161,7 +161,10 @@ public class Board {
 
         for (Tile tile : tiles) {
             if (tile instanceof PropertyTile) {
-                houses += Math.max(((PropertyTile) tile).getNoHouses(),PropertyTile.MAX_NO_HOUSES-1);
+                PropertyTile prop = (PropertyTile) tile;
+                if (prop.getOwner() == p) {
+                    houses += Math.max(((PropertyTile) tile).getNoHouses(), PropertyTile.MAX_NO_HOUSES - 1);
+                }
             }
         }
 
@@ -178,7 +181,8 @@ public class Board {
 
         for (Tile tile : tiles) {
             if (tile instanceof PropertyTile) {
-                if (((PropertyTile) tile).getNoHouses() == PropertyTile.MAX_NO_HOUSES) {
+                PropertyTile prop = (PropertyTile) tile;
+                if (prop.getNoHouses() == PropertyTile.MAX_NO_HOUSES && prop.getOwner().equals(p)) {
                     hotels += 1;
                 }
             }
