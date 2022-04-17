@@ -1,19 +1,16 @@
 package ui.menu;
 
 import javafx.concurrent.Task;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.Player.Player;
 import model.game.Game;
 import ui.Sizes;
+import ui.menu.BalanceText;
 
-import java.util.Locale;
 /**
  * Class creats window which opens when player crosses starting tile.
  */
@@ -70,8 +67,8 @@ public class GoMenu extends Menu {
             @Override
             protected Object call() throws Exception {
                 Thread.sleep(1000);
-                payingBalance.animateText();
-                receivingBalance.animateText();
+                payingBalance.update();
+                receivingBalance.update();
                 return null;
             }
         };

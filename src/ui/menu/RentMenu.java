@@ -1,22 +1,16 @@
 package ui.menu;
 
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import model.Player.Player;
 import model.board.BuyableTile;
 import ui.Sizes;
+
 /**
  * Class responisible for building RentMenu
  */
@@ -89,8 +83,8 @@ public class RentMenu extends Menu {
             @Override
             protected Object call() throws Exception {
                 Thread.sleep(1000);
-                payingBalance.animateText();
-                receivingBalance.animateText();
+                payingBalance.update();
+                receivingBalance.update();
                 return null;
             }
         };

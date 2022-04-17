@@ -107,6 +107,27 @@ public class UIGame extends Application {
         }
     }
 
+    private void checkGoReward() {
+        if (model.hasPassedGo()) {
+            createGoPopup();
+        } else {
+            takeTurn();
+        }
+    }
+
+    private void takeTurn() {
+        switch (model.takeTurn()) {
+            case SHOW_BUY_BUYABLE:
+                createBuyablePopup();
+                break;
+            case SHOW_RENT_PAY:
+                createRentPopup();
+                break;
+            default:
+                createTurnEndPopup();
+        }
+    }
+
     private void createTurnEndPopup() {
         if (model.isPlayersLastRoll()) {
             TurnEndMenu menu = new TurnEndMenu();
@@ -137,27 +158,6 @@ public class UIGame extends Application {
             Platform.runLater(() -> board.update());
             createTurnEndPopup();
         });
-    }
-
-    private void checkGoReward() {
-        if (model.hasPassedGo()) {
-            createGoPopup();
-        } else {
-            takeTurn();
-        }
-    }
-
-    private void takeTurn() {
-        switch (model.takeTurn()) {
-            case SHOW_BUY_BUYABLE:
-                createBuyablePopup();
-                break;
-            case SHOW_RENT_PAY:
-                createRentPopup();
-                break;
-            default:
-                createTurnEndPopup();
-        }
     }
 
     private void createDicePopup(Dice dice) {

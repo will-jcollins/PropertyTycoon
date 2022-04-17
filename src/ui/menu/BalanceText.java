@@ -1,5 +1,6 @@
 package ui.menu;
 
+
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
@@ -7,53 +8,58 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import ui.Sizes;
 
-import java.util.Queue;
-
 public class BalanceText extends Text {
-    private int startVal;
-    private int endVal;
-    private int differenceSign;
 
-    private boolean finished = false;
+    private int displayedValue;
+    private int goalValue;
+    private boolean updating; // Whether animation is happening right now
+    private boolean finished; // Whether animation has finished
 
-    /**
-     * Constructor sets the beginning value and the value which is supposed to be shown at the end
-     * @param startVal - starting value
-     * @param endVal - ending value
-     */
-    public BalanceText(int startVal, int endVal) {
-        super();
+    public BalanceText(int startValue, int goalValue) {
+        this.displayedValue = startValue;
+        this.goalValue = goalValue;
+        this.updating = false;
+        this.finished = false;
 
-        this.startVal = startVal;
-        this.endVal = endVal;
-        this.differenceSign = (int) Math.signum(this.endVal - this.startVal);
-
-        setText("$" + this.startVal);
-        setFont(Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontBody()));
+        setText("$" + displayedValue);
+        setFont(Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontHeading()));
         setFill(Color.BLACK);
     }
 
-    public void animateText() {
-        Platform.runLater(() -> animateText(startVal + differenceSign));
+    public void update() {
+        if (!updating && goalValue != displayedValue) {
+            updating = true;
+            finished = false;
+            Platform.runLater(() -> stepText());
+        }
     }
 
     /**
-     * Method responsible for animating text
-     * @param currentVal
+     * Triggers animation of balance text until
+     * displayed value matches player's balance
      */
-    private void animateText(int currentVal) {
+    public void update(int goalValue) {
+        this.goalValue = goalValue;
+        update();
+    }
+
+    private void stepText() {
+        // Calculate next value to display
+        displayedValue = displayedValue + (int) Math.signum(goalValue - displayedValue);
+
         // Termination condition
-        if (currentVal == endVal) {
-            setText("$" + currentVal);
+        if (displayedValue == goalValue) {
+            setText("$" + displayedValue);
+            updating = false;
             finished = true;
         } else {
-            setText("$" + currentVal);
+            setText("$" + displayedValue);
             // Spawn new thread to wait on in order to not block the UI thread
             Task nextTask = new Task() {
                 @Override
                 protected Object call() throws Exception {
                     Thread.sleep(15);
-                    Platform.runLater(() -> animateText(currentVal + differenceSign));
+                    Platform.runLater(() -> stepText());
                     return null;
                 }
             };

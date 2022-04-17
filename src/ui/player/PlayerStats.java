@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 import model.Player.Player;
 import ui.Sizes;
 import ui.menu.BalanceText;
+
 /**
  * Class responisble for showing player info in the top left corner
  */
@@ -24,7 +25,7 @@ public class PlayerStats extends GridPane {
     private static final Font MONEY_FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontBody());
 
     private Player player;
-    private StatBalanceText balance;
+    private BalanceText balance;
     /**
      * Constructor of class PlayerStats
      * @param player Instance of class Player
@@ -41,7 +42,7 @@ public class PlayerStats extends GridPane {
         setColumnIndex(nameDisplay,1);
         setMargin(nameDisplay, new Insets(PADDING, PADDING, 0, PADDING));
 
-        balance = new StatBalanceText(player);
+        balance = new BalanceText(player.getMoney(),player.getMoney());
         balance.maxHeight(ICON_LENGTH);
         balance.setFont(MONEY_FONT);
         getChildren().add(balance);
@@ -62,6 +63,6 @@ public class PlayerStats extends GridPane {
      * Method for updating players money
      */
     public void update() {
-        balance.update();
+        balance.update(player.getMoney());
     }
 }
