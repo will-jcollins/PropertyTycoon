@@ -119,6 +119,11 @@ public class Game {
                     throw new IllegalStateException("Case for buyable tile not enumerated");
                 }
 
+                // If rent to be paid exceeds player's current money, player is bankrupt
+                if (rentToPay > getCurrentPlayer().getMoney()) {
+                    return UITip.SHOW_BANKRUPT;
+                }
+
                 getCurrentPlayer().pay(rentToPay);
                 buyable.getOwner().pay(-rentToPay);
 
@@ -247,7 +252,7 @@ public class Game {
         prop.setNoHouses(prop.getNoHouses() + 1);
     }
 
-    private void removePlayer(Player p) {
+    public void removePlayer(Player p) {
         players.remove(p);
         currentPlayer = currentPlayer % players.size();
         board.freeProperties(p);

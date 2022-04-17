@@ -99,7 +99,7 @@ public class UIGame extends Application {
                 createDicePopup(model.getDice());
                 break;
             case SHOW_GAME_OVER:
-                // TODO:: create game over screen
+                createGameOverPopup();
                 System.out.println("game over");
                 break;
             default:
@@ -107,25 +107,29 @@ public class UIGame extends Application {
         }
     }
 
-    private void checkGoReward() {
-        if (model.hasPassedGo()) {
-            createGoPopup();
-        } else {
-            takeTurn();
-        }
+    private void createBankruptPopup() {
+        BankruptMenu menu = new BankruptMenu(model.getCurrentPlayer());
+
+        showMenu(menu,
+                onShow -> {
+                },
+                onExit -> {
+                    if (menu.isFinished()) {
+                        model.removePlayer(model.getCurrentPlayer()); {
+                            startNextIteration();
+                        }
+                    };
+                });
     }
 
-    private void takeTurn() {
-        switch (model.takeTurn()) {
-            case SHOW_BUY_BUYABLE:
-                createBuyablePopup();
-                break;
-            case SHOW_RENT_PAY:
-                createRentPopup();
-                break;
-            default:
-                createTurnEndPopup();
-        }
+    private void createGameOverPopup() {
+        GameOverMenu menu = new GameOverMenu(model.getPlayers());
+
+        showMenu(menu,
+                onShow -> {
+                },
+                onExit -> {
+                });
     }
 
     private void createTurnEndPopup() {
@@ -158,6 +162,30 @@ public class UIGame extends Application {
             Platform.runLater(() -> board.update());
             createTurnEndPopup();
         });
+    }
+
+    private void checkGoReward() {
+        if (model.hasPassedGo()) {
+            createGoPopup();
+        } else {
+            takeTurn();
+        }
+    }
+
+    private void takeTurn() {
+        switch (model.takeTurn()) {
+            case SHOW_BUY_BUYABLE:
+                createBuyablePopup();
+                break;
+            case SHOW_RENT_PAY:
+                createRentPopup();
+                break;
+            case SHOW_BANKRUPT:
+                createBankruptPopup();
+                break;
+            default:
+                createTurnEndPopup();
+        }
     }
 
     private void createDicePopup(Dice dice) {
