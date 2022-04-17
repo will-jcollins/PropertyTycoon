@@ -8,5 +8,6 @@ public enum UITip {
     SHOW_GAME_OVER,
     SHOW_BUY_BUYABLE,
     SHOW_RENT_PAY,
+    SHOW_BANKRUPT,
     NOP;
 }
