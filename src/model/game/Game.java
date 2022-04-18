@@ -199,12 +199,52 @@ public class Game {
                         tempPlayer = players.get(currentPlayer);
                         tempPlayer.addJailCard();
                         break;
+                    case COLLECTALL:
+                        tempPlayer = players.get(currentPlayer);
+                        Player playerToPay;
+                        for (int i = 0; i < players.size(); i++) {
+                            playerToPay = players.get(i);
+                            playerToPay.pay(action.getVal1());
+                            tempPlayer.pay(-action.getVal1());
+                        }
                     default:
                         return UITip.NOP;
                 }
 
                 return UITip.NOP;
             }
+
+    private int noStationsOwned(Player p) {
+        int noStations = 0;
+
+        for (int i = 0; i < Board.SIZE; i++) {
+            Tile tile = board.getTile(i);
+
+            if (tile instanceof StationTile) {
+                if (((StationTile) tile).getOwner() == p) {
+                    noStations++;
+                }
+            }
+        }
+
+        return noStations;
+    }
+
+    private int noUtilitiesOwned(Player p) {
+        int noStations = 0;
+
+        for (int i = 0; i < Board.SIZE; i++) {
+            Tile tile = board.getTile(i);
+
+            if (tile instanceof UtilityTile) {
+                if (((UtilityTile) tile).getOwner() == p) {
+                    noStations++;
+                }
+            }
+        }
+
+        return noStations;
+    }
 
     public ArrayList<PropertyTile> getDevelopProperties(Player p) {
         ArrayList<PropertyTile> out = new ArrayList<>();
