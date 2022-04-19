@@ -2,28 +2,26 @@ package model.board;
 
 import model.actions.ActCode;
 import model.actions.Action;
+import model.actions.Actionable;
 
-public class Card {
-    public String text;
-    public int amount;
-    public String location = "";
-    public ActCode action;
+public class Card implements Actionable {
+    private String text;
+    private Action action;
 
-    public Card(String text, int amount, ActCode action){
+    public Card(String text, Action action){
         this.text = text;
-        this.amount = amount;
         this.action = action;
     }
 
-    public Card(String text, String location, ActCode action){
-        this.text = text;
-        this.location = location;
-        this.action = action;
+    @Override
+    public String toString() {
+        return "Card{" +
+                "text='" + text + '\'' +
+                '}';
     }
-    public Card(String text, int amount, String location, ActCode action){
-        this.text = text;
-        this.amount = amount;
-        this.action = action;
-        this.location = location;
+
+    @Override
+    public Action getAction() {
+        return action;
     }
 }

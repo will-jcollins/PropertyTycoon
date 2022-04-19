@@ -189,11 +189,11 @@ public class Game {
                         break;
                     case POTLUCK:
                         tempCard = potLuck.draw();
-                        executeActionable(new Action(tempCard.action, tempCard.amount));
+                        executeActionable(tempCard.getAction());
                         break;
                     case OPPORTUNITY:
                         tempCard = opportunity.draw();
-                        executeActionable(new Action(tempCard.action, tempCard.amount));
+                        executeActionable(tempCard.getAction());
                         break;
                     case JAILCARD:
                         tempPlayer = players.get(currentPlayer);
