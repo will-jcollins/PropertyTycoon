@@ -1,10 +1,10 @@
 [
 {
-"text":"Bank pays you divided of £50",
+"text":"Bank pays you divided of $50",
 "action": "BANKPAY 50"
 },
 {
-"text":"You have won a lip sync battle. Collect £100",
+"text":"You have won a lip sync battle. Collect $100",
 "action":"BANKPAY 100"
 },
 {
@@ -12,11 +12,11 @@
 "action":"MOVETO 39 0"
 },
 {
-"text":"Advance to Han Xin Gardens. If you pass GO, collect £200",
+"text":"Advance to Han Xin Gardens. If you pass GO, collect $200",
 "action":"MOVETO 24 1"
 },
 {
-"text":"Fined £15 for speeding",
+"text":"Fined $15 for speeding",
 "action":"PAYFINE 15"
 },
 {
@@ -24,15 +24,15 @@
 "action":" MOVETO 15"
 },
 {
-"text":"Pay university fees of £150",
+"text":"Pay university fees of $150",
 "action":"PAYBANK 150"
 },
 {
-"text":"Loan matures, collect £150",
+"text":"Loan matures, collect $150",
 "action":"BANKPAY 150"
 },
 {
-"text":"You are assessed for repairs, £40/house, £115/hotel",
+"text":"You are assessed for repairs, $40/house, $115/hotel",
 "action":"PAYASSETS 40 115"
 },
 {
@@ -40,7 +40,7 @@
 "action":"MOVETO 0 1"
 },
 {
-"text":"You are assessed for repairs, £25/house, £100/hotel",
+"text":"You are assessed for repairs, $25/house, $100/hotel",
 "action":"PAYASSETS 25 100"
 },
 {

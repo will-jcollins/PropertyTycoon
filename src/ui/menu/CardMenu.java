@@ -19,6 +19,6 @@ public class CardMenu extends Menu {
 
     @Override
     public int getEndLatency() {
-        return 1000;
+        return 3000;
     }
 }

@@ -1,11 +1,11 @@
 [
   {
 
-    "text": "You inherit £200",
+    "text": "You inherit $200",
     "action" : "BANKPAY 200"
   },
   {
-    "text": "You have won 2nd prize in a beauty contest, collect £50",
+    "text": "You have won 2nd prize in a beauty contest, collect $50",
     "action" : "BANKPAY 50"
   },
   {
@@ -13,19 +13,19 @@
     "action": "MOVETO 1 0"
   },
   {
-    "text": "Student loan refund. Collect £20",
+    "text": "Student loan refund. Collect $20",
     "action" : "BANKPAY 20"
   },
   {
-    "text": "Bank error in your favour. Collect £200",
+    "text": "Bank error in your favour. Collect $200",
     "action": "BANKPAY 200"
   },
   {
-    "text": "Pay bill for text books of £100",
+    "text": "Pay bill for text books of $100",
     "action": "PAYBANK 100"
   },
   {
-    "text":"Mega late night taxi bill pay £50",
+    "text":"Mega late night taxi bill pay $50",
     "action": "PAYBANK 50"
   },
   {
@@ -33,7 +33,7 @@
     "action": "MOVETO 0 1"
   },
   {
-    "text" : "From sale of Bitcoin you get £50",
+    "text" : "From sale of Bitcoin you get $50",
     "action" : "BANKPAY 50"
   },
   {
@@ -41,27 +41,27 @@
     "action" : "PAYBANK 50"
   },
   {
-    "text": "Pay a £10 fine or take opportunity knocks",
+    "text": "Pay a $10 fine or take opportunity knocks",
     "action": "PAYFINEOROPP 10"
   },
   {
-    "text":"Pay insurance fee of £50",
+    "text":"Pay insurance fee of $50",
     "action" : "PAYFINE 50"
   },
   {
-    "text": "Savings bond matures, collect £100",
+    "text": "Savings bond matures, collect $100",
     "action" : "BANKPAY 100"
   },
   {
-    "text": "Go to jail. Do not pass GO, do not collect £200",
+    "text": "Go to jail. Do not pass GO, do not collect $200",
     "action": "GOTOJAIL"
   },
   {
-    "text":"Received interest on shares of £25",
+    "text":"Received interest on shares of $25",
     "action": "BANKPAY 25"
   },
   {
-    "text":"It's your birthday. Collect £10 from each player",
+    "text":"It's your birthday. Collect $10 from each player",
     "action": "COLLECTALL 10"
   },
   {

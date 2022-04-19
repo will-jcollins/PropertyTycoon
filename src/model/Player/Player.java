@@ -18,6 +18,7 @@ public abstract class Player {
     private int prevMoney = money;
     private int jailCards = 0;
     private boolean passedGo = true; // Whether the player has EVER passed go
+    private boolean inJail = false;
 
     /**
      * Costructor of class player
@@ -120,6 +121,10 @@ public abstract class Player {
      */
     public boolean hasPassedGo() {
         return passedGo;
+    }
+
+    public boolean isInJail() {
+        return inJail;
     }
 
     @Override

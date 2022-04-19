@@ -78,9 +78,7 @@ public class UIGame extends Application {
         root.setLeft(statsVBox);
 
         // Trigger game logic after UI has loaded
-        Platform.runLater(() -> {
-            startNextIteration();
-        });
+        Platform.runLater(() -> startNextIteration());
 
         // Scene & Stage setup
         Scene scene = new Scene(root);
@@ -94,25 +92,14 @@ public class UIGame extends Application {
         players.dismissPlayer(model.getCurrentPlayer());
         UITip tip = model.iterateGame();
         players.higlightPlayer(model.getCurrentPlayer());
-        switch (tip) {
-            case SHOW_DICE_MENU:
-                createDicePopup(model.getDice());
-                break;
-            case SHOW_GAME_OVER:
-                createGameOverPopup();
-                System.out.println("game over");
-                break;
-            default:
-                throw new IllegalStateException("Not enumerated");
-        }
+        interpretUITip(tip);
     }
 
     private void createBankruptPopup() {
         BankruptMenu menu = new BankruptMenu(model.getCurrentPlayer());
 
         showMenu(menu,
-                onShow -> {
-                },
+                onShow -> {},
                 onExit -> {
                     if (menu.isFinished()) {
                         model.removePlayer(model.getCurrentPlayer()); {
@@ -126,10 +113,8 @@ public class UIGame extends Application {
         GameOverMenu menu = new GameOverMenu(model.getPlayers());
 
         showMenu(menu,
-                onShow -> {
-                },
-                onExit -> {
-                });
+                onShow -> {},
+                onExit -> {});
     }
 
     private void createTurnEndPopup() {
@@ -173,7 +158,18 @@ public class UIGame extends Application {
     }
 
     private void takeTurn() {
-        switch (model.takeTurn()) {
+        interpretUITip(model.takeTurn());
+    }
+
+    private void interpretUITip(UITip tip) {
+        System.out.println(tip);
+        switch (tip) {
+            case SHOW_DICE_MENU:
+                createDicePopup(model.getDice());
+                break;
+            case SHOW_GAME_OVER:
+                createGameOverPopup();
+                break;
             case SHOW_BUY_BUYABLE:
                 createBuyablePopup();
                 break;
@@ -183,20 +179,22 @@ public class UIGame extends Application {
             case SHOW_BANKRUPT:
                 createBankruptPopup();
                 break;
-            case SHOW_CARD_PICKUP:
-                createCardPopup();
+            case SHOW_OPPORTUNITY:
+                createCardPopup("OPPORTUNITY",model.getCollectedCard().getText());
+                break;
+            case SHOW_POTLUCK:
+                createCardPopup("POTLUCK",model.getCollectedCard().getText());
+                break;
             default:
                 createTurnEndPopup();
         }
     }
 
-    private void createCardPopup() {
-        CardMenu menu = new CardMenu("TITLE","DESCRIPTION");
-
-        showMenu(menu, onShow -> {}, onExit -> {
-            //
-            startNextIteration();
-        });
+    private void createCardPopup(String title, String description) {
+        CardMenu menu = new CardMenu(title,description);
+        showMenu(menu, onShow -> {}, onExit -> {System.out.println("Create Card Popup");
+            interpretUITip(model.executeCollectedCard());
+            });
     }
 
     private void createDicePopup(Dice dice) {
@@ -300,9 +298,11 @@ public class UIGame extends Application {
     }
 
     private void updatePlayerStats() {
-        for (PlayerStats stats : playerStats) {
-            stats.update();
-        }
+        Platform.runLater(() -> {
+            for (PlayerStats stats : playerStats) {
+                stats.update();
+            }
+        });
     }
 
     private void remove(Node n) {

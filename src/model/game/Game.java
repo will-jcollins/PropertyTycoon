@@ -25,8 +25,8 @@ public class Game {
     private Board board = new Board();
     private ArrayList<Player> players;
     private int currentPlayer = 0;
-    private Deck potLuck = new Deck("PotLuck.json");
-    private Deck opportunity = new Deck("Opportunity.json");
+    private Deck potLuck = new Deck(System.getProperty("user.dir") + "/assets/jsons/PotLuck.json");
+    private Deck opportunity = new Deck(System.getProperty("user.dir") + "/assets/jsons/Opportunity.json");
     private int freeParking = 0;
     private boolean gameOver = false;
     private boolean passedGo = false; // Whether current player passed go on this turn
@@ -149,8 +149,8 @@ public class Game {
     private UITip executeActionable(Actionable actionable) {
 
         Action action = actionable.getAction();
+        System.out.println(action);
         Player tempPlayer;
-        Card tempCard;
         switch (action.getActCode()) {
             case BANKPAY:
                 getCurrentPlayer().pay(-action.getVal1());
@@ -164,7 +164,7 @@ public class Game {
             case MOVETO:
                 tempPlayer = players.get(currentPlayer);
                 tempPlayer.setPos(action.getVal1());
-                if (tempPlayer.getPos() < tempPlayer.getPrevPos()){
+                if (tempPlayer.getPos() < tempPlayer.getPrevPos()) {
                     tempPlayer.pay(GO_REWARD * action.getVal2());
                     passedGo = action.getVal2() == 1;
                 }
@@ -192,10 +192,10 @@ public class Game {
                 break;
             case POTLUCK:
                 collectedCard = potLuck.draw();
-                return UITip.SHOW_CARD_PICKUP;
+                return UITip.SHOW_POTLUCK;
             case OPPORTUNITY:
                 collectedCard = opportunity.draw();
-                return UITip.SHOW_CARD_PICKUP;
+                return UITip.SHOW_OPPORTUNITY;
             case JAILCARD:
                 tempPlayer = players.get(currentPlayer);
                 tempPlayer.addJailCard();
@@ -216,8 +216,7 @@ public class Game {
     }
 
     public UITip executeCollectedCard() {
-//        return executeActionable(collectedCard);
-        return executeActionable(new Action(ActCode.NOP));
+        return executeActionable(collectedCard);
     }
 
     public ArrayList<PropertyTile> getDevelopProperties(Player p) {
@@ -303,7 +302,7 @@ public class Game {
     }
 
     public boolean isPlayersLastRoll() {
-        return !dice.isDouble();
+        return !dice.isDouble() && !getCurrentPlayer().isInJail();
     }
 
     public Card getCollectedCard() {

@@ -12,25 +12,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Deck {
+    private static final Random random = new Random();
     private Card[] deck;
 
-    public static void main(String[] args){
-        Deck test = new Deck("C:\\Users\\User\\Documents\\GitHub\\propertytycoon\\assets\\jsons\\PotLuck.json");
-        for (int i = 0; i < 10; i++) {
-            System.out.println(test.draw().toString());
-        }
-        Deck test2 = new Deck("C:\\Users\\User\\Documents\\GitHub\\propertytycoon\\assets\\jsons\\Opportunity.json");
-        for (int i = 0; i < 10; i++) {
-            System.out.println(test.draw().toString());
-        }
-    }
-
-    public Deck(String fileName){
-        String DATAPATH = fileName;
+    public Deck(String path) {
         StringBuilder sb = new StringBuilder();
 
         // Open file input stream and read characters into string builder
-        try (FileInputStream fis = new FileInputStream(fileName)) {
+        try (FileInputStream fis = new FileInputStream(path)) {
 
             int content;
             while ((content = fis.read()) != -1) {
@@ -45,22 +34,19 @@ public class Deck {
 
         JSONArray objects = new JSONArray(sb.toString());
         deck = new Card[objects.length()];
-        // Populate board with Tile objects using information from JSON
+        // Populate deck with Card objects using information from JSON
         for (int i = 0; i < objects.length(); i++) {
             JSONObject obj = objects.getJSONObject(i);
-
 
             Card card;
             card = new Card(obj.getString("text"),
                     new Action(obj.getString("action")));
             deck[i] = card;
-
         }
     }
 
 
     public Card draw(){
-        Random random = new Random();
         int pos = random.nextInt(deck.length);
         return deck[pos];
     }

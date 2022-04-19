@@ -18,6 +18,10 @@ public class Card implements Actionable {
         return text;
     }
 
+    public String getText() {
+        return text;
+    }
+
     @Override
     public Action getAction() {
         return action;

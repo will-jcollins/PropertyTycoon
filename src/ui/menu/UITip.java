@@ -9,6 +9,7 @@ public enum UITip {
     SHOW_BUY_BUYABLE,
     SHOW_RENT_PAY,
     SHOW_BANKRUPT,
-    SHOW_CARD_PICKUP,
+    SHOW_POTLUCK,
+    SHOW_OPPORTUNITY,
     NOP;
 }
