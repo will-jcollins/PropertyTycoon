@@ -183,9 +183,20 @@ public class UIGame extends Application {
             case SHOW_BANKRUPT:
                 createBankruptPopup();
                 break;
+            case SHOW_CARD_PICKUP:
+                createCardPopup();
             default:
                 createTurnEndPopup();
         }
+    }
+
+    private void createCardPopup() {
+        CardMenu menu = new CardMenu("TITLE","DESCRIPTION");
+
+        showMenu(menu, onShow -> {}, onExit -> {
+            //
+            startNextIteration();
+        });
     }
 
     private void createDicePopup(Dice dice) {

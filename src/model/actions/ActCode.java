@@ -6,7 +6,7 @@ import java.util.Locale;
  * Enum class with action codes
  */
 public enum ActCode {
-    COLLECTALL, //Recive money form everyone (val1 represents the money everyone pays)
+    COLLECTALL, //Recive money from everyone (val1 represents the money everyone pays)
     BANKPAY, // Recieve money from bank (val1 represents money player receives)
     PAYBANK, // Pay money to bank (val1 represents money player pays)
     PAYFINE, // Place money under free parking (val1 represents money player pays)

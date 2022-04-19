@@ -38,6 +38,11 @@ public abstract class Menu extends GridPane {
         setMaxWidth(0);
     }
 
+    /**
+     * Indicates to UI how long to show the menu for (in milliseconds)
+     * once isFinished returns true
+     * @return time
+     */
     public int getEndLatency() {
         return 1000;
     }

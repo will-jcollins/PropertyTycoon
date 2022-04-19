@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import model.Player.AIPlayer;
 import model.Player.HumanPlayer;
 import model.Player.Player;
+import model.actions.ActCode;
 import model.actions.Action;
 import model.actions.Actionable;
 import model.board.*;
@@ -16,10 +17,9 @@ import java.util.HashMap;
 
 public class Game {
 
+    // Constants
     public static final int TURNS_TO_JAIL = 3;
     public static final int GO_REWARD = 200;
-
-    private boolean passedGo = false; // Whether current player passed go on this turn
 
     // Model
     private Board board = new Board();
@@ -29,6 +29,8 @@ public class Game {
     private Deck opportunity = new Deck("Opportunity.json");
     private int freeParking = 0;
     private boolean gameOver = false;
+    private boolean passedGo = false; // Whether current player passed go on this turn
+    private Card collectedCard;
     // RNG
     private Dice dice = new Dice(2,6);
 
@@ -56,6 +58,7 @@ public class Game {
 
     public UITip iterateGame() {
         passedGo = false;
+        collectedCard = null;
 
         // Select next player if needed
         if (isPlayersLastRoll()) {
@@ -145,105 +148,76 @@ public class Game {
 
     private UITip executeActionable(Actionable actionable) {
 
-                Action action = actionable.getAction();
-                Player tempPlayer;
-                Card tempCard;
-                switch (action.getActCode()) {
-                    case BANKPAY:
-                        getCurrentPlayer().pay(-action.getVal1());
-                        break;
-                    case PAYBANK:
-                        getCurrentPlayer().pay(action.getVal1());
-                        break;
-                    case JAIL:
-                        sendToJail(players.get(currentPlayer));
-                        break;
-                    case MOVETO:
-                        tempPlayer = players.get(currentPlayer);
-                        tempPlayer.setPos(action.getVal1());
-                        if (tempPlayer.getPos() < tempPlayer.getPrevPos()){
-                            tempPlayer.pay(GO_REWARD * action.getVal2());
-                            passedGo = action.getVal2() == 1;
-                        }
-                        break;
-                    case MOVEN:
-                        tempPlayer = players.get(currentPlayer);
-                        int currentPos = tempPlayer.getPos();
-                        tempPlayer.setPos(currentPos + action.getVal1());
-                        if (tempPlayer.getPos() < tempPlayer.getPrevPos()){
-                            tempPlayer.pay(GO_REWARD * action.getVal2());
-                            passedGo = action.getVal2() == 1;
-                        }
-                        break;
-                    case PAYASSETS:
-                        tempPlayer = getCurrentPlayer();
-                        tempPlayer.pay(action.getVal1() * board.getNoHouses(tempPlayer) + action.getVal2() * board.getNoHotels(tempPlayer));
-                        break;
-                    case PAYFINE:
-                        getCurrentPlayer().pay(action.getVal1());
-                        freeParking += action.getVal1();
-                        break;
-                    case FINEPAY:
-                        getCurrentPlayer().pay(-freeParking);
-                        freeParking = 0;
-                        break;
-                    case POTLUCK:
-                        tempCard = potLuck.draw();
-                        executeActionable(new Action(tempCard.action, tempCard.amount));
-                        break;
-                    case OPPORTUNITY:
-                        tempCard = opportunity.draw();
-                        executeActionable(new Action(tempCard.action, tempCard.amount));
-                        break;
-                    case JAILCARD:
-                        tempPlayer = players.get(currentPlayer);
-                        tempPlayer.addJailCard();
-                        break;
-                    case COLLECTALL:
-                        tempPlayer = players.get(currentPlayer);
-                        Player playerToPay;
-                        for (int i = 0; i < players.size(); i++) {
-                            playerToPay = players.get(i);
-                            playerToPay.pay(action.getVal1());
-                            tempPlayer.pay(-action.getVal1());
-                        }
-                    default:
-                        return UITip.NOP;
+        Action action = actionable.getAction();
+        Player tempPlayer;
+        Card tempCard;
+        switch (action.getActCode()) {
+            case BANKPAY:
+                getCurrentPlayer().pay(-action.getVal1());
+                break;
+            case PAYBANK:
+                getCurrentPlayer().pay(action.getVal1());
+                break;
+            case JAIL:
+                sendToJail(players.get(currentPlayer));
+                break;
+            case MOVETO:
+                tempPlayer = players.get(currentPlayer);
+                tempPlayer.setPos(action.getVal1());
+                if (tempPlayer.getPos() < tempPlayer.getPrevPos()){
+                    tempPlayer.pay(GO_REWARD * action.getVal2());
+                    passedGo = action.getVal2() == 1;
                 }
-
+                break;
+            case MOVEN:
+                tempPlayer = players.get(currentPlayer);
+                int currentPos = tempPlayer.getPos();
+                tempPlayer.setPos(currentPos + action.getVal1());
+                if (tempPlayer.getPos() < tempPlayer.getPrevPos()){
+                    tempPlayer.pay(GO_REWARD * action.getVal2());
+                    passedGo = action.getVal2() == 1;
+                }
+                break;
+            case PAYASSETS:
+                tempPlayer = getCurrentPlayer();
+                tempPlayer.pay(action.getVal1() * board.getNoHouses(tempPlayer) + action.getVal2() * board.getNoHotels(tempPlayer));
+                break;
+            case PAYFINE:
+                getCurrentPlayer().pay(action.getVal1());
+                freeParking += action.getVal1();
+                break;
+            case FINEPAY:
+                getCurrentPlayer().pay(-freeParking);
+                freeParking = 0;
+                break;
+            case POTLUCK:
+                collectedCard = potLuck.draw();
+                return UITip.SHOW_CARD_PICKUP;
+            case OPPORTUNITY:
+                collectedCard = opportunity.draw();
+                return UITip.SHOW_CARD_PICKUP;
+            case JAILCARD:
+                tempPlayer = players.get(currentPlayer);
+                tempPlayer.addJailCard();
+                break;
+            case COLLECTALL:
+                tempPlayer = players.get(currentPlayer);
+                Player playerToPay;
+                for (int i = 0; i < players.size(); i++) {
+                    playerToPay = players.get(i);
+                    playerToPay.pay(action.getVal1());
+                    tempPlayer.pay(-action.getVal1());
+                }
+            default:
                 return UITip.NOP;
-            }
-
-    private int noStationsOwned(Player p) {
-        int noStations = 0;
-
-        for (int i = 0; i < Board.SIZE; i++) {
-            Tile tile = board.getTile(i);
-
-            if (tile instanceof StationTile) {
-                if (((StationTile) tile).getOwner() == p) {
-                    noStations++;
-                }
-            }
         }
 
-        return noStations;
+        return UITip.NOP;
     }
 
-    private int noUtilitiesOwned(Player p) {
-        int noStations = 0;
-
-        for (int i = 0; i < Board.SIZE; i++) {
-            Tile tile = board.getTile(i);
-
-            if (tile instanceof UtilityTile) {
-                if (((UtilityTile) tile).getOwner() == p) {
-                    noStations++;
-                }
-            }
-        }
-
-        return noStations;
+    public UITip executeCollectedCard() {
+//        return executeActionable(collectedCard);
+        return executeActionable(new Action(ActCode.NOP));
     }
 
     public ArrayList<PropertyTile> getDevelopProperties(Player p) {
@@ -330,6 +304,10 @@ public class Game {
 
     public boolean isPlayersLastRoll() {
         return !dice.isDouble();
+    }
+
+    public Card getCollectedCard() {
+        return collectedCard;
     }
 
     public static void main(String[] args){
