@@ -9,19 +9,19 @@
 },
 {
 "text":"Advance to Turing Heights",
-"action":"MOVE 39"
+"action":"MOVETO 39 0"
 },
 {
 "text":"Advance to Han Xin Gardens. If you pass GO, collect £200",
-"action":"MOVE 24"
+"action":"MOVETO 24 1"
 },
 {
 "text":"Fined £15 for speeding",
 "action":"PAYFINE 15"
 },
 {
-"text":""Take a trip to Hove station.",
-"action":" MOVE 15"
+"text":"Take a trip to Hove station.",
+"action":" MOVETO 15"
 },
 {
 "text":"Pay university fees of £150",
@@ -32,16 +32,16 @@
 "action":"BANKPAY 150"
 },
 {
-"text":"You are assessed for repairs, £40/house, £115/hotel"
-"action":"REPAIRS 40 115"
+"text":"You are assessed for repairs, £40/house, £115/hotel",
+"action":"PAYASSETS 40 115"
 },
 {
 "text":"Advance to GO",
-"action":"MOVE 0"
+"action":"MOVETO 0 1"
 },
 {
 "text":"You are assessed for repairs, £25/house, £100/hotel",
-"action":"ASSETPAY 25 100"
+"action":"PAYASSETS 25 100"
 },
 {
 "text":"Go back 3 spaces" ,
