@@ -15,9 +15,7 @@ public class Card implements Actionable {
 
     @Override
     public String toString() {
-        return "Card{" +
-                "text='" + text + '\'' +
-                '}';
+        return text;
     }
 
     @Override
