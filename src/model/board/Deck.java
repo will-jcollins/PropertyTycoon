@@ -19,6 +19,10 @@ public class Deck {
         for (int i = 0; i < 10; i++) {
             System.out.println(test.draw().toString());
         }
+        Deck test2 = new Deck("C:\\Users\\User\\Documents\\GitHub\\propertytycoon\\assets\\jsons\\Opportunity.json");
+        for (int i = 0; i < 10; i++) {
+            System.out.println(test.draw().toString());
+        }
     }
 
     public Deck(String fileName){
@@ -45,59 +49,11 @@ public class Deck {
         for (int i = 0; i < objects.length(); i++) {
             JSONObject obj = objects.getJSONObject(i);
 
-            String type = obj.getString("type");
 
             Card card;
-            System.out.println(type);
-            switch (type) {
-                case "collect":
-                    // Construct a collect card
-                    card = new Card(obj.getString("text"),
-                            new Action(ActCode.BANKPAY,obj.getInt("collect")));
-                    deck[i] = card;
-                    break;
-
-                case "pay":
-                    // Construct a pay card
-                    System.out.println(obj.getString("text"));
-                    card = new Card(obj.getString("text"),
-                            new Action(ActCode.PAYBANK,obj.getInt("pay")));
-                    deck[i] = card;
-                    break;
-
-                case "move":
-                    // Construct a move card
-                    card = new Card(obj.getString("text"),
-                            new Action(ActCode.MOVETO,obj.getInt("move")));
-                    deck[i] = card;
-                    break;
-                case "moveNoGo":
-                    // Construct a move card
-                    card = new Card(obj.getString("text"),
-                            new Action(ActCode.MOVEN,obj.getInt("move")));
-                    deck[i] = card;
-                    break;
-
-                case "jail":
-                    // Construct a move card
-                    card = new Card(obj.getString("text"),
-                            new Action(ActCode.JAIL));
-                    deck[i] = card;
-                    break;
-
-                case "collectFromAll":
-                    // Construct a move card
-                    card = new Card(obj.getString("text"),
-                            new Action(ActCode.COLLECTALL,obj.getInt("collectFromAll")));
-                    deck[i] = card;
-                    break;
-                case "auto"://this utilises Action(String input){}
-                    card = new Card(obj.getString("text"),
-                            new Action(obj.getString("action")));
-                    deck[i] = card;
-                    break;
-                default: throw new IllegalStateException("Invalid JSON data from \"" + DATAPATH + "\"");
-            }
+            card = new Card(obj.getString("text"),
+                    new Action(obj.getString("action")));
+            deck[i] = card;
 
         }
     }

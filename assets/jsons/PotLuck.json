@@ -1,86 +1,70 @@
 [
   {
-    "type": "collect",
+
     "text": "You inherit £200",
-    "collect" : 200
+    "action" : "BANKPAY 200"
   },
   {
-    "type": "collect",
     "text": "You have won 2nd prize in a beauty contest, collect £50",
-    "collect" : 50
+    "action" : "BANKPAY 50"
   },
   {
-    "type": "moveNoGo",
     "text": "You are up the creek with no paddle - go back to the Old Creek",
-    "move": 1
+    "action": "MOVETO 1 0"
   },
   {
-    "type": "collect",
     "text": "Student loan refund. Collect £20",
-    "collect" : 20
+    "action" : "BANKPAY 20"
   },
   {
-    "type": "collect",
     "text": "Bank error in your favour. Collect £200",
-    "collect": 200
+    "action": "BANKPAY 200"
   },
   {
-    "type": "pay",
     "text": "Pay bill for text books of £100",
-    "pay": 100
+    "action": "PAYBANK 100"
   },
   {
-    "type": "pay",
     "text":"Mega late night taxi bill pay £50",
-    "pay": 50
+    "action": "PAYBANK 50"
   },
   {
-    "type": "move",
     "text": "Advance to go",
-    "move": 0
+    "action": "MOVETO 0 1"
   },
   {
-    "type": "collect",
     "text" : "From sale of Bitcoin you get £50",
-    "collect" : 50
+    "action" : "BANKPAY 50"
   },
   {
-    "type": "pay",
     "text" : "Bitcoin assets fall - pay off Bitcoin short fall",
-    "pay" : 50
+    "action" : "PAYBANK 50"
   },
   {
-    "type": "auto",
     "text": "Pay a £10 fine or take opportunity knocks",
     "action": "PAYFINEOROPP 10"
   },
   {
-    "type": "auto",
     "text":"Pay insurance fee of £50",
     "action" : "PAYFINE 50"
   },
   {
-    "type": "collect",
     "text": "Savings bond matures, collect £100",
-    "collect" : 100
+    "action" : "BANKPAY 100"
   },
   {
-    "type": "jail",
     "text": "Go to jail. Do not pass GO, do not collect £200",
-    "moveNoGo": "jail"
+    "action": "GOTOJAIL"
   },
   {
-    "type": "collect",
     "text":"Received interest on shares of £25",
-    "collect": 25
+    "action": "BANKPAY 25"
   },
   {
-    "type": "collectFromAll",
     "text":"It's your birthday. Collect £10 from each player",
-    "collectFromAll": 10
+    "action": "COLLECTALL 10"
   },
   {
-    "type": "auto",
     "text": "Get out of jail free",
     "action": "JAILCARD"
   }

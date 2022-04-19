@@ -1,62 +1,50 @@
 [
 {
-"type": "auto"
-"text":"Bank pays you divided of £50"
+"text":"Bank pays you divided of £50",
 "action": "BANKPAY 50"
 },
 {
-"type": "auto"
-"text":"You have won a lip sync battle. Collect £100"
+"text":"You have won a lip sync battle. Collect £100",
 "action":"BANKPAY 100"
 },
 {
-"type": "auto",
 "text":"Advance to Turing Heights",
 "action":"MOVE 39"
 },
 {
-"type": "auto",
 "text":"Advance to Han Xin Gardens. If you pass GO, collect £200",
 "action":"MOVE 24"
 },
 {
-"type": "auto",
 "text":"Fined £15 for speeding",
 "action":"PAYFINE 15"
 },
 {
-"type": "auto",
 "text":""Take a trip to Hove station.",
 "action":" MOVE 15"
 },
 {
-"type": "auto"
-"text":"Pay university fees of £150"
+"text":"Pay university fees of £150",
 "action":"PAYBANK 150"
 },
 {
-"type": "auto"
-"text":"Loan matures, collect £150"
+"text":"Loan matures, collect £150",
 "action":"BANKPAY 150"
 },
 {
-"type": "auto"
 "text":"You are assessed for repairs, £40/house, £115/hotel"
 "action":"REPAIRS 40 115"
 },
 {
-"type": "auto"
-"text":"Advance to GO"
+"text":"Advance to GO",
 "action":"MOVE 0"
 },
 {
-"type": "auto",
 "text":"You are assessed for repairs, £25/house, £100/hotel",
 "action":"ASSETPAY 25 100"
 },
 {
-"type": "auto",
 "text":"Go back 3 spaces" ,
 "action":"MOVEN 3 -1"
-},
+}
 ]
