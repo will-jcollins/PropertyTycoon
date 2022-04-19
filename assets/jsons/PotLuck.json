@@ -12,7 +12,7 @@
   {
     "type": "moveNoGo",
     "text": "You are up the creek with no paddle - go back to the Old Creek",
-    "move": "Old Creek"
+    "move": 1
   },
   {
     "type": "collect",
@@ -37,7 +37,7 @@
   {
     "type": "move",
     "text": "Advance to go",
-    "move": "GO"
+    "move": 0
   },
   {
     "type": "collect",
@@ -50,15 +50,14 @@
     "pay" : 50
   },
   {
-    "type": "pay",
-    "text": "Pay a £10 fine or take opportunity knocks"    ,
-    "parking": 10,
-    "else": "O"
+    "type": "auto",
+    "text": "Pay a £10 fine or take opportunity knocks",
+    "action": "PAYFINEOROPP 10"
   },
   {
-    "type": "parking",
+    "type": "auto",
     "text":"Pay insurance fee of £50",
-    "parking" : 50
+    "action" : "PAYFINE 50"
   },
   {
     "type": "collect",
@@ -81,8 +80,8 @@
     "collectFromAll": 10
   },
   {
-    "type": "outOfJail",
+    "type": "auto",
     "text": "Get out of jail free",
-    "getOutOfJail": 1
+    "action": "JAILCARD"
   }
 ]
