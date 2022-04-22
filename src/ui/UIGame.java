@@ -28,6 +28,7 @@ import ui.player.PlayerStats;
 import ui.player.UIPlayers;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class UIGame extends Application {
 
@@ -133,6 +134,42 @@ public class UIGame extends Application {
         }
     }
 
+    private void createTransferMoney() {
+        //Workaround for actcode interpret issue
+        if (model.getCurrentPlayer().getPrevMoney()-model.getCurrentPlayer().getMoney() !=0) {
+            TransferMoneyMenu menu = new TransferMoneyMenu(model.getCurrentPlayer(), model.isPlayerPaying(), model.getPayReason());
+
+            showMenu(menu,
+                    onShow -> menu.startAnimation(),
+                    onExit -> {
+                        Platform.runLater(() -> updatePlayerStats());
+                        createTurnEndPopup();
+                    }
+            );
+        } else createTurnEndPopup(); }
+
+    private void createMultiTransferPopup() {
+        int i = 0;
+
+        String[] playerNames = new String[model.getPlayers().size()];
+
+        for (Player otherPlayer : model.getPlayers()) {
+            if (!Objects.equals(otherPlayer.getName(), model.getStoredPlayer().getName())) {
+                playerNames[i] = otherPlayer.getName().toUpperCase();
+            } else playerNames[i] = "";
+            i++;
+        }
+
+        MultiTransferMoneyMenu menu = new MultiTransferMoneyMenu(model.getStoredPlayer(), playerNames);
+
+        showMenu(menu,
+                onShow -> menu.startAnimation(),
+                onExit -> {Platform.runLater(() -> updatePlayerStats());
+                    createTurnEndPopup();
+                }
+        );
+    }
+
     private void createDevelopPopup() {
         ArrayList<PropertyTile> developProperties = model.getDevelopProperties(model.getCurrentPlayer());
         DevelopMenu menu = new DevelopMenu(developProperties, model.getCurrentPlayer());
@@ -187,6 +224,15 @@ public class UIGame extends Application {
             case SHOW_GOTO_JAIL_MENU:
                 Platform.runLater(() -> players.updatePlayers(model.getCurrentPlayer(), board,e -> {startNextIteration();}));
                 break;
+            case SHOW_TRANSFERMONEY:
+                createTransferMoney();
+                break;
+            case SHOW_OPPCHOICE:
+                createOppChoicePopup();
+                break;
+            case SHOW_MULTITRANSFER:
+                createMultiTransferPopup();
+                break;
             default:
                 createTurnEndPopup();
         }
@@ -195,6 +241,23 @@ public class UIGame extends Application {
     private void createCardPopup(String title, String description) {
         CardMenu menu = new CardMenu(title,description);
         showMenu(menu, onShow -> {}, onExit -> executeUITip(model.executeCollectedCard()));
+    }
+
+    private void createOppChoicePopup() {
+        OppChoiceMenu menu = new OppChoiceMenu(model.getCurrentPlayer());
+        showMenu(menu,
+                onShow -> {},
+                onExit -> {
+                    System.out.println("Create OppChoice popup");
+                    if(menu.getOutcome()) {
+                        executeUITip(UITip.SHOW_OPPORTUNITY);
+                    } else {
+                        model.getCurrentPlayer().pay(10);
+                        updatePlayerStats();
+                        createTurnEndPopup();
+                    }
+
+                });
     }
 
     private void createDicePopup(Dice dice) {
