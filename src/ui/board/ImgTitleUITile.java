@@ -8,6 +8,10 @@ import javafx.scene.text.TextAlignment;
 import model.board.ActionTile;
 import ui.Sizes;
 
+/**
+ * Displays a UITile with an image and a title above it
+ * @Author Will Collins
+ */
 public class ImgTitleUITile extends UITile {
 
     public ImgTitleUITile(int x, int y, double width, double height, double angle, String name, String imgPath) {

@@ -13,6 +13,7 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import model.Player.Player;
 import model.board.Board;
+import model.game.Game;
 import ui.Sizes;
 import ui.board.UIBoard;
 
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 /**
  * Class responsible for crating and moving player tokens
+ * @Author Will Collins
  */
 public class UIPlayers extends Group {
 
@@ -88,32 +90,42 @@ public class UIPlayers extends Group {
      * @param onFinish EventHandler responisble for animation of the player movement
      * @throws InterruptedException
      */
-    public void updatePlayers(Player player, UIBoard board, EventHandler onFinish) throws InterruptedException {
+    public void updatePlayers(Player player, UIBoard board, EventHandler onFinish) {
         finished = false;
 
         // Move pieces to the correct tile, changing tile player is positioned on by 1 at a time
         ImageView token = tokens.get(player);
         SequentialTransition seqTransition = new SequentialTransition(token);
 
-        // Build all transitions required to move token to next position one by one
-        int nextPos = player.getPrevPos();
-        int prevPos = nextPos;
 
-        while (nextPos != player.getPos()) {
-            nextPos = (nextPos + 1) % Board.SIZE;
-
+        if (player.getTurnsInJail() == 1) {
+            // Move player into jail on their first turn
             TranslateTransition transTransition = new TranslateTransition(Duration.millis(500));
-            transTransition.setByX(board.getXTilePos(nextPos) - board.getXTilePos(prevPos));
-            transTransition.setByY(board.getYTilePos(nextPos) - board.getYTilePos(prevPos));
+            transTransition.setByX(board.getXJailPos() - board.getXTilePos(player.getPos()));
+            transTransition.setByY(board.getYJailPos() - board.getYTilePos(player.getPos()));
             seqTransition.getChildren().add(transTransition);
+        } else if (!player.inJail()) {
+            // Build all transitions required to move token to next position one by one
+            int nextPos = player.getPrevPos();
+            int prevPos = nextPos;
 
-            prevPos = nextPos;
+            while (nextPos != player.getPos()) {
+                nextPos = (nextPos + 1) % Board.SIZE;
+
+                TranslateTransition transTransition = new TranslateTransition(Duration.millis(500));
+                transTransition.setByX(board.getXTilePos(nextPos) - board.getXTilePos(prevPos));
+                transTransition.setByY(board.getYTilePos(nextPos) - board.getYTilePos(prevPos));
+                seqTransition.getChildren().add(transTransition);
+
+                prevPos = nextPos;
+            }
         }
 
         // Play transitions constructed in sequence
         seqTransition.play();
         seqTransition.setOnFinished(onFinish);
     }
+
     /**
      * Method responisible for highlighting player whose move is currently on
      * @param p Instance of class Player

@@ -6,15 +6,16 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import model.Player.Player;
 import model.board.*;
+import model.game.Game;
 
 import java.util.HashMap;
 /**
  * Class which is responsible for building the board
+ * @Author Will Collins
  */
 public class UIBoard extends Group {
 
     private static final int DEFAULT_SIZE = 810;
-    private static final int JAIL_POS = 10;
 
     // Geometry constants
     private final int SIZE;
@@ -125,11 +126,29 @@ public class UIBoard extends Group {
     }
 
     public double getXTilePos(int pos) {
-        return (pos != JAIL_POS) ? (tiles[pos].getMinX() + tiles[pos].getMaxX()) / 2 : (tiles[pos].getMinX() + tiles[pos].getMaxX()) / 2 - TILE_HEIGHT / 3;
+        if (pos != Game.JAIL_POS) {
+            return (tiles[pos].getMinX() + tiles[pos].getMaxX()) / 2;
+        } else {
+            // Position returned when player is in 'just visiting' needs to be offset so they don't appear to be in jail
+            return (tiles[pos].getMinX() + tiles[pos].getMaxX()) / 2 - TILE_HEIGHT / 5;
+        }
+
     }
 
     public double getYTilePos(int pos) {
-        return (pos != JAIL_POS) ? (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2 : (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2 + TILE_HEIGHT / 3;
+        if (pos != Game.JAIL_POS) {
+            return (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2;
+        } else {
+            return (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2 + TILE_HEIGHT / 5;
+        }
+    }
+
+    public double getXJailPos() {
+        return (tiles[Game.JAIL_POS].getMinX() + tiles[Game.JAIL_POS].getMaxX()) / 2 + TILE_HEIGHT / 5;
+    }
+
+    public double getYJailPos() {
+        return (tiles[Game.JAIL_POS].getMinY() + tiles[Game.JAIL_POS].getMaxY()) / 2 - TILE_HEIGHT / 5;
     }
 
     public int getSize() {

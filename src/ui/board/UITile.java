@@ -14,6 +14,7 @@ import javafx.scene.transform.Rotate;
 import ui.Sizes;
 /**
  * Class defining the parameters used to create board tiles
+ * @Author Will Collins
  */
 public class UITile extends Group {
 
@@ -23,7 +24,7 @@ public class UITile extends Group {
     protected static final Font TITLEFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontPropTitle());
     protected static final Font CAPTIONFONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontPropCost());
 
-    protected static final int MAXCHARSPERLINE = 7;
+    protected static final int MAXCHARSPERLINE = 7; // Max number of chars before a newline is inserted in text
 
     private final double width;
     private final double height;
@@ -57,7 +58,7 @@ public class UITile extends Group {
         rotate.setAngle(angle);
         getTransforms().add(rotate);
 
-        // Works out min / max of x & y with rotation factored in
+        // Works out min / max of x & y with rotation factored in (JavaFX max / min x & y methods do not)
         double[] sizeArr = {0,width, height};
         int[] xDifference = {1,-2,-1,2};
         int[] yDifference = {2,1,-2,-1};

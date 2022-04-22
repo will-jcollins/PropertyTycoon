@@ -1,6 +1,7 @@
 package model.Player;
 
 import model.board.Board;
+import model.game.Game;
 
 import java.util.Objects;
 import java.util.Random;
@@ -12,20 +13,20 @@ public abstract class Player {
 
     private final int id;
     private final String name;
-    private int pos = 39; // Player position
+    private int pos = 22; // Player position
     private int prevPos = 0;
     private int money = 1500;
     private int prevMoney = money;
     private int jailCards = 0;
     private boolean passedGo = true; // Whether the player has EVER passed go
-    private boolean inJail = false;
+    private int turnsInJail = 0;
 
     /**
      * Costructor of class player
      * @param id player id
      * @param name player name
      */
-    public Player(int id, String name){
+    public Player(int id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -94,6 +95,10 @@ public abstract class Player {
         jailCards += 1;
     }
 
+    public boolean hasJailCard() {
+        return jailCards > 0;
+    }
+
     /**
      * get player position before move
      * @return player starting postion in a turn
@@ -110,11 +115,6 @@ public abstract class Player {
         return name;
     }
 
-    public boolean askPlayer(String message) {
-        System.out.println(message);
-        return true;
-    }
-
     /**
      * Checks if player passed starting tile
      * @return true if passed, false otherwise
@@ -123,8 +123,16 @@ public abstract class Player {
         return passedGo;
     }
 
-    public boolean isInJail() {
-        return inJail;
+    public void sendToJail() {
+        turnsInJail = 1;
+    }
+
+    public boolean inJail() {
+        return turnsInJail > 0;
+    }
+
+    public int getTurnsInJail() {
+        return turnsInJail;
     }
 
     @Override

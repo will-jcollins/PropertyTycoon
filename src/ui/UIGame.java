@@ -13,7 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -22,14 +21,12 @@ import model.board.BuyableTile;
 import model.board.PropertyTile;
 import model.game.Dice;
 import model.game.Game;
-import ui.board.OwnerRibbon;
 import ui.board.UIBoard;
 import ui.menu.*;
 import ui.menu.dice.DiceMenu;
 import ui.player.PlayerStats;
 import ui.player.UIPlayers;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class UIGame extends Application {
@@ -92,7 +89,7 @@ public class UIGame extends Application {
         players.dismissPlayer(model.getCurrentPlayer());
         UITip tip = model.iterateGame();
         players.higlightPlayer(model.getCurrentPlayer());
-        interpretUITip(tip);
+        executeUITip(tip);
     }
 
     private void createBankruptPopup() {
@@ -158,11 +155,10 @@ public class UIGame extends Application {
     }
 
     private void takeTurn() {
-        interpretUITip(model.takeTurn());
+        executeUITip(model.takeTurn());
     }
 
-    private void interpretUITip(UITip tip) {
-        System.out.println(tip);
+    private void executeUITip(UITip tip) {
         switch (tip) {
             case SHOW_DICE_MENU:
                 createDicePopup(model.getDice());
@@ -185,6 +181,12 @@ public class UIGame extends Application {
             case SHOW_POTLUCK:
                 createCardPopup("POTLUCK",model.getCollectedCard().getText());
                 break;
+            case SHOW_JAIL_MENU:
+                createJailPopup();
+                break;
+            case SHOW_GOTO_JAIL_MENU:
+                Platform.runLater(() -> players.updatePlayers(model.getCurrentPlayer(), board,e -> {startNextIteration();}));
+                break;
             default:
                 createTurnEndPopup();
         }
@@ -192,20 +194,14 @@ public class UIGame extends Application {
 
     private void createCardPopup(String title, String description) {
         CardMenu menu = new CardMenu(title,description);
-        showMenu(menu, onShow -> {}, onExit -> {System.out.println("Create Card Popup");
-            interpretUITip(model.executeCollectedCard());
-            });
+        showMenu(menu, onShow -> {}, onExit -> executeUITip(model.executeCollectedCard()));
     }
 
     private void createDicePopup(Dice dice) {
         DiceMenu menu = new DiceMenu(dice);
 
         showMenu(menu,onShow -> {}, onExit -> {
-            try {
-                players.updatePlayers(model.getCurrentPlayer(),board,onFinish -> checkGoReward());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            players.updatePlayers(model.getCurrentPlayer(),board,onFinish -> checkGoReward());
         });
     }
 
@@ -248,6 +244,24 @@ public class UIGame extends Application {
                     Platform.runLater(() -> updatePlayerStats());
                     takeTurn();
         });
+    }
+
+    private void createJailPopup() {
+        JailMenu menu = new JailMenu(model.getCurrentPlayer().hasJailCard());
+
+        showMenu(menu,
+                onShow -> {},
+                onExit -> {
+                    switch (menu.getOutcome()) {
+                        case PAY:
+                        case JAILCARD:
+                        case ROLL_DICE:
+                        case WAIT:
+                        default:
+                            startNextIteration();
+                    }
+                }
+        );
     }
 
     private void showMenu(Menu menu, EventHandler onShow, EventHandler onExit) {
@@ -298,11 +312,9 @@ public class UIGame extends Application {
     }
 
     private void updatePlayerStats() {
-        Platform.runLater(() -> {
-            for (PlayerStats stats : playerStats) {
-                stats.update();
-            }
-        });
+        for (PlayerStats stats : playerStats) {
+            stats.update();
+        }
     }
 
     private void remove(Node n) {

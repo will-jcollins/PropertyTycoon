@@ -18,8 +18,10 @@ import java.util.HashMap;
 public class Game {
 
     // Constants
-    public static final int TURNS_TO_JAIL = 3;
+    public static final int TURNS_TO_JAIL = 3; // Number of doubles before being sent to jail
+    public static final int TURNS_IN_JAIL = 4; // Number of turns spent in jail (including the turn where player is sent to jail)
     public static final int GO_REWARD = 200;
+    public static final int JAIL_POS = 10;
 
     // Model
     private Board board = new Board();
@@ -65,19 +67,19 @@ public class Game {
             selectNextPlayer();
         }
 
-        // While end state of game has not been reached
         if (players.size() < 2) {
             return UITip.SHOW_GAME_OVER;
+        } else if (getCurrentPlayer().inJail()) {
+            return UITip.SHOW_JAIL_MENU;
         } else {
             dice.roll();
-            Player player = players.get(currentPlayer);
+            Player player = getCurrentPlayer();
             player.changePos(dice.getRollTotal());
 
             if (player.getPos() < player.getPrevPos()) {
                 player.pay(-GO_REWARD);
                 passedGo = true;
             }
-
             return UITip.SHOW_DICE_MENU;
         }
     }
@@ -98,7 +100,7 @@ public class Game {
             if (buyable.getOwner() == null) {
                 // If player has passed go, give them opportunity to buy
                 return p.hasPassedGo() ? UITip.SHOW_BUY_BUYABLE : UITip.NOP;
-            } else if (!buyable.getOwner().equals(getCurrentPlayer())) {
+            } else if (!buyable.getOwner().equals(getCurrentPlayer()) && !buyable.getOwner().inJail()) {
                 int rentToPay;
                 // Calculate the amount of rent to pay based on tile type
                 if (tile instanceof PropertyTile) {
@@ -142,14 +144,9 @@ public class Game {
         }
     }
 
-    private void sendToJail(Player player) {
-    player.setPos(10);
-    }
-
     private UITip executeActionable(Actionable actionable) {
 
         Action action = actionable.getAction();
-        System.out.println(action);
         Player tempPlayer;
         switch (action.getActCode()) {
             case BANKPAY:
@@ -159,23 +156,23 @@ public class Game {
                 getCurrentPlayer().pay(action.getVal1());
                 break;
             case JAIL:
-                sendToJail(players.get(currentPlayer));
-                break;
+                getCurrentPlayer().sendToJail();
+                return UITip.SHOW_GOTO_JAIL_MENU;
             case MOVETO:
                 tempPlayer = players.get(currentPlayer);
                 tempPlayer.setPos(action.getVal1());
-                if (tempPlayer.getPos() < tempPlayer.getPrevPos()) {
+                if (tempPlayer.getPos() < tempPlayer.getPrevPos() && action.getVal2() == 1) {
                     tempPlayer.pay(GO_REWARD * action.getVal2());
-                    passedGo = action.getVal2() == 1;
+                    passedGo = true;
                 }
                 break;
             case MOVEN:
                 tempPlayer = players.get(currentPlayer);
                 int currentPos = tempPlayer.getPos();
                 tempPlayer.setPos(currentPos + action.getVal1());
-                if (tempPlayer.getPos() < tempPlayer.getPrevPos()){
+                if (tempPlayer.getPos() < tempPlayer.getPrevPos() && action.getVal2() == 1){
                     tempPlayer.pay(GO_REWARD * action.getVal2());
-                    passedGo = action.getVal2() == 1;
+                    passedGo = true;
                 }
                 break;
             case PAYASSETS:
@@ -302,7 +299,7 @@ public class Game {
     }
 
     public boolean isPlayersLastRoll() {
-        return !dice.isDouble() && !getCurrentPlayer().isInJail();
+        return !dice.isDouble() && getCurrentPlayer().inJail();
     }
 
     public Card getCollectedCard() {

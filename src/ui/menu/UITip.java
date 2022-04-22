@@ -11,5 +11,7 @@ public enum UITip {
     SHOW_BANKRUPT,
     SHOW_POTLUCK,
     SHOW_OPPORTUNITY,
+    SHOW_JAIL_MENU,
+    SHOW_GOTO_JAIL_MENU,
     NOP;
 }

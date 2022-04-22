@@ -8,6 +8,10 @@ import model.board.StationTile;
 import ui.Sizes;
 import ui.player.UIPlayers;
 
+/**
+ * Adds ownership ribbon to ImgCostUITile
+ * @Author Will Collins
+ */
 public class AssetUITile extends ImgCostUITile {
 
     private static final String STATIONIMGPATH = "file:assets/images/station.png";
