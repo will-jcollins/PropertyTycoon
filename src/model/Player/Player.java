@@ -91,10 +91,26 @@ public abstract class Player {
         return id;
     }
 
+    /**
+     * Increase player's number of get out of jail free
+     * cards by 1
+     */
     public void addJailCard(){
         jailCards += 1;
     }
 
+    /**
+     * Decrease player's number of get out of jail free
+     * cards by 1
+     */
+    public void removeJailCard() {
+        jailCards -= 1;
+    }
+
+    /**
+     * Indicates if player has at least 1 jail card
+     * @return true if player has at least 1 jail card
+     */
     public boolean hasJailCard() {
         return jailCards > 0;
     }
@@ -123,12 +139,23 @@ public abstract class Player {
         return passedGo;
     }
 
+    /**
+     * Sets player state to enter jail
+     */
     public void sendToJail() {
         turnsInJail = 1;
     }
 
+    public void leaveJail() {
+        turnsInJail = 0;
+    }
+
     public boolean inJail() {
         return turnsInJail > 0;
+    }
+
+    public void addTurnInJail() {
+        turnsInJail += 1;
     }
 
     public int getTurnsInJail() {

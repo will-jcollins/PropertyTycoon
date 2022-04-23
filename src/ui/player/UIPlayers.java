@@ -104,6 +104,12 @@ public class UIPlayers extends Group {
             transTransition.setByX(board.getXJailPos() - board.getXTilePos(player.getPos()));
             transTransition.setByY(board.getYJailPos() - board.getYTilePos(player.getPos()));
             seqTransition.getChildren().add(transTransition);
+        } else if (player.getTurnsInJail() == Game.TURNS_IN_JAIL) {
+            // Move player into jail on their first turn
+            TranslateTransition transTransition = new TranslateTransition(Duration.millis(500));
+            transTransition.setByX(board.getXTilePos(player.getPos()) - board.getXJailPos());
+            transTransition.setByY(board.getYTilePos(player.getPos()) - board.getYJailPos());
+            seqTransition.getChildren().add(transTransition);
         } else if (!player.inJail()) {
             // Build all transitions required to move token to next position one by one
             int nextPos = player.getPrevPos();

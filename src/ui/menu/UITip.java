@@ -13,5 +13,6 @@ public enum UITip {
     SHOW_OPPORTUNITY,
     SHOW_JAIL_MENU,
     SHOW_GOTO_JAIL_MENU,
+    EXIT_JAIL,
     NOP;
 }

@@ -185,8 +185,12 @@ public class UIGame extends Application {
                 createJailPopup();
                 break;
             case SHOW_GOTO_JAIL_MENU:
-                Platform.runLater(() -> players.updatePlayers(model.getCurrentPlayer(), board,e -> {startNextIteration();}));
+                Platform.runLater(() -> players.updatePlayers(model.getCurrentPlayer(), board,e -> startNextIteration()));
                 break;
+            case EXIT_JAIL:
+                Platform.runLater(() -> players.updatePlayers(model.getCurrentPlayer(), board,e -> takeTurn()));
+                break;
+            case NOP:
             default:
                 createTurnEndPopup();
         }
