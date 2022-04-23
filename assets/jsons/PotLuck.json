@@ -41,7 +41,7 @@
     "action" : "PAYBANK 50"
   },
   {
-    "text": "Pay a $10 fine or take opportunity knocks",
+    "text": "Pay a $10 fine or take an opportunity knock card",
     "action": "PAYFINEOROPP 10"
   },
   {
@@ -54,7 +54,7 @@
   },
   {
     "text": "Go to jail. Do not pass GO, do not collect $200",
-    "action": "GOTOJAIL"
+    "action": "JAIL"
   },
   {
     "text":"Received interest on shares of $25",

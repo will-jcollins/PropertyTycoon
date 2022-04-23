@@ -62,6 +62,8 @@ public class Dice {
         for (int i = 0; i < vals.length - 1; i++) {
             if (vals[i] != vals[i + 1]) {
                 return false;
+            } else if (vals[i] == 0) {
+                return false;
             }
         }
         return true;
@@ -74,8 +76,8 @@ public class Dice {
     public void reset() {
         doubles = 0;
 
-        for (int i : vals) {
-            i = 0;
+        for (int i = 0; i < vals.length; i++) {
+            vals[i] = 0;
         }
     }
 

@@ -61,23 +61,28 @@ public class Game {
         passedGo = false;
         collectedCard = null;
 
-        System.out.println(getCurrentPlayer().getTurnsInJail());
-
+        System.out.println("isdouble: " + dice.isDouble());
+        System.out.println(isPlayersLastRoll());
         // Select next player if needed
         if (isPlayersLastRoll()) {
             selectNextPlayer();
         }
 
+        dice.roll();
+
         if (players.size() < 2) {
             return UITip.SHOW_GAME_OVER;
         } else if (getCurrentPlayer().getTurnsInJail() >= TURNS_IN_JAIL) {
+            dice.reset();
             getCurrentPlayer().setPos(JAIL_POS);
             return UITip.EXIT_JAIL;
         } else if (getCurrentPlayer().inJail()) {
+            dice.reset();
             getCurrentPlayer().addTurnInJail();
             return UITip.SHOW_JAIL_MENU;
+        } else if (dice.getDoubles() == TURNS_TO_JAIL) {
+            return UITip.SHOW_DICE_FOR_JAIL;
         } else {
-            dice.roll();
             Player player = getCurrentPlayer();
             player.changePos(dice.getRollTotal());
 
@@ -98,6 +103,11 @@ public class Game {
         passedGo = false;
         Player p = getCurrentPlayer();
 
+        if (dice.getDoubles() == TURNS_TO_JAIL) {
+            getCurrentPlayer().sendToJail();
+            return UITip.SHOW_GOTO_JAIL_MENU;
+        }
+
         // If player needs to leave jail
         if (p.getTurnsInJail() >= TURNS_IN_JAIL) {
             getCurrentPlayer().leaveJail();
@@ -109,7 +119,7 @@ public class Game {
         if (tile instanceof BuyableTile) {
             BuyableTile buyable = (BuyableTile) tile;
             if (buyable.getOwner() == null) {
-                // If player has passed go, give them opportunity to buy
+                // If player has passed go, give them opportunity to buy, otherwise don't
                 return p.hasPassedGo() ? UITip.SHOW_BUY_BUYABLE : UITip.NOP;
             } else if (!buyable.getOwner().equals(getCurrentPlayer()) && !buyable.getOwner().inJail()) {
                 int rentToPay;
@@ -165,12 +175,12 @@ public class Game {
                 return UITip.SHOW_OPPCHOICE;
             case BANKPAY:
                 getCurrentPlayer().pay(-action.getVal1());
-                payReason = "THE BANK";
+                payReason = "BANK";
                 playerPay = false;
                 return UITip.SHOW_TRANSFERMONEY;
             case PAYBANK:
                 getCurrentPlayer().pay(action.getVal1());
-                payReason = "THE BANK";
+                payReason = "BANK";
                 playerPay = true;
                 return UITip.SHOW_TRANSFERMONEY;
             case JAIL:
@@ -183,7 +193,7 @@ public class Game {
                     tempPlayer.pay(GO_REWARD * action.getVal2());
                     passedGo = true;
                 }
-                break;
+                return UITip.MOVE_PLAYER;
             case MOVEN:
                 tempPlayer = players.get(currentPlayer);
                 int currentPos = tempPlayer.getPos();
@@ -192,31 +202,31 @@ public class Game {
                     tempPlayer.pay(GO_REWARD * action.getVal2());
                     passedGo = true;
                 }
-                break;
+                return UITip.MOVE_PLAYER;
             case PAYASSETS:
                 tempPlayer = getCurrentPlayer();
                 if (board.getNoHouses(tempPlayer) != 0) {
                     tempPlayer.pay(action.getVal1() * board.getNoHouses(tempPlayer) + action.getVal2() * board.getNoHotels(tempPlayer));
-                    payReason = "THE BANK";
+                    payReason = "BANK";
                     playerPay = true;
                     return UITip.SHOW_TRANSFERMONEY;
                 }
-                break;
+                return UITip.NOP;
             case PAYFINE:
                 getCurrentPlayer().pay(action.getVal1());
                 freeParking += action.getVal1();
-                payReason = "THE TAXMAN";
+                payReason = "TAX";
                 playerPay = true;
                 return UITip.SHOW_TRANSFERMONEY;
             case FINEPAY:
                 if (freeParking != 0) {
                     getCurrentPlayer().pay(-freeParking);
                     freeParking = 0;
-                    payReason = "COLLECTED FINES";
+                    payReason = "FINES";
                     playerPay = false;
                     return UITip.SHOW_TRANSFERMONEY;
                 }
-                else break;
+                else return UITip.NOP;
             case POTLUCK:
                 collectedCard = potLuck.draw();
                 return UITip.SHOW_POTLUCK;
@@ -226,7 +236,7 @@ public class Game {
             case JAILCARD:
                 tempPlayer = players.get(currentPlayer);
                 tempPlayer.addJailCard();
-                break;
+                return UITip.NOP;
             case COLLECTALL:
                 tempPlayer = players.get(currentPlayer);
                 storedPlayer = players.get(currentPlayer);
@@ -240,8 +250,6 @@ public class Game {
             default:
                 return UITip.NOP;
         }
-
-        return UITip.NOP;
     }
 
     public UITip executeCollectedCard() {

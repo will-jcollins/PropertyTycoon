@@ -33,6 +33,7 @@ public class OppChoiceMenu extends Menu {
         setRowIndex(choosePay,3);
         choosePay.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             finished = true;
+            outcome = false;
         });
 
         TextButton chooseOpp = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.DEEPBLUE.getColor(), "OPPORTUNITY");

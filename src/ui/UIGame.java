@@ -191,14 +191,34 @@ public class UIGame extends Application {
         }
     }
 
+    private void checkGoAndEnd() {
+        if (model.hasPassedGo()) {
+            GoMenu menu = new GoMenu(model.getCurrentPlayer());
+
+            showMenu(menu,
+                    onShow -> menu.startAnimation(),
+                    onExit -> {
+                        createTurnEndPopup();
+                    });
+        } else {
+            createTurnEndPopup();
+        }
+    }
+
     private void takeTurn() {
         executeUITip(model.takeTurn());
     }
 
     private void executeUITip(UITip tip) {
+        System.out.println(tip);
         switch (tip) {
             case SHOW_DICE_MENU:
                 createDicePopup(model.getDice());
+                break;
+            case SHOW_DICE_FOR_JAIL:
+                DiceMenu menu = new DiceMenu(model.getDice());
+
+                showMenu(menu,onShow -> {}, onExit -> takeTurn());
                 break;
             case SHOW_GAME_OVER:
                 createGameOverPopup();
@@ -232,6 +252,9 @@ public class UIGame extends Application {
                 break;
             case SHOW_MULTITRANSFER:
                 createMultiTransferPopup();
+                break;
+            case MOVE_PLAYER:
+                Platform.runLater(() -> players.updatePlayers(model.getCurrentPlayer(), board, e -> checkGoAndEnd()));
                 break;
             case EXIT_JAIL:
                 Platform.runLater(() -> players.updatePlayers(model.getCurrentPlayer(), board,e -> takeTurn()));

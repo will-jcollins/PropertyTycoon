@@ -37,7 +37,7 @@ public class Deck {
         // Populate deck with Card objects using information from JSON
         for (int i = 0; i < objects.length(); i++) {
             JSONObject obj = objects.getJSONObject(i);
-
+            System.out.println(obj.get("action"));
             Card card;
             card = new Card(obj.getString("text"),
                     new Action(obj.getString("action")));

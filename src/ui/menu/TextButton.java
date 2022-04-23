@@ -62,5 +62,19 @@ public class TextButton extends Group {
         buttonText.setX(width / 2 - (buttonText.getBoundsInLocal().getWidth() / 2));
         buttonText.setY(height / 2 + (buttonText.getBoundsInLocal().getHeight() / 3));
         getChildren().add(buttonText);
+
+        addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(5),this);
+            scaleTransition.setToX(0.95);
+            scaleTransition.setToY(0.95);
+            scaleTransition.play();
+        });
+
+        addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(5),this);
+            scaleTransition.setToX(1);
+            scaleTransition.setToY(1);
+            scaleTransition.play();
+        });
     }
 }
