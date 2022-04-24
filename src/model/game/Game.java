@@ -227,7 +227,7 @@ public class  Game {
                 return UITip.MOVE_PLAYER;
             case PAYASSETS:
                 tempPlayer = getCurrentPlayer();
-                if (board.getNoHouses(tempPlayer) != 0) {
+                if (board.getNoHouses(getCurrentPlayer()) > 0 || board.getNoHotels(getCurrentPlayer()) > 0) {
                     tempPlayer.pay(action.getVal1() * board.getNoHouses(tempPlayer) + action.getVal2() * board.getNoHotels(tempPlayer));
                     payReason = "BANK";
                     playerPay = true;

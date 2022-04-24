@@ -135,7 +135,7 @@ public class UIGame extends Application {
         GoToPrisonMenu menu = new GoToPrisonMenu (model.getCurrentPlayer ());
         showMenu(menu,
                 onShow -> {},
-                onExit -> {});
+                onExit -> Platform.runLater(() -> players.updatePlayers(model.getCurrentPlayer(), board,e -> startNextIteration())));
     }
 
     /**
@@ -255,8 +255,8 @@ public class UIGame extends Application {
                 createDicePopup(model.getDice());
                 break;
             case SHOW_DICE_FOR_JAIL:
+                // Shows dice menu without moving the player
                 DiceMenu menu = new DiceMenu(model.getDice());
-
                 showMenu(menu,onShow -> {}, onExit -> takeTurn());
                 break;
             case SHOW_GAME_OVER:
@@ -281,8 +281,7 @@ public class UIGame extends Application {
                 createJailPopup();
                 break;
             case SHOW_GOTO_JAIL_MENU:
-                createJailPopup ();
-                Platform.runLater(() -> players.updatePlayers(model.getCurrentPlayer(), board,e -> startNextIteration()));
+                createGoToJailPopUp();
                 break;
             case SHOW_TRANSFERMONEY:
                 createTransferMoney();
