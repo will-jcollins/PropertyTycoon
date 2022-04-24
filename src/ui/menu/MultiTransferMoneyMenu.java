@@ -12,6 +12,9 @@ import ui.Sizes;
 
 import java.util.Objects;
 
+/**
+ * Class for creating popup for transfering money between more than two players
+ */
 public class MultiTransferMoneyMenu extends Menu {
     BalanceText receivingBalance;
     BalanceText payingBalance;

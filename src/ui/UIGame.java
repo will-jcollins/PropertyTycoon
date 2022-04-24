@@ -30,6 +30,9 @@ import ui.player.UIPlayers;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Main class responsible for starting UI game
+ */
 public class UIGame extends Application {
 
     private static final int MENU_OFFSET = 50;
@@ -86,6 +89,9 @@ public class UIGame extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Method responsible for starting next iteration
+     */
     private void startNextIteration() {
         players.dismissPlayer(model.getCurrentPlayer());
         UITip tip = model.iterateGame();
@@ -93,6 +99,9 @@ public class UIGame extends Application {
         executeUITip(tip);
     }
 
+    /**
+     * Method responsible for creating bunkrupt popup menu
+     */
     private void createBankruptPopup() {
         BankruptMenu menu = new BankruptMenu(model.getCurrentPlayer());
 
@@ -107,6 +116,9 @@ public class UIGame extends Application {
                 });
     }
 
+    /**
+     * Method responsible for creating game over popup menu
+     */
     private void createGameOverPopup() {
         GameOverMenu menu = new GameOverMenu(model.getPlayers());
 
@@ -115,6 +127,20 @@ public class UIGame extends Application {
                 onExit -> {});
     }
 
+    /**
+     * Mehtod responsible for creating go to prison popup
+     */
+    private void createGoToJailPopUp()
+    {
+        GoToPrisonMenu menu = new GoToPrisonMenu (model.getCurrentPlayer ());
+        showMenu(menu,
+                onShow -> {},
+                onExit -> {});
+    }
+
+    /**
+     * Mehtod responsibe for creating popup menu at the end of players turn
+     */
     private void createTurnEndPopup() {
         if (model.isPlayersLastRoll()) {
             TurnEndMenu menu = new TurnEndMenu();
@@ -134,6 +160,9 @@ public class UIGame extends Application {
         }
     }
 
+    /**
+     * Method responsible for creating menu for money transfer between two players
+     */
     private void createTransferMoney() {
         //Workaround for actcode interpret issue
         if (model.getCurrentPlayer().getPrevMoney()-model.getCurrentPlayer().getMoney() !=0) {
@@ -148,6 +177,9 @@ public class UIGame extends Application {
             );
         } else createTurnEndPopup(); }
 
+    /**
+     * Method responsible for creating menu for money transfer between multiple players
+     */
     private void createMultiTransferPopup() {
         int i = 0;
 
@@ -170,6 +202,9 @@ public class UIGame extends Application {
         );
     }
 
+    /**
+     * Method responsible for creating popup menu for developing properties
+     */
     private void createDevelopPopup() {
         ArrayList<PropertyTile> developProperties = model.getDevelopProperties(model.getCurrentPlayer());
         DevelopMenu menu = new DevelopMenu(developProperties, model.getCurrentPlayer());
@@ -209,6 +244,10 @@ public class UIGame extends Application {
         executeUITip(model.takeTurn());
     }
 
+    /**
+     * Method responsible for choosing action to perform
+     * @param tip different action varibles
+     */
     private void executeUITip(UITip tip) {
         System.out.println(tip);
         switch (tip) {
@@ -242,6 +281,7 @@ public class UIGame extends Application {
                 createJailPopup();
                 break;
             case SHOW_GOTO_JAIL_MENU:
+                createJailPopup ();
                 Platform.runLater(() -> players.updatePlayers(model.getCurrentPlayer(), board,e -> startNextIteration()));
                 break;
             case SHOW_TRANSFERMONEY:
@@ -265,11 +305,19 @@ public class UIGame extends Application {
         }
     }
 
+    /**
+     * Creatine popup for card when player stands on a property
+     * @param title Property name
+     * @param description describtion of the card
+     */
     private void createCardPopup(String title, String description) {
         CardMenu menu = new CardMenu(title,description);
         showMenu(menu, onShow -> {}, onExit -> executeUITip(model.executeCollectedCard()));
     }
 
+    /**
+     * Method responsible for creating pot luck menu
+     */
     private void createOppChoicePopup() {
         OppChoiceMenu menu = new OppChoiceMenu(model.getCurrentPlayer());
         showMenu(menu,
@@ -287,6 +335,10 @@ public class UIGame extends Application {
                 });
     }
 
+    /**
+     * Method responsible for creating dice popup
+     * @param dice instance of class Dice
+     */
     private void createDicePopup(Dice dice) {
         DiceMenu menu = new DiceMenu(dice);
 
@@ -295,6 +347,9 @@ public class UIGame extends Application {
         });
     }
 
+    /**
+     * Method responsible for creating popup menu for buying action
+     */
     private void createBuyablePopup() {
         BuyableMenu menu = new BuyableMenu((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()),model.getCurrentPlayer());
 
@@ -313,6 +368,9 @@ public class UIGame extends Application {
         });
     }
 
+    /**
+     * Method responsible for creating menu for rent transaction
+     */
     private void createRentPopup() {
         RentMenu menu = new RentMenu((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()),model.getCurrentPlayer());
 
@@ -325,6 +383,9 @@ public class UIGame extends Application {
         );
     }
 
+    /**
+     * Method responsible for creating menu when player passes starting point
+     */
     private void createGoPopup() {
         GoMenu menu = new GoMenu(model.getCurrentPlayer());
 
@@ -336,6 +397,9 @@ public class UIGame extends Application {
         });
     }
 
+    /**
+     * Method responsible for creating method for player which goes to jail
+     */
     private void createJailPopup() {
         JailMenu menu = new JailMenu(model.getCurrentPlayer().hasJailCard());
 
@@ -354,6 +418,12 @@ public class UIGame extends Application {
         );
     }
 
+    /**
+     * Method responsible for showing menu
+     * @param menu menu instance
+     * @param onShow stating EventHandler
+     * @param onExit exit EventHandler
+     */
     private void showMenu(Menu menu, EventHandler onShow, EventHandler onExit) {
         menu.setOpacity(0);
         gameStack.getChildren().add(menu);
@@ -401,6 +471,9 @@ public class UIGame extends Application {
         exitThread.start();
     }
 
+    /**
+     * Method responsible for updating player stats
+     */
     private void updatePlayerStats() {
         for (PlayerStats stats : playerStats) {
             stats.update();
@@ -411,6 +484,10 @@ public class UIGame extends Application {
         gameStack.getChildren().remove(n);
     }
 
+    /**
+     * Method responsible for launching a code
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }

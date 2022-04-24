@@ -5,6 +5,9 @@ import model.board.Street;
 import model.game.JailOption;
 import ui.Sizes;
 
+/**
+ * Class responsible for creating JailMenu, for player already in jail
+ */
 public class JailMenu extends Menu {
 
     private boolean finished = false;

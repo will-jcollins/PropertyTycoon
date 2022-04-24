@@ -4,6 +4,9 @@ import model.actions.ActCode;
 import model.actions.Action;
 import model.actions.Actionable;
 
+/**
+ * Class for describing cards
+ */
 public class Card implements Actionable {
     private String text;
     private Action action;

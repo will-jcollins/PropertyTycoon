@@ -10,10 +10,17 @@ import model.Player.Player;
 import model.board.Street;
 import ui.Sizes;
 
+/**
+ * Class for creating Bankrupt menu
+ */
 public class BankruptMenu extends Menu {
 
     private boolean finished;
 
+    /**
+     * Constructor of BunkruptMenu class
+     * @param player - instance of class Player
+     */
     public BankruptMenu(Player player) {
         super();
 

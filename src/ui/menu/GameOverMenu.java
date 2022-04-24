@@ -12,6 +12,9 @@ import ui.Sizes;
 
 import java.util.ArrayList;
 
+/**
+ * Class for creating gameOverMenu
+ */
 public class GameOverMenu extends Menu {
 
     private boolean finished;

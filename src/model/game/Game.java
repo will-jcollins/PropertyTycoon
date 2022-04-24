@@ -11,7 +11,10 @@ import ui.menu.UITip;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Game {
+/**
+ * Class for controlling game
+ */
+public class  Game {
 
     // Constants
     public static final int TURNS_TO_JAIL = 3; // Number of doubles before being sent to jail
@@ -36,7 +39,11 @@ public class Game {
     // RNG
     private Dice dice = new Dice(2,6);
 
-
+    /**
+     * Constructor of class Game
+     * @param noHumans - number of human players
+     * @param noAIs - number of Ai players
+     */
     public Game(int noHumans, int noAIs) {
 
         players = new ArrayList<>();
@@ -56,7 +63,10 @@ public class Game {
     }
     }
 
-
+    /**
+     * Mehtod for running turns of the game
+     * @return appropriate enum for action
+     */
     public UITip iterateGame() {
         passedGo = false;
         collectedCard = null;
@@ -94,11 +104,18 @@ public class Game {
         }
     }
 
+    /**
+     * Method responsible for pointing to player for the next turn
+     */
     public void selectNextPlayer() {
         currentPlayer = (currentPlayer + 1) % players.size();
         dice.reset();
     }
 
+    /**
+     * Method responsible for running turns
+     * @return - UITip with action
+     */
     public UITip takeTurn() {
         passedGo = false;
         Player p = getCurrentPlayer();
@@ -165,6 +182,11 @@ public class Game {
         }
     }
 
+    /**
+     * Execute action
+     * @param actionable - action
+     * @return UITip action
+     */
     private UITip executeActionable(Actionable actionable) {
 
         Action action = actionable.getAction();
@@ -252,10 +274,19 @@ public class Game {
         }
     }
 
+    /**
+     * Returns card
+     * @return cards
+     */
     public UITip executeCollectedCard() {
         return executeActionable(collectedCard);
     }
 
+    /**
+     * Returns list of properties to develop
+     * @param p instance of class player
+     * @return list of properties
+     */
     public ArrayList<PropertyTile> getDevelopProperties(Player p) {
         ArrayList<PropertyTile> out = new ArrayList<>();
 
@@ -279,6 +310,11 @@ public class Game {
         return out;
     }
 
+    /**
+     * Returns list of streets which player owns
+     * @param p instance of class player
+     * @return list of streets which player owns
+     */
     private ArrayList<Street> streetsOwnedByPlayer(Player p) {
         ArrayList<Street> streets = new ArrayList<>(Arrays.asList(Street.values()));
 
@@ -296,32 +332,56 @@ public class Game {
         return streets;
     }
 
+    /**
+     * Method for developing properties
+     * @param prop instance of class propertyTile
+     */
     public void developProperty(PropertyTile prop) {
         Player p = getCurrentPlayer();
         p.pay(prop.getStreet().getDevelopCost());
         prop.setNoHouses(prop.getNoHouses() + 1);
     }
 
+    /**
+     * Method for removing player from property
+     * @param p INstance of class player
+     */
     public void removePlayer(Player p) {
         players.remove(p);
         currentPlayer = currentPlayer % players.size();
         board.freeProperties(p);
     }
 
+    /**
+     * Returns dice
+     * @return dice
+     */
     public Dice getDice() {
         return dice;
     }
 
+    /**
+     * Getter of board
+     * @return board
+     */
     public Board getBoard() {
         return board;
     }
 
+    /**
+     * Function for buying tile
+     * @param tile instance of BuyableTile class
+     */
     public void buyTile(BuyableTile tile) {
         Player p = getCurrentPlayer();
         tile.setOwner(p);
         p.pay(tile.getCost());
     }
 
+    /**
+     * Method for leaving jail
+     * @param option instance of JailOPtion class
+     */
     public void leaveJail(JailOption option) {
         switch (option) {
             case JAILCARD:

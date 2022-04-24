@@ -10,6 +10,9 @@ import javafx.scene.text.Text;
 import model.Player.Player;
 import ui.Sizes;
 
+/**
+ * Class responsible for creaing Transfer money menu between two players
+ */
 public class TransferMoneyMenu extends Menu {
     BalanceText receivingBalance;
     BalanceText payingBalance;
