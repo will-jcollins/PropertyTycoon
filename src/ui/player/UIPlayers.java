@@ -3,17 +3,14 @@ package ui.player;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import model.Player.Player;
 import model.board.Board;
-import model.game.Game;
 import ui.Sizes;
 import ui.board.UIBoard;
 
@@ -27,7 +24,7 @@ public class UIPlayers extends Group {
 
     private static final double OPACITY = 0.5;
 
-    public static final Color[] PLAYER_COLORS = {new Color(0.58,0.67,0.59,1), Color.GRAY, Color.BLUE, Color.GREEN, Color.PINK, Color.PURPLE};
+    public static final Color[] PLAYER_COLORS = {new Color(0.58,0.67,0.59,1), new Color(0.78,0.52,0.6,1), Color.BLUE, Color.GREEN, Color.PINK, Color.PURPLE};
     public static final String[] PLAYER_IMGS = {"file:assets/images/token1.png","file:assets/images/token2.png","file:assets/images/token3.png","file:assets/images/token4.png","file:assets/images/token5.png","file:assets/images/token6.png",};
     private HashMap<Player, ImageView> tokens;
 
@@ -104,7 +101,7 @@ public class UIPlayers extends Group {
             transTransition.setByX(board.getXJailPos() - board.getXTilePos(player.getPos()));
             transTransition.setByY(board.getYJailPos() - board.getYTilePos(player.getPos()));
             seqTransition.getChildren().add(transTransition);
-        } else if (player.getTurnsInJail() == Game.TURNS_IN_JAIL) {
+        } else if (player.hasLeftJail()) {
             // Move player into jail on their first turn
             TranslateTransition transTransition = new TranslateTransition(Duration.millis(500));
             transTransition.setByX(board.getXTilePos(player.getPos()) - board.getXJailPos());

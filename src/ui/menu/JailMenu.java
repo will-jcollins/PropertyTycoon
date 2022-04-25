@@ -1,7 +1,13 @@
 package ui.menu;
 
+import javafx.geometry.HPos;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import model.Player.Player;
 import model.board.Street;
+import model.game.Game;
 import model.game.JailOption;
 import ui.Sizes;
 
@@ -13,7 +19,7 @@ public class JailMenu extends Menu {
     private boolean finished = false;
     private JailOption outcome;
 
-    public JailMenu(boolean canUseJailcard) {
+    public JailMenu(Player player) {
         super();
 
         TextButton waitButton = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.GREEN.getColor(), "WAIT");
@@ -32,23 +38,38 @@ public class JailMenu extends Menu {
                 }
         );
 
-        TextButton payButton = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.DEEPBLUE.getColor(), "PAY");
-        add(payButton,0,1);
-        payButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                    finished = true;
-                    outcome = JailOption.PAY;
-                }
-        );
+        TextButton payButton;
+        if (player.getMoney() > Game.JAIL_COST) {
+            payButton = new TextButton(Sizes.getButtonWidth(), Sizes.getButtonHeight(), Street.DEEPBLUE.getColor(), "PAY");
+            payButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                        finished = true;
+                        outcome = JailOption.PAY;
+                    }
+            );
+        } else {
+            payButton = new TextButton(Sizes.getButtonWidth(), Sizes.getButtonHeight(), Color.GRAY, "PAY");
+        }
+        add(payButton, 0, 1);
 
-        if (canUseJailcard) {
-            TextButton cardButton = new TextButton(Sizes.getButtonWidth(), Sizes.getButtonHeight(), Street.DEEPBLUE.getColor(), "USE CARD");
-            add(cardButton, 1, 1);
+        Text cost = new Text("COST: $" + Game.JAIL_COST);
+        cost.setFont(TITLE_FONT);
+        cost.setFill(Color.BLACK);
+        cost.setTextAlignment(TextAlignment.CENTER);
+        setHalignment(cost, HPos.CENTER);
+        add(cost,0,2);
+
+        TextButton cardButton;
+        if (player.hasJailCard()) {
+            cardButton = new TextButton(Sizes.getButtonWidth(), Sizes.getButtonHeight(), Street.DEEPBLUE.getColor(), "USE CARD");
             cardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                         finished = true;
                         outcome = JailOption.JAILCARD;
                     }
             );
+        } else {
+            cardButton = new TextButton(Sizes.getButtonWidth(), Sizes.getButtonHeight(), Color.GRAY, "USE CARD");
         }
+        add(cardButton, 1, 1);
     }
 
     @Override

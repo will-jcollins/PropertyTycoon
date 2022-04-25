@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
@@ -21,6 +22,7 @@ import model.board.BuyableTile;
 import model.board.PropertyTile;
 import model.game.Dice;
 import model.game.Game;
+import model.game.JailOption;
 import ui.board.UIBoard;
 import ui.menu.*;
 import ui.menu.dice.DiceMenu;
@@ -33,7 +35,7 @@ import java.util.Objects;
 /**
  * Main class responsible for starting UI game
  */
-public class UIGame extends Application {
+public class UIGame extends BorderPane {
 
     private static final int MENU_OFFSET = 50;
 
@@ -44,13 +46,13 @@ public class UIGame extends Application {
     private UIBoard board;
     private Game model;
 
-    @Override
-    public void start(Stage primaryStage) {
+    public void start() {
+        startNextIteration();
+    }
 
-        Sizes.computeSizes();
+    public UIGame(Game model) {
 
-        // Create monopoly model from options selected in menu
-        model = new Game(2,0);
+        this.model = model;
 
         // Create a board that is 9/10 the size of the screen height
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -75,18 +77,8 @@ public class UIGame extends Application {
         }
 
         // Create layout with board in center and player stats to the left
-        BorderPane root = new BorderPane(gameStack);
-        root.setLeft(statsVBox);
-
-        // Trigger game logic after UI has loaded
-        Platform.runLater(() -> startNextIteration());
-
-        // Scene & Stage setup
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setFullScreen(true);
-        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-        primaryStage.show();
+        setCenter(gameStack);
+        setLeft(statsVBox);
     }
 
     /**
@@ -257,7 +249,7 @@ public class UIGame extends Application {
             case SHOW_DICE_FOR_JAIL:
                 // Shows dice menu without moving the player
                 DiceMenu menu = new DiceMenu(model.getDice());
-                showMenu(menu,onShow -> {}, onExit -> takeTurn());
+                showMenu(menu,onShow -> {}, onExit -> createGoToJailPopUp());
                 break;
             case SHOW_GAME_OVER:
                 createGameOverPopup();
@@ -327,7 +319,7 @@ public class UIGame extends Application {
                         executeUITip(UITip.SHOW_OPPORTUNITY);
                     } else {
                         model.getCurrentPlayer().pay(10);
-                        updatePlayerStats();
+                        Platform.runLater(() -> updatePlayerStats());
                         createTurnEndPopup();
                     }
 
@@ -400,15 +392,29 @@ public class UIGame extends Application {
      * Method responsible for creating method for player which goes to jail
      */
     private void createJailPopup() {
-        JailMenu menu = new JailMenu(model.getCurrentPlayer().hasJailCard());
+        JailMenu menu = new JailMenu(model.getCurrentPlayer());
 
         showMenu(menu,
                 onShow -> {},
                 onExit -> {
                     switch (menu.getOutcome()) {
-                        case PAY:
-                        case JAILCARD:
                         case ROLL_DICE:
+                            Dice tempDice = model.rollForJail();
+                            DiceMenu diceMenu = new DiceMenu(tempDice);
+                            showMenu(diceMenu,onShow1 -> {}, onExit1 -> {
+                                if (tempDice.isDouble()) {
+                                    players.updatePlayers(model.getCurrentPlayer(),board,e -> createTurnEndPopup());
+                                } else {
+                                    startNextIteration();
+                                }
+                            });
+                            break;
+                        case JAILCARD:
+                        case PAY:
+                            model.leaveJail(menu.getOutcome());
+                            Platform.runLater(() -> updatePlayerStats());
+                            players.updatePlayers(model.getCurrentPlayer(),board,e -> createTurnEndPopup());
+                            break;
                         case WAIT:
                         default:
                             startNextIteration();
@@ -481,13 +487,5 @@ public class UIGame extends Application {
 
     private void remove(Node n) {
         gameStack.getChildren().remove(n);
-    }
-
-    /**
-     * Method responsible for launching a code
-     * @param args
-     */
-    public static void main(String[] args) {
-        launch(args);
     }
 }

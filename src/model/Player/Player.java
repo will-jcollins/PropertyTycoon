@@ -20,6 +20,7 @@ public abstract class Player {
     private int jailCards = 0;
     private boolean passedGo = true; // Whether the player has EVER passed go
     private int turnsInJail = 0;
+    private boolean leftJail = false;
 
     /**
      * Costructor of class player
@@ -148,6 +149,8 @@ public abstract class Player {
 
     public void leaveJail() {
         turnsInJail = 0;
+        pos = Game.JAIL_POS;
+        leftJail = true;
     }
 
     public boolean inJail() {
@@ -160,6 +163,14 @@ public abstract class Player {
 
     public int getTurnsInJail() {
         return turnsInJail;
+    }
+
+    public boolean hasLeftJail() {
+        return leftJail;
+    }
+
+    public void setLeftJail(boolean leftJail) {
+        this.leftJail = leftJail;
     }
 
     @Override

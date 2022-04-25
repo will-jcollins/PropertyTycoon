@@ -32,6 +32,8 @@ public class Dice {
     public int[] roll() {
         for (int i = 0; i < vals.length; i++) {
             vals[i] = rand.nextInt(range) + 1;
+            vals[0] = 1;
+            vals[1] = 1;
         }
 
         doubles = isDouble() ? (doubles + 1) : 0;
@@ -78,17 +80,6 @@ public class Dice {
 
         for (int i = 0; i < vals.length; i++) {
             vals[i] = 0;
-        }
-    }
-
-    public static void main(String[] args) {
-        Dice d = new Dice(3, 6);
-        int[] roll = d.roll();
-
-        for (int i = 0; i < 100; i++) {
-            System.out.println(Arrays.toString(roll));
-            System.out.println(d.isDouble());
-            roll = d.roll();
         }
     }
 }

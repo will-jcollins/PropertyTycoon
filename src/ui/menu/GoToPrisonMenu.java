@@ -21,29 +21,22 @@ public class GoToPrisonMenu extends Menu
     {
         super();
 
-        Text title = new Text (player.getName () + " GO TO PRISON!");
+        Text title = new Text (player.getName() + ", GO TO JAIL");
 
         title.setFont(TITLE_FONT);
         title.setFill(Color.BLACK);
         getChildren().add(title);
         setColumnIndex(title,0);
-        setColumnSpan(title,2);
         setRowIndex(title, 0);
         setHalignment(title, HPos.CENTER);
 
-        TextButton contiunue = new TextButton (Sizes.getButtonWidth (), Sizes.getButtonHeight (), Street.RED.getColor (), "CONTINUE");
-        getChildren ().add(contiunue);
-        setColumnIndex (contiunue,0);
-        setRowIndex (contiunue,1);
-        setHalignment (contiunue,HPos.CENTER);
+        TextButton contButton = new TextButton(Sizes.getButtonWidth(), Sizes.getButtonHeight(), Street.RED.getColor(), "CONTINUE");
+        getChildren().add(contButton);
+        setColumnIndex(contButton,0);
+        setRowIndex(contButton,1);
+        setHalignment(contButton,HPos.CENTER);
 
-        contiunue.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                    finished = true;
-                }
-        );
-
-        setStyle("");
-        setBackground(new Background (new BackgroundFill (Color.TRANSPARENT,null,null)));
+        contButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> finished = true);
 
     }
 
@@ -51,5 +44,10 @@ public class GoToPrisonMenu extends Menu
     public boolean isFinished()
     {
         return finished;
+    }
+
+    @Override
+    public int getEndLatency() {
+        return 0;
     }
 }
