@@ -35,8 +35,8 @@ public class GoToPrisonMenu extends Menu
         setColumnIndex(contButton,0);
         setRowIndex(contButton,1);
         setHalignment(contButton,HPos.CENTER);
-
         contButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> finished = true);
+        addOption(contButton);
 
     }
 

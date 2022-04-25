@@ -31,6 +31,7 @@ public class TurnEndMenu extends Menu {
             finished = true;
             }
         );
+        addOption(endTurn);
 
         TextButton develop = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.DEEPBLUE.getColor(), "DEVELOP");
         getChildren().add(develop);

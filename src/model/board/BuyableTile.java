@@ -38,24 +38,7 @@ public abstract class BuyableTile extends Tile {
         p.pay(-getCost());
         setOwner(p);
     }
-    /**
-     * Method manages operation of paying rent after stepping on a tile
-     * @param p Instance of class Player
-     * @param amount amount which has to be paid
-     */
-    public void payRent(Player p, int amount) {
-        p.pay(-amount);
-        System.out.println(owner);
-        owner.pay(amount);
-        System.out.println(owner);
-    }
-    /**
-     * Check if a property if available to be bough
-     * @return returns true if there is no owner
-     */
-    public boolean canBuy() {
-        return owner == null;
-    }
+
     /**
      * @return returns owner of a tile
      */

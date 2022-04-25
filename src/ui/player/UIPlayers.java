@@ -24,7 +24,12 @@ public class UIPlayers extends Group {
 
     private static final double OPACITY = 0.5;
 
-    public static final Color[] PLAYER_COLORS = {new Color(0.58,0.67,0.59,1), new Color(0.78,0.52,0.6,1), Color.BLUE, Color.GREEN, Color.PINK, Color.PURPLE};
+    public static final Color[] PLAYER_COLORS = {new Color(0.58,0.67,0.59,1),
+                                                 new Color(0.78,0.52,0.6,1),
+                                                 new Color(0.63,0.48,0.65,1),
+                                                 new Color(0.32,0.67,0.73,1),
+                                                 new Color(0.71,0.51,0.38,1),
+                                                 new Color(0.76,0.61,0.17,1)};
     public static final String[] PLAYER_IMGS = {"file:assets/images/token1.png","file:assets/images/token2.png","file:assets/images/token3.png","file:assets/images/token4.png","file:assets/images/token5.png","file:assets/images/token6.png",};
     private HashMap<Player, ImageView> tokens;
 

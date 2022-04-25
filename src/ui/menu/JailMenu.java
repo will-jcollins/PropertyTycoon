@@ -29,6 +29,7 @@ public class JailMenu extends Menu {
                     finished = true;
                 }
         );
+        addOption(waitButton);
 
         TextButton rollButton = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.DEEPBLUE.getColor(), "ROLL");
         add(rollButton,1,0);
@@ -37,6 +38,7 @@ public class JailMenu extends Menu {
                     outcome = JailOption.ROLL_DICE;
                 }
         );
+        addOption(rollButton);
 
         TextButton payButton;
         if (player.getMoney() > Game.JAIL_COST) {
@@ -46,6 +48,7 @@ public class JailMenu extends Menu {
                         outcome = JailOption.PAY;
                     }
             );
+            addOption(payButton);
         } else {
             payButton = new TextButton(Sizes.getButtonWidth(), Sizes.getButtonHeight(), Color.GRAY, "PAY");
         }
@@ -66,6 +69,7 @@ public class JailMenu extends Menu {
                         outcome = JailOption.JAILCARD;
                     }
             );
+            addOption(cardButton);
         } else {
             cardButton = new TextButton(Sizes.getButtonWidth(), Sizes.getButtonHeight(), Color.GRAY, "USE CARD");
         }

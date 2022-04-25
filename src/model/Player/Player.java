@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Class defining player
  */
-public abstract class Player {
+public class Player {
 
     private final int id;
     private final String name;
@@ -21,15 +21,18 @@ public abstract class Player {
     private boolean passedGo = true; // Whether the player has EVER passed go
     private int turnsInJail = 0;
     private boolean leftJail = false;
+    private boolean isAuto = false;
 
     /**
      * Costructor of class player
      * @param id player id
      * @param name player name
+     * @param isAuto is the player controlled autonomously
      */
-    public Player(int id, String name) {
+    public Player(int id, String name, boolean isAuto) {
         this.id = id;
         this.name = name;
+        this.isAuto = isAuto;
     }
 
     /**
@@ -171,6 +174,10 @@ public abstract class Player {
 
     public void setLeftJail(boolean leftJail) {
         this.leftJail = leftJail;
+    }
+
+    public boolean isAuto() {
+        return isAuto;
     }
 
     @Override

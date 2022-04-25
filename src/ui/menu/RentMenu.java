@@ -37,8 +37,9 @@ public class RentMenu extends Menu {
 
         BuyableCard card = new BuyableCard(tile,Sizes.getCardSize());
         getChildren().add(card);
-        setColumnIndex(card, 1);
+        setColumnIndex(card, 0);
         setRowIndex(card, 1);
+        setColumnSpan(card,3);
         setHalignment(card, HPos.CENTER);
 
         Text receivingName =  new Text(tile.getOwner().getName().toUpperCase());

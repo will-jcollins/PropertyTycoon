@@ -5,7 +5,6 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
-import model.Player.HumanPlayer;
 import model.Player.Player;
 import model.game.Game;
 
@@ -23,9 +22,12 @@ public class Window extends Application {
         Sizes.computeSizes();
 
         ArrayList<Player> players = new ArrayList<>();
-        players.add(new HumanPlayer(0, "Will"));
-        players.add(new HumanPlayer(1,"Max"));
-        players.add(new HumanPlayer(2,"Ant"));
+        players.add(new Player(0, "Will",false));
+        players.add(new Player(1,"Max",true));
+        players.add(new Player(2,"Ant",true));
+        players.add(new Player(3,"Hannah",true));
+        players.add(new Player(4,"Tom",true));
+        players.add(new Player(5,"Oliver",true));
 
         // Create monopoly model from options selected in menu
         Game model = new Game(players);

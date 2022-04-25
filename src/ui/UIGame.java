@@ -47,7 +47,10 @@ public class UIGame extends BorderPane {
     private Game model;
 
     public void start() {
-        startNextIteration();
+        UITip tip = model.iterateGame();
+        players.higlightPlayer(model.getCurrentPlayer());
+        TurnMenu menu = new TurnMenu(model.getCurrentPlayer());
+        showMenu(menu, onShow -> {}, onExit -> executeUITip(tip));
     }
 
     public UIGame(Game model) {
@@ -85,10 +88,17 @@ public class UIGame extends BorderPane {
      * Method responsible for starting next iteration
      */
     private void startNextIteration() {
-        players.dismissPlayer(model.getCurrentPlayer());
+        Player prevPlayer = model.getCurrentPlayer();
         UITip tip = model.iterateGame();
-        players.higlightPlayer(model.getCurrentPlayer());
-        executeUITip(tip);
+        Player nextPlayer = model.getCurrentPlayer();
+        players.dismissPlayer(prevPlayer);
+        players.higlightPlayer(nextPlayer);
+        if (prevPlayer.equals(nextPlayer)) {
+            executeUITip(tip);
+        } else {
+            TurnMenu menu = new TurnMenu(nextPlayer);
+            showMenu(menu, onShow -> {}, onExit -> executeUITip(tip));
+        }
     }
 
     /**
@@ -156,18 +166,16 @@ public class UIGame extends BorderPane {
      * Method responsible for creating menu for money transfer between two players
      */
     private void createTransferMoney() {
-        //Workaround for actcode interpret issue
-        if (model.getCurrentPlayer().getPrevMoney()-model.getCurrentPlayer().getMoney() !=0) {
-            TransferMoneyMenu menu = new TransferMoneyMenu(model.getCurrentPlayer(), model.isPlayerPaying(), model.getPayReason());
+        TransferMoneyMenu menu = new TransferMoneyMenu(model.getCurrentPlayer(), model.isPlayerPaying(), model.getPayReason());
 
-            showMenu(menu,
-                    onShow -> menu.startAnimation(),
-                    onExit -> {
-                        Platform.runLater(() -> updatePlayerStats());
-                        createTurnEndPopup();
-                    }
-            );
-        } else createTurnEndPopup(); }
+        showMenu(menu,
+                onShow -> menu.startAnimation(),
+                onExit -> {
+                    Platform.runLater(() -> updatePlayerStats());
+                    createTurnEndPopup();
+                }
+        );
+    }
 
     /**
      * Method responsible for creating menu for money transfer between multiple players
@@ -202,9 +210,11 @@ public class UIGame extends BorderPane {
         DevelopMenu menu = new DevelopMenu(developProperties, model.getCurrentPlayer());
 
         showMenu(menu,onShow -> {}, onExit -> {
+            // If player made a selection develop that property
             if (menu.getSelectedProperty() != null) {
                 model.developProperty(menu.getSelectedProperty());
             }
+            // Update the board and return to turn end menu
             Platform.runLater(() -> board.update());
             createTurnEndPopup();
         });
@@ -237,19 +247,21 @@ public class UIGame extends BorderPane {
     }
 
     /**
-     * Method responsible for choosing action to perform
+     * Method responsible for choosing which UI action to perform based on what happens in the model
      * @param tip different action varibles
      */
     private void executeUITip(UITip tip) {
-        System.out.println(tip);
         switch (tip) {
             case SHOW_DICE_MENU:
-                createDicePopup(model.getDice());
+                DiceMenu menu = new DiceMenu(model.getDice());
+                showMenu(menu,onShow -> {}, onExit -> {
+                    players.updatePlayers(model.getCurrentPlayer(),board,onFinish -> checkGoReward());
+                });
                 break;
             case SHOW_DICE_FOR_JAIL:
                 // Shows dice menu without moving the player
-                DiceMenu menu = new DiceMenu(model.getDice());
-                showMenu(menu,onShow -> {}, onExit -> createGoToJailPopUp());
+                DiceMenu diceMenu = new DiceMenu(model.getDice());
+                showMenu(diceMenu,onShow -> {}, onExit -> createGoToJailPopUp());
                 break;
             case SHOW_GAME_OVER:
                 createGameOverPopup();
@@ -314,7 +326,6 @@ public class UIGame extends BorderPane {
         showMenu(menu,
                 onShow -> {},
                 onExit -> {
-                    System.out.println("Create OppChoice popup");
                     if(menu.getOutcome()) {
                         executeUITip(UITip.SHOW_OPPORTUNITY);
                     } else {
@@ -324,18 +335,6 @@ public class UIGame extends BorderPane {
                     }
 
                 });
-    }
-
-    /**
-     * Method responsible for creating dice popup
-     * @param dice instance of class Dice
-     */
-    private void createDicePopup(Dice dice) {
-        DiceMenu menu = new DiceMenu(dice);
-
-        showMenu(menu,onShow -> {}, onExit -> {
-            players.updatePlayers(model.getCurrentPlayer(),board,onFinish -> checkGoReward());
-        });
     }
 
     /**
@@ -442,7 +441,13 @@ public class UIGame extends BorderPane {
         showTranslateTransition.setByY(-MENU_OFFSET);
 
         ParallelTransition showTransition = new ParallelTransition(menu,showFadeTransition,showTranslateTransition);
-        showTransition.setOnFinished(onShow);
+        showTransition.setOnFinished(e -> {
+            // If current player is AI click through automatically
+            onShow.handle(new ActionEvent());
+            if (model.getCurrentPlayer().isAuto()) {
+                menu.autoFire();
+            }
+        });
         showTransition.play();
 
         FadeTransition exitFadeTransition = new FadeTransition(Duration.millis(250),menu);
