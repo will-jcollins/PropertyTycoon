@@ -49,6 +49,7 @@ public class UIGame extends BorderPane {
     private Game model;
 
     public UIGame(Game model) {
+        Sizes.computeSizes();
 
         this.model = model;
 

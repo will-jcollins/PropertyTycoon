@@ -18,16 +18,13 @@ public class Window extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
-        Sizes.computeSizes();
-
         ArrayList<Player> players = new ArrayList<>();
-        players.add(new Player(0, "Will",false));
+        players.add(new Player(0, "Will",true));
         players.add(new Player(1,"Max",true));
-        players.add(new Player(2,"Ant",true));
-        players.add(new Player(3,"Hannah",true));
-        players.add(new Player(4,"Tom",true));
-        players.add(new Player(5,"Oliver",true));
+//        players.add(new Player(2,"Ant",true));
+//        players.add(new Player(3,"Hannah",true));
+//        players.add(new Player(4,"Tom",true));
+//        players.add(new Player(5,"Oliver",true));
 
         // Create monopoly model from options selected in menu
         Game model = new Game(players);

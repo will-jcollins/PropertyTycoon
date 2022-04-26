@@ -1,5 +1,6 @@
 package ui.startingMenu.sample;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,9 +10,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import model.Player.Player;
+import model.game.Game;
+import ui.UIGame;
 
 import javax.xml.soap.Text;
 import java.net.URL;
@@ -127,39 +132,67 @@ public class PlayerMenuController implements Initializable
      */
     public void startMenuButton(ActionEvent event)
     {
-        int value = 0;
-        for(CheckBox box : checkBoxes)
-        {
-            if(box.isSelected())
-            {
-                value++;
+
+        boolean validInput = true;
+        int checkedBoxes = 0; // Number of checkboxes that are ticked
+
+        for (int i = 0; i < checkBoxes.size(); i++) {
+            if (checkBoxes.get(i).isSelected()) {
+                checkedBoxes += 1;
             }
         }
 
-        if(value == 6)
+        for (int i = 0; i < checkedBoxes; i++) {
+            if (choiceBoxes.get(i).equals("No player")) {
+                validInput = false;
+            }
+
+            if (textFields.get(i).equals("")) {
+                validInput = false;
+            }
+        }
+
+        if (checkedBoxes < 2) {
+            validInput = false;
+        }
+
+        System.out.println(checkedBoxes);
+        System.out.println(validInput);
+
+
+        if (validInput)
         {
-            try{
+            try {
 
-                for(ChoiceBox box : choiceBoxes)
-                {
-                    playerTypes.add(box.getValue().toString());
-                }
+                ArrayList<Player> players = new ArrayList<>();
 
-                for(TextField name : textFields)
-                {
-                    playerNames.add(name.getText());
+                for (int i = 0; i < checkedBoxes; i++) {
+                    players.add(new Player(i,textFields.get(i).getText(),choiceBoxes.get(i).getValue().toString().equals("AI player")));
                 }
 
                 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("../FXML files/gameMode.fxml"));
-                Scene scene = new Scene(loader.load(),389,402 );
+                // Create monopoly model from options selected in menu
+                Game model = new Game(players);
+                UIGame root = new UIGame(model);
+
+                // Trigger game logic after UI has loaded
+                Platform.runLater(() -> root.start());
+
+                // Scene & Stage setup
+                Scene scene = new Scene(root);
                 Stage stage = new Stage();
                 stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
                 stage.show();
-                System.out.println(playerNames);
-                System.out.println(playerTypes);
+
+//                FXMLLoader loader = new FXMLLoader();
+//                loader.setLocation(getClass().getResource("../FXML files/gameMode.fxml"));
+//                Scene scene = new Scene(loader.load(),389,402 );
+//                Stage stage = new Stage();
+//                stage.setScene(scene);
+//                stage.show();
             }catch(Exception e)
             {
                 e.printStackTrace();

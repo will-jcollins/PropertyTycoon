@@ -53,9 +53,11 @@ public class  Game {
         passedGo = false;
         collectedCard = null;
 
+        // Reset player attributes used to help UI
         if (getCurrentPlayer().hasLeftJail() && !getCurrentPlayer().inJail()) {
             getCurrentPlayer().setLeftJail(false);
         }
+        getCurrentPlayer().setMovingBack(false);
 
         // Select next player if needed
         if (isPlayersLastRoll()) {
@@ -182,6 +184,8 @@ public class  Game {
             case JAIL:
                 getCurrentPlayer().sendToJail();
                 return UITip.SHOW_GOTO_JAIL_MENU;
+            case MOVEBACKTO:
+                getCurrentPlayer().setMovingBack(true);
             case MOVETO:
                 tempPlayer = players.get(currentPlayer);
                 tempPlayer.setPos(action.getVal1());
@@ -190,6 +194,8 @@ public class  Game {
                     passedGo = true;
                 }
                 return UITip.MOVE_PLAYER;
+            case MOVEBACKN:
+                getCurrentPlayer().setMovingBack(true);
             case MOVEN:
                 tempPlayer = players.get(currentPlayer);
                 int currentPos = tempPlayer.getPos();

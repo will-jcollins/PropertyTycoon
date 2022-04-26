@@ -15,7 +15,9 @@ public enum ActCode {
     FINEPAY, // Receive all the money under free parking
     PAYASSETS, // Pay money to bank as a factor of the number of houses / hotels (val1 represents factor for houses, val2 represents factor for hotels)
     MOVETO, // Move to space specified (val1 represents space to move to, val2 represents if player should collect go reward)
+    MOVEBACKTO, // Move backwards to space specified (val1 represents space to move to, val2 represents if player should collect go reward)
     MOVEN, // Move n spaces (val1 represents n, val2 represents if player should collect go reward)
+    MOVEBACKN, // Move n spaces backwards (val1 represents n, val2 represents if player should collect go reward)
     JAILCARD, // Go straight to jail (no operands)
     JAIL, // Receive a get out of jail free card (no operands)
     POTLUCK, // Receive a potluck card (no operands)

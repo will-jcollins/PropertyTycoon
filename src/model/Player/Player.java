@@ -22,6 +22,7 @@ public class Player {
     private int turnsInJail = 0;
     private boolean leftJail = false;
     private boolean isAuto;
+    private boolean movingBack = false;
 
     /**
      * Costructor of class player
@@ -178,6 +179,14 @@ public class Player {
 
     public boolean isAuto() {
         return isAuto;
+    }
+
+    public boolean isMovingBack() {
+        return movingBack;
+    }
+
+    public void setMovingBack(boolean movingBack) {
+        this.movingBack = movingBack;
     }
 
     @Override
