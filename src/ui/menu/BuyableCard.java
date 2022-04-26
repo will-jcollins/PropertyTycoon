@@ -257,7 +257,7 @@ public class BuyableCard extends Group {
             y += caption.getBoundsInLocal().getHeight();
         }
 
-        y += PADDING * 2;
+        y += PADDING;
 
         Text mortgage = new Text("Mortgage Value       $" + (utility.getCost() / 2));
         mortgage.setFont(CAPTION_FONT);

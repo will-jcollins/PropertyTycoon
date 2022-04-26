@@ -69,6 +69,7 @@ public class BuyableMenu extends Menu {
                 outcome = true;
                 finished = true;
             });
+            addOption(accept);
         } else {
             accept = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Color.GRAY, "BUY");
             Text alert = new Text("BALANCE TOO LOW");
@@ -77,6 +78,7 @@ public class BuyableMenu extends Menu {
             setColumnIndex(alert,1);
             setRowIndex(alert,4);
             setHalignment(alert,HPos.CENTER);
+            addOption(auction);
         }
 
         getChildren().add(accept);

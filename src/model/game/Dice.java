@@ -80,15 +80,4 @@ public class Dice {
             vals[i] = 0;
         }
     }
-
-    public static void main(String[] args) {
-        Dice d = new Dice(3, 6);
-        int[] roll = d.roll();
-
-        for (int i = 0; i < 100; i++) {
-            System.out.println(Arrays.toString(roll));
-            System.out.println(d.isDouble());
-            roll = d.roll();
-        }
-    }
 }

@@ -1,7 +1,9 @@
 package ui.menu.dice;
 
+import javafx.event.Event;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -63,7 +65,9 @@ public class DiceMenu extends Menu {
                 die2.animateRoll(dice.getRoll()[1]);
             }
         });
+        addOption(accept);
     }
+
     /**
      * Method checks if rolling animation is finished
      * @return true if the animation is finished, false otherwise

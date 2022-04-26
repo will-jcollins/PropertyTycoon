@@ -1,15 +1,12 @@
 package ui.menu;
 
+import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.animation.SequentialTransition;
+import javafx.application.Platform;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -76,5 +73,38 @@ public class TextButton extends Group {
             scaleTransition.setToY(1);
             scaleTransition.play();
         });
+    }
+
+    public void fire() {
+        ScaleTransition shrinkTransition = new ScaleTransition(Duration.millis(50),this);
+        shrinkTransition.setToX(0.9);
+        shrinkTransition.setToY(0.9);
+
+        ScaleTransition growTransition = new ScaleTransition(Duration.millis(50),this);
+        growTransition.setToX(1);
+        growTransition.setToY(1);
+
+        SequentialTransition sequentialTransition = new SequentialTransition(shrinkTransition,growTransition);
+        sequentialTransition.setOnFinished(e -> {
+            fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, // double x,
+                    0, // double y,
+                    0, // double screenX,
+                    0, // double screenY,
+                    MouseButton.PRIMARY, // MouseButton button,
+                    0, // int clickCount,
+                    false, // boolean shiftDown,
+                    false, // boolean controlDown,
+                    false, // boolean altDown,
+                    false, // boolean metaDown,
+                    true, // boolean primaryButtonDown,
+                    false, // boolean middleButtonDown,
+                    false, // boolean secondaryButtonDown,
+                    false, // boolean synthesized,
+                    false, // boolean popupTrigger,
+                    false, // boolean stillSincePress,
+                    null // PickResult pickResult
+            ));
+        });
+        sequentialTransition.play();
     }
 }

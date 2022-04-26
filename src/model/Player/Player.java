@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Class defining player
  */
-public abstract class Player {
+public class Player {
 
     private final int id;
     private final String name;
@@ -18,17 +18,21 @@ public abstract class Player {
     private int money = 1500;
     private int prevMoney = money;
     private int jailCards = 0;
-    private boolean passedGo = true; // Whether the player has EVER passed go
+    private boolean passedGo = false; // Whether the player has EVER passed go
     private int turnsInJail = 0;
+    private boolean leftJail = false;
+    private boolean isAuto;
 
     /**
      * Costructor of class player
      * @param id player id
      * @param name player name
+     * @param isAuto is the player controlled autonomously
      */
-    public Player(int id, String name) {
+    public Player(int id, String name, boolean isAuto) {
         this.id = id;
         this.name = name;
+        this.isAuto = isAuto;
     }
 
     /**
@@ -111,8 +115,8 @@ public abstract class Player {
      * Indicates if player has at least 1 jail card
      * @return true if player has at least 1 jail card
      */
-    public boolean hasJailCard() {
-        return jailCards > 0;
+    public int getJailCards() {
+        return jailCards;
     }
 
     /**
@@ -148,6 +152,8 @@ public abstract class Player {
 
     public void leaveJail() {
         turnsInJail = 0;
+        pos = Game.JAIL_POS;
+        leftJail = true;
     }
 
     public boolean inJail() {
@@ -160,6 +166,18 @@ public abstract class Player {
 
     public int getTurnsInJail() {
         return turnsInJail;
+    }
+
+    public boolean hasLeftJail() {
+        return leftJail;
+    }
+
+    public void setLeftJail(boolean leftJail) {
+        this.leftJail = leftJail;
+    }
+
+    public boolean isAuto() {
+        return isAuto;
     }
 
     @Override

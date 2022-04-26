@@ -27,14 +27,20 @@ public class OppChoiceMenu extends Menu {
         setMargin(title, new Insets(0, 0, PADDING * 2, 0));
         setHalignment(title, HPos.CENTER);
 
-        TextButton choosePay = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.RED.getColor(), "PAY $10");
+        TextButton choosePay;
+        if (player.getMoney() >= 10) {
+            choosePay = new TextButton(Sizes.getButtonWidth(), Sizes.getButtonHeight(), Street.RED.getColor(), "PAY $10");
+            choosePay.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                finished = true;
+                outcome = false;
+            });
+            addOption(choosePay);
+        } else {
+            choosePay = new TextButton(Sizes.getButtonWidth(), Sizes.getButtonHeight(), Color.GRAY, "PAY $10");
+        }
         getChildren().add(choosePay);
         setColumnIndex(choosePay,1);
         setRowIndex(choosePay,3);
-        choosePay.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            finished = true;
-            outcome = false;
-        });
 
         TextButton chooseOpp = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.DEEPBLUE.getColor(), "OPPORTUNITY");
         getChildren().add(chooseOpp);

@@ -1,7 +1,5 @@
 package model.game;
 
-import model.Player.AIPlayer;
-import model.Player.HumanPlayer;
 import model.Player.Player;
 import model.actions.Action;
 import model.actions.Actionable;
@@ -17,11 +15,11 @@ import java.util.Arrays;
 public class  Game {
 
     // Constants
-    public static final int TURNS_TO_JAIL = 3; // Number of doubles before being sent to jail
+    public static final int DOUBLES_TO_JAIL = 3; // Number of doubles before being sent to jail
     public static final int TURNS_IN_JAIL = 4; // Number of turns spent in jail (including the turn where player is sent to jail)
-    public static final int JAIL_COST = 300; // Amount paid to leave jail
-    public static final int GO_REWARD = 200;
-    public static final int JAIL_POS = 10;
+    public static final int JAIL_COST = 50; // Amount paid to leave jail
+    public static final int GO_REWARD = 200; // Money player receives after passing GO
+    public static final int JAIL_POS = 10; // Tile where Jail and Just Visiting are
 
     // Model
     private Board board = new Board();
@@ -41,26 +39,10 @@ public class  Game {
 
     /**
      * Constructor of class Game
-     * @param noHumans - number of human players
-     * @param noAIs - number of Ai players
+     * @param players - arraylist of human and non-human players
      */
-    public Game(int noHumans, int noAIs) {
-
-        players = new ArrayList<>();
-
-        for (int i = 0; i < noHumans; i++) {
-
-            // Testing with 2 human players
-            if (i == 0) {
-                players.add(new HumanPlayer(i, "Will"));
-            } else if (i == 1) {
-                players.add(new HumanPlayer(i, "Levi"));
-            }
-        }
-
-        for (int i = 0; i < noAIs; i++) {
-            players.add(new AIPlayer(i));
-    }
+    public Game(ArrayList<Player> players) {
+        this.players = players;
     }
 
     /**
@@ -71,8 +53,10 @@ public class  Game {
         passedGo = false;
         collectedCard = null;
 
-        System.out.println("isdouble: " + dice.isDouble());
-        System.out.println(isPlayersLastRoll());
+        if (getCurrentPlayer().hasLeftJail() && !getCurrentPlayer().inJail()) {
+            getCurrentPlayer().setLeftJail(false);
+        }
+
         // Select next player if needed
         if (isPlayersLastRoll()) {
             selectNextPlayer();
@@ -84,13 +68,14 @@ public class  Game {
             return UITip.SHOW_GAME_OVER;
         } else if (getCurrentPlayer().getTurnsInJail() >= TURNS_IN_JAIL) {
             dice.reset();
-            getCurrentPlayer().setPos(JAIL_POS);
+            getCurrentPlayer().leaveJail();
             return UITip.EXIT_JAIL;
         } else if (getCurrentPlayer().inJail()) {
             dice.reset();
             getCurrentPlayer().addTurnInJail();
             return UITip.SHOW_JAIL_MENU;
-        } else if (dice.getDoubles() == TURNS_TO_JAIL) {
+        } else if (dice.getDoubles() == DOUBLES_TO_JAIL) {
+            getCurrentPlayer().sendToJail();
             return UITip.SHOW_DICE_FOR_JAIL;
         } else {
             Player player = getCurrentPlayer();
@@ -119,17 +104,6 @@ public class  Game {
     public UITip takeTurn() {
         passedGo = false;
         Player p = getCurrentPlayer();
-
-        if (dice.getDoubles() == TURNS_TO_JAIL) {
-            getCurrentPlayer().sendToJail();
-            return UITip.SHOW_GOTO_JAIL_MENU;
-        }
-
-        // If player needs to leave jail
-        if (p.getTurnsInJail() >= TURNS_IN_JAIL) {
-            getCurrentPlayer().leaveJail();
-            return UITip.NOP;
-        }
 
         // Interact with tile landed on
         Tile tile = board.getTile(p.getPos());
@@ -380,7 +354,7 @@ public class  Game {
 
     /**
      * Method for leaving jail
-     * @param option instance of JailOPtion class
+     * @param option instance of JailOption class
      */
     public void leaveJail(JailOption option) {
         switch (option) {
@@ -390,13 +364,24 @@ public class  Game {
                 break;
             case PAY:
                 getCurrentPlayer().pay(JAIL_COST);
-            case WAIT:
+                getCurrentPlayer().leaveJail();
+                break;
             case ROLL_DICE:
                 getCurrentPlayer().leaveJail();
                 break;
+            case WAIT:
             default:
                 throw new IllegalArgumentException(option + " not enumerated in leaveJail (Game)");
         }
+    }
+
+    public Dice rollForJail() {
+        Dice tempDice = new Dice(2,6);
+        tempDice.roll();
+        if (tempDice.isDouble()) {
+            getCurrentPlayer().leaveJail();
+        }
+        return tempDice;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -429,11 +414,6 @@ public class  Game {
 
     public Card getCollectedCard() {
         return collectedCard;
-    }
-
-    public static void main(String[] args){
-        Game game = new Game(0,4);
-        game.iterateGame();
     }
 }
 
