@@ -1,4 +1,4 @@
-package ui.startingMenu;
+package ui.startingMenu.sample;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 /**
  * Class which starts the Main menu and the game
  */
-public class Main extends Application {
+public class MenuStart extends Application {
 
 
     /**
@@ -19,7 +19,7 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../assets/FXML files/mainMenu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../FXML files/mainMenu.fxml"));
         primaryStage.setTitle("Start");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../CSS%20files/playerMenu.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.PlayerMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../CSS/playerMenu.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.startingMenu.sample.PlayerMenuController">
    <children>
       <GridPane layoutX="100.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0">
         <columnConstraints>
@@ -94,7 +94,7 @@
       </GridPane>
       <Button fx:id="backutton" layoutX="55.0" layoutY="513.0" mnemonicParsing="false" onAction="#returnButton" prefHeight="50.0" prefWidth="91.0" styleClass="returnButton" />
       <Label alignment="CENTER" layoutX="325.0" layoutY="53.0" prefHeight="36.0" prefWidth="150.0" text="Player menu" />
-      <Button layoutX="651.0" layoutY="522.0" mnemonicParsing="false" onAction="#startMenuButton" prefHeight="50.0" prefWidth="130.0" styleClass="startButton" stylesheets="@../CSS%20files/playerMenu.css" text="Start game">
+      <Button layoutX="651.0" layoutY="522.0" mnemonicParsing="false" onAction="#startMenuButton" prefHeight="50.0" prefWidth="130.0" styleClass="startButton" text="Start game">
          <font>
             <Font size="10.0" />
          </font></Button>

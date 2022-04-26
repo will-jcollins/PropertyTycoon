@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" stylesheets="@../CSS%20files/timeFormatMenu.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.TimeFormatController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" stylesheets="@../CSS/timeFormatMenu.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.startingMenu.sample.TimeFormatController">
    <children>
       <GridPane layoutX="50.0" layoutY="110.0">
         <columnConstraints>
@@ -37,6 +37,6 @@
       </GridPane>
       <Label layoutX="80.0" layoutY="46.0" text="Choose time for the game" />
       <Button layoutX="107.0" layoutY="279.0" mnemonicParsing="false" onAction="#startGame" styleClass="startButton" text="Start game" />
-      <Button layoutX="23.0" layoutY="350.0" mnemonicParsing="false" onAction="#returnButton" prefHeight="27.0" prefWidth="54.0" styleClass="returnButton" stylesheets="@../CSS files/timeFormatMenu.css" />
+      <Button layoutX="23.0" layoutY="350.0" mnemonicParsing="false" onAction="#returnButton" prefHeight="27.0" prefWidth="54.0" styleClass="returnButton" />
    </children>
 </AnchorPane>

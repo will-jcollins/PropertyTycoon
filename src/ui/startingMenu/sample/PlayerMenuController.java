@@ -1,4 +1,4 @@
-package ui.startingMenu;
+package ui.startingMenu.sample;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,8 +9,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
+import javax.xml.soap.Text;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
