@@ -18,10 +18,10 @@ public class Player {
     private int money = 1500;
     private int prevMoney = money;
     private int jailCards = 0;
-    private boolean passedGo = true; // Whether the player has EVER passed go
+    private boolean passedGo = false; // Whether the player has EVER passed go
     private int turnsInJail = 0;
     private boolean leftJail = false;
-    private boolean isAuto = false;
+    private boolean isAuto;
 
     /**
      * Costructor of class player
@@ -115,8 +115,8 @@ public class Player {
      * Indicates if player has at least 1 jail card
      * @return true if player has at least 1 jail card
      */
-    public boolean hasJailCard() {
-        return jailCards > 0;
+    public int getJailCards() {
+        return jailCards;
     }
 
     /**

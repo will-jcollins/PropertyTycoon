@@ -8,12 +8,14 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -46,13 +48,6 @@ public class UIGame extends BorderPane {
     private UIBoard board;
     private Game model;
 
-    public void start() {
-        UITip tip = model.iterateGame();
-        players.higlightPlayer(model.getCurrentPlayer());
-        TurnMenu menu = new TurnMenu(model.getCurrentPlayer());
-        showMenu(menu, onShow -> {}, onExit -> executeUITip(tip));
-    }
-
     public UIGame(Game model) {
 
         this.model = model;
@@ -82,6 +77,15 @@ public class UIGame extends BorderPane {
         // Create layout with board in center and player stats to the left
         setCenter(gameStack);
         setLeft(statsVBox);
+        setPadding(new Insets(Sizes.getPadding(),Sizes.getPadding(),Sizes.getPadding(),Sizes.getPadding()));
+        setBackground(new Background(new BackgroundFill(new Color(1,0.89,0.83,0.5),null,null)));
+    }
+
+    public void start() {
+        UITip tip = model.iterateGame();
+        players.higlightPlayer(model.getCurrentPlayer());
+        TurnMenu menu = new TurnMenu(model.getCurrentPlayer());
+        showMenu(menu, onShow -> {}, onExit -> executeUITip(tip));
     }
 
     /**

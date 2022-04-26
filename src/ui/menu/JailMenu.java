@@ -62,7 +62,7 @@ public class JailMenu extends Menu {
         add(cost,0,2);
 
         TextButton cardButton;
-        if (player.hasJailCard()) {
+        if (player.getJailCards() > 0) {
             cardButton = new TextButton(Sizes.getButtonWidth(), Sizes.getButtonHeight(), Street.DEEPBLUE.getColor(), "USE CARD");
             cardButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                         finished = true;

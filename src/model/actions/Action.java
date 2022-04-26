@@ -25,7 +25,7 @@ public class Action implements Actionable {
         for (int i = 1; i < values.length; i++) {
             sb.append("|" + values[i].toString());
         }
-        String regex = "(" + sb + ")( [0-9]+)?( [0-9]+)?";
+        String regex = "(" + sb + ")( -?[0-9]+)?( -?[0-9]+)?";
 
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(in);

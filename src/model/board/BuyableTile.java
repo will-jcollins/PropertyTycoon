@@ -9,6 +9,7 @@ public abstract class BuyableTile extends Tile {
 
     private final int cost;
     private Player owner;
+    private boolean mortgaged = false;
 
     /**
      * Constructor assigns attributes from parameter
@@ -27,16 +28,6 @@ public abstract class BuyableTile extends Tile {
      */
     public int getCost() {
         return cost;
-    }
-
-    /**
-     * Method which perform buying operation as well as after buying
-     * sets ownership of a place to a player
-     * @param p Instance of class Player
-     */
-    public void buy(Player p) {
-        p.pay(-getCost());
-        setOwner(p);
     }
 
     /**
