@@ -1,8 +1,11 @@
 *{
     -fx-base: rgb(191,219,173);
 }
+
+
 .button{
     -fx-font-size: 16pt;
+
     -fx-text-fill: white;
 }
 

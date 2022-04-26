@@ -6,12 +6,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.Player.Player;
@@ -19,6 +20,7 @@ import model.game.Game;
 import ui.UIGame;
 
 import javax.xml.soap.Text;
+import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -60,6 +62,14 @@ public class PlayerMenuController implements Initializable
     @FXML public CheckBox playerBox5;
     @FXML public CheckBox playerBox6;
 
+    @FXML public Label player1;
+    @FXML public Label player2;
+    @FXML public Label player3;
+    @FXML public Label player4;
+    @FXML public Label player5;
+    @FXML public Label player6;
+
+    @FXML public Button startGameButton;
 
 
     /**
@@ -71,6 +81,7 @@ public class PlayerMenuController implements Initializable
     public ArrayList<ChoiceBox> choiceBoxes = new ArrayList<>();
     public ArrayList<TextField> textFields = new ArrayList<>();
     public ArrayList<CheckBox> checkBoxes = new ArrayList<>();
+    public ArrayList<Label> playersLabels = new ArrayList<>();
 
     private Button backButton;
 
@@ -85,6 +96,9 @@ public class PlayerMenuController implements Initializable
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
+
         choicePlayer1.getItems().addAll("Human player","AI player","No player");
         choicePlayer1.setValue("No player");
 
@@ -110,6 +124,10 @@ public class PlayerMenuController implements Initializable
         choiceBoxes.add(choicePlayer5);
         choiceBoxes.add(choicePlayer6);
 
+
+
+
+
         textFields.add(playerName1);
         textFields.add(playerName2);
         textFields.add(playerName3);
@@ -117,12 +135,25 @@ public class PlayerMenuController implements Initializable
         textFields.add(playerName5);
         textFields.add(playerName6);
 
+
+
         checkBoxes.add(playerBox1);
         checkBoxes.add(playerBox2);
         checkBoxes.add(playerBox3);
         checkBoxes.add(playerBox4);
         checkBoxes.add(playerBox5);
         checkBoxes.add(playerBox6);
+
+        playersLabels.add(player1);
+        playersLabels.add(player2);
+        playersLabels.add(player3);
+        playersLabels.add(player4);
+        playersLabels.add(player5);
+        playersLabels.add(player6);
+
+
+
+
     }
 
     /**
@@ -137,7 +168,7 @@ public class PlayerMenuController implements Initializable
         int checkedBoxes = 0; // Number of checkboxes that are ticked
 
         for (int i = 0; i < checkBoxes.size(); i++) {
-            if (checkBoxes.get(i).isSelected()) {
+            if (checkBoxes.get(i).isSelected() ) {
                 checkedBoxes += 1;
             }
         }
@@ -145,6 +176,7 @@ public class PlayerMenuController implements Initializable
         for (int i = 0; i < checkedBoxes; i++) {
             if (choiceBoxes.get(i).equals("No player")) {
                 validInput = false;
+
             }
 
             if (textFields.get(i).equals("")) {
@@ -166,9 +198,15 @@ public class PlayerMenuController implements Initializable
 
                 ArrayList<Player> players = new ArrayList<>();
 
+
+
+
+
                 for (int i = 0; i < checkedBoxes; i++) {
                     players.add(new Player(i,textFields.get(i).getText(),choiceBoxes.get(i).getValue().toString().equals("AI player")));
                 }
+
+
 
                 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 

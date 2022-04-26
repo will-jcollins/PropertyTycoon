@@ -84,17 +84,17 @@
             <CheckBox fx:id="playerBox4" mnemonicParsing="false" text="Ready" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <CheckBox fx:id="playerBox5" mnemonicParsing="false" text="Ready" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
             <CheckBox fx:id="playerBox6" mnemonicParsing="false" text="Ready" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-            <Label text="Player 1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Label text="Player 2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Label text="Player 3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-            <Label text="Player 4" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-            <Label text="Player 5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-            <Label text="Player6" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+            <Label fx:id="player1" text="Player 1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Label fx:id="player2" text="Player 2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Label fx:id="player3" text="Player 3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Label fx:id="player4" text="Player 4" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <Label fx:id="player5" text="Player 5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+            <Label fx:id="player6" text="Player6" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
       <Button fx:id="backutton" layoutX="55.0" layoutY="513.0" mnemonicParsing="false" onAction="#returnButton" prefHeight="50.0" prefWidth="91.0" styleClass="returnButton" />
-      <Label alignment="CENTER" layoutX="325.0" layoutY="53.0" prefHeight="36.0" prefWidth="150.0" text="Player menu" />
-      <Button layoutX="651.0" layoutY="522.0" mnemonicParsing="false" onAction="#startMenuButton" prefHeight="50.0" prefWidth="130.0" styleClass="startButton" text="Start game">
+      <Label fx:id="playerMenuLabel" alignment="CENTER" layoutX="325.0" layoutY="53.0" prefHeight="36.0" prefWidth="150.0" text="Player menu" />
+      <Button fx:id="startGameButton" layoutX="651.0" layoutY="522.0" mnemonicParsing="false" onAction="#startMenuButton" prefHeight="50.0" prefWidth="130.0" styleClass="startButton" text="Start game">
          <font>
             <Font size="10.0" />
          </font></Button>
