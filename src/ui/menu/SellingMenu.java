@@ -101,7 +101,7 @@ public class SellingMenu extends Menu
         return finished;
     }
 
-    public PropertyTile getSelectedProperty() {
-        return property;
+    public BuyableTile getSelectedProperty() {
+        return outcome;
     }
 }

@@ -504,8 +504,8 @@ public class UIGame extends BorderPane {
 //TODO sell menu
     private void createSellMenu()
     {
-        ArrayList<PropertyTile> sellProperties = model.getDevelopProperties(model.getCurrentPlayer());
-        SellingMenu sm = new SellingMenu(sellProperties,model.getCurrentPlayer());
+        ArrayList<BuyableTile> sellProperties = model.ownedByPlayer(model.getCurrentPlayer());
+        SellingMenu sm = new SellingMenu(sellProperties);
 
         showMenu(sm,onShow -> {}, onExit -> {
             if(sm.getSelectedProperty() != null){

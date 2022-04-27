@@ -124,7 +124,7 @@ public class UIPlayers extends Group {
                     nextPos = (nextPos - 1) <= -1 ? Board.SIZE - 1 : (nextPos - 1);
                 }
 
-                TranslateTransition transTransition = new TranslateTransition(Duration.millis(500));
+                TranslateTransition transTransition = new TranslateTransition(Duration.millis(1));
                 transTransition.setByX(board.getXTilePos(nextPos) - board.getXTilePos(prevPos));
                 transTransition.setByY(board.getYTilePos(nextPos) - board.getYTilePos(prevPos));
                 seqTransition.getChildren().add(transTransition);
