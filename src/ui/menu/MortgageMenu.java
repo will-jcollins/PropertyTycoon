@@ -40,7 +40,7 @@ public class MortgageMenu extends Menu
         root.setAlignment(Pos.CENTER);
 
         if (ownedProperties.size() <= 0) {
-            Text noDevelopTxt = new Text("NOTHING TO SELL!");
+            Text noDevelopTxt = new Text("NOTHING TO MORTGAGE!");
             noDevelopTxt.setFont(TITLE_FONT);
             root.getChildren().add(noDevelopTxt);
         }
@@ -58,7 +58,7 @@ public class MortgageMenu extends Menu
             buttonAndText.setAlignment(Pos.CENTER);
             buttonAndText.setSpacing(PADDING);
 
-            TextButton sell = new TextButton(Sizes.getButtonWidth() * 2,Sizes.getButtonHeight(),Street.GREEN.getColor(),"MORTGAGE FOR $" + buyable.getCost()/2);
+            TextButton sell = new TextButton(Sizes.getButtonWidth() * 1.5,Sizes.getButtonHeight(),Street.GREEN.getColor(),"MORTGAGE FOR $" + buyable.getCost()/2);
             sell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 outcome = buyable;
                 finished = true;
