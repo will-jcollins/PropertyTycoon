@@ -209,7 +209,7 @@ public class PlayerMenuController implements Initializable
 
                 // Create monopoly model from options selected in menu
                 Game model = new Game(players);
-                UIGame root = new UIGame(model);
+                UIGame root = new UIGame(model,-1);
 
                 // Trigger game logic after UI has loaded
                 Platform.runLater(() -> root.start());

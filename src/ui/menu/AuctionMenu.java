@@ -95,6 +95,10 @@ public class AuctionMenu extends Menu {
         buttonMap = new HashMap<>();
 
         for (Player p : players) {
+            if (p.isAuto()) {
+                continue;
+            }
+
             VBox tempVBox = new VBox();
             tempVBox.setAlignment(Pos.CENTER);
             tempVBox.setSpacing(Sizes.getPadding());
@@ -140,6 +144,12 @@ public class AuctionMenu extends Menu {
         });
         setHalignment(finishEarly,HPos.CENTER);
         add(finishEarly,0,4,2,1);
+
+        // Disable all bidding buttons before menu is shown
+        for (TextButton txtButton : buttonMap.values()) {
+            txtButton.setDisable(true);
+            txtButton.setFill(Color.GRAY);
+        }
     }
 
     public void start() {

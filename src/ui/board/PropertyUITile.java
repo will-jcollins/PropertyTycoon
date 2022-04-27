@@ -95,8 +95,8 @@ public class PropertyUITile extends UITile {
         ribbon.setOpacity(0);
         ribbon.setStroke(Color.BLACK);
         ribbon.setStrokeWidth(Sizes.getSmallStroke());
-        ribbon.toBack();
         getChildren().add(ribbon);
+        ribbon.toBack();
     }
 
     public void update() {
@@ -105,15 +105,24 @@ public class PropertyUITile extends UITile {
             houseCount.setVisible(true);
             int houses = Math.min(property.getNoHouses(),PropertyTile.MAX_NO_HOUSES - 1);
             Platform.runLater(() -> houseCount.setText(Integer.toString(houses)));
+        } else {
+            houseIcon.setVisible(false);
+            houseCount.setVisible(false);
         }
 
         if (property.getNoHouses() >= PropertyTile.MAX_NO_HOUSES) {
             hotelIcon.setVisible(true);
+        } else {
+            hotelIcon.setVisible(false);
         }
 
-        if (property.getOwner() != null && ribbon.getOpacity() < 1) {
-            ribbon.setFill(UIPlayers.PLAYER_COLORS[property.getOwner().getId()]);
-            ribbon.setOpacity(1);
+        if (property.getOwner() != null) {
+            if (ribbon.getOpacity() < 1) {
+                ribbon.setFill(UIPlayers.PLAYER_COLORS[property.getOwner().getId()]);
+                ribbon.setOpacity(1);
+            }
+        } else {
+            ribbon.setOpacity(0);
         }
     }
 }

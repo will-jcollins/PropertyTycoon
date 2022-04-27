@@ -29,8 +29,8 @@ public class AssetUITile extends ImgCostUITile {
         ribbon.setOpacity(0);
         ribbon.setStroke(Color.BLACK);
         ribbon.setStrokeWidth(Sizes.getSmallStroke());
-        ribbon.toBack();
         getChildren().add(ribbon);
+        ribbon.toBack();
     }
 
     public void update() {

@@ -7,6 +7,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.board.Street;
+import model.game.Game;
 import ui.Sizes;
 /**
  * Class responisible for building End turn menu
@@ -19,7 +20,7 @@ public class TurnEndMenu extends Menu {
     /**
      * Constructor of the TurnEndMenu class
      */
-    public TurnEndMenu() {
+    public TurnEndMenu(Game model) {
         super();
 
         TextButton endTurn = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.GREEN.getColor(), "END TURN");
@@ -45,6 +46,10 @@ public class TurnEndMenu extends Menu {
 
         setStyle("");
         setBackground(new Background(new BackgroundFill(Color.TRANSPARENT,null,null)));
+
+        if (model.getDevelopProperties(model.getCurrentPlayer()).size() > 0) {
+            addOption(develop);
+        }
     }
 
     public boolean getOutcome() {

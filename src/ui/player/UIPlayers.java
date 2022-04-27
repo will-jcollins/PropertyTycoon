@@ -159,6 +159,10 @@ public class UIPlayers extends Group {
         outFade.play();
     }
 
+    public void removePlayer(Player p) {
+        getChildren().remove(tokens.get(p));
+    }
+
     public boolean isFinished() {
         return finished;
     }

@@ -17,10 +17,8 @@ import java.util.ArrayList;
 
 public class SellingMenu extends Menu
 {
-
     private PropertyTile property;
     private boolean finished = false;
-
 
     public SellingMenu(ArrayList<PropertyTile> ownedProperties, Player p)
     {

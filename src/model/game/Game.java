@@ -6,9 +6,11 @@ import model.actions.Actionable;
 import model.board.*;
 import ui.menu.UITip;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EmptyStackException;
+import java.util.Timer;
 
 /**
  * Class for controlling game
@@ -21,7 +23,7 @@ public class  Game {
     public static final int JAIL_COST = 50; // Amount paid to leave jail
     public static final int GO_REWARD = 200; // Money player receives after passing GO
     public static final int JAIL_POS = 10; // Tile where Jail and Just Visiting are
-    public static final int AUCTION_TIME = 60; // Time given for each auction
+    public static final int AUCTION_TIME = 30; // Time given for each auction
 
     // Model
     private Board board = new Board();
@@ -30,16 +32,15 @@ public class  Game {
     private Player storedPlayer;
     private Deck potLuck = new Deck(System.getProperty("user.dir") + "/assets/jsons/PotLuck.json");
     private Deck opportunity = new Deck(System.getProperty("user.dir") + "/assets/jsons/Opportunity.json");
-    private int freeParking = 0;
-    private String payReason;
-    private boolean playerPay;
+    private int freeParking = 0; // Total fines collected
+    private String payReason; // 'Entity' player is paying for an action (purely for UI)
+    private boolean playerPay; // Whether player is paying for an action (purely for UI)
     private boolean gameOver = false;
     private boolean passedGo = false; // Whether current player passed go on this turn
     private Card collectedCard;
     private Bid maxBid;
     // RNG
     private Dice dice = new Dice(2,6);
-
     /**
      * Constructor of class Game
      * @param players - arraylist of human and non-human players

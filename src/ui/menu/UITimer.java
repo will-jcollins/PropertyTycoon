@@ -12,15 +12,15 @@ import java.util.concurrent.TimeUnit;
 
 public class UITimer extends Text {
 
-    private int secondsLeft;
+    private long secondsLeft;
     private boolean finished = false; // Whether timer has started
 
     protected static final Font FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontHeading());
 
-    public UITimer(int seconds) {
+    public UITimer(long seconds) {
         this.secondsLeft = seconds;
         setFont(FONT);
-        setText(formatInt(secondsLeft / 60) + ":" + formatInt(secondsLeft % 60));
+        setText(formatNum(secondsLeft / 60) + ":" + formatNum(secondsLeft % 60));
     }
 
     public void start() {
@@ -42,11 +42,11 @@ public class UITimer extends Text {
     }
 
     private void updateText() {
-        Platform.runLater(() -> setText(formatInt(secondsLeft / 60) + ":" + formatInt(secondsLeft % 60)));
+        Platform.runLater(() -> setText(formatNum(secondsLeft / 60) + ":" + formatNum(secondsLeft % 60)));
     }
 
-    private String formatInt(int n) {
+    private String formatNum(long n) {
         // Adds a zero in front of number if there is only 1 digit
-        return Integer.toString(n).length()==1 ? "0" + n : Integer.toString(n);
+        return Long.toString(n).length()==1 ? "0" + n : Long.toString(n);
     }
 }

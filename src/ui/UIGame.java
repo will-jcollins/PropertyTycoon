@@ -48,7 +48,9 @@ public class UIGame extends BorderPane {
     private UIBoard board;
     private Game model;
 
-    public UIGame(Game model) {
+    private UITimer timer;
+
+    public UIGame(Game model, long gameLength) {
         Sizes.computeSizes();
 
         this.model = model;
@@ -75,6 +77,11 @@ public class UIGame extends BorderPane {
             statsVBox.getChildren().add(stats);
         }
 
+        if (gameLength > 0) {
+            timer = new UITimer(gameLength);
+            statsVBox.getChildren().add(timer);
+        }
+
         // Create layout with board in center and player stats to the left
         setCenter(gameStack);
         setLeft(statsVBox);
@@ -83,6 +90,9 @@ public class UIGame extends BorderPane {
     }
 
     public void start() {
+        if (timer != null) {
+            timer.start();
+        }
         UITip tip = model.iterateGame();
         players.higlightPlayer(model.getCurrentPlayer());
         TurnMenu menu = new TurnMenu(model.getCurrentPlayer());
@@ -93,16 +103,34 @@ public class UIGame extends BorderPane {
      * Method responsible for starting next iteration
      */
     private void startNextIteration() {
-        Player prevPlayer = model.getCurrentPlayer();
-        UITip tip = model.iterateGame();
-        Player nextPlayer = model.getCurrentPlayer();
-        players.dismissPlayer(prevPlayer);
-        players.higlightPlayer(nextPlayer);
-        if (prevPlayer.equals(nextPlayer)) {
-            executeUITip(tip);
+        if (timer != null) {
+            if (timer.isFinished()) {
+                createGameOverPopup();
+            } else {
+                Player prevPlayer = model.getCurrentPlayer();
+                UITip tip = model.iterateGame();
+                Player nextPlayer = model.getCurrentPlayer();
+                players.dismissPlayer(prevPlayer);
+                players.higlightPlayer(nextPlayer);
+                if (prevPlayer.equals(nextPlayer)) {
+                    executeUITip(tip);
+                } else {
+                    TurnMenu menu = new TurnMenu(nextPlayer);
+                    showMenu(menu, onShow -> {}, onExit -> executeUITip(tip));
+                }
+            }
         } else {
-            TurnMenu menu = new TurnMenu(nextPlayer);
-            showMenu(menu, onShow -> {}, onExit -> executeUITip(tip));
+            Player prevPlayer = model.getCurrentPlayer();
+            UITip tip = model.iterateGame();
+            Player nextPlayer = model.getCurrentPlayer();
+            players.dismissPlayer(prevPlayer);
+            players.higlightPlayer(nextPlayer);
+            if (prevPlayer.equals(nextPlayer)) {
+                executeUITip(tip);
+            } else {
+                TurnMenu menu = new TurnMenu(nextPlayer);
+                showMenu(menu, onShow -> {}, onExit -> executeUITip(tip));
+            }
         }
     }
 
@@ -115,11 +143,10 @@ public class UIGame extends BorderPane {
         showMenu(menu,
                 onShow -> {},
                 onExit -> {
-                    if (menu.isFinished()) {
-                        model.removePlayer(model.getCurrentPlayer()); {
-                            startNextIteration();
-                        }
-                    };
+                    players.removePlayer(model.getCurrentPlayer());
+                    model.removePlayer(model.getCurrentPlayer()); {
+                        startNextIteration();
+                    }
                 });
     }
 
@@ -150,7 +177,7 @@ public class UIGame extends BorderPane {
      */
     private void createTurnEndPopup() {
         if (model.isPlayersLastRoll()) {
-            TurnEndMenu menu = new TurnEndMenu();
+            TurnEndMenu menu = new TurnEndMenu(model);
 
             showMenu(menu,
                     onShow -> {
@@ -362,13 +389,18 @@ public class UIGame extends BorderPane {
                     model.startAuction();
                     auctionMenu.start();
                 }, onExit1 -> {
-                    AuctionWonMenu wonMenu = new AuctionWonMenu(model.getMaxBid().getPlayer());
-                    showMenu(wonMenu,onShow -> {},onExit2 -> {
-                        model.actOnAuction();
-                        Platform.runLater(() -> updatePlayerStats());
-                        Platform.runLater(() -> board.update());
+                    if (model.getMaxBid() != null) {
+                        AuctionWonMenu wonMenu = new AuctionWonMenu(model.getMaxBid().getPlayer());
+                        showMenu(wonMenu, onShow -> {
+                        }, onExit2 -> {
+                            model.actOnAuction();
+                            Platform.runLater(() -> updatePlayerStats());
+                            Platform.runLater(() -> board.update());
+                            createTurnEndPopup();
+                        });
+                    } else {
                         createTurnEndPopup();
-                    });
+                    }
                 });
             }
             Platform.runLater(() -> updatePlayerStats());
