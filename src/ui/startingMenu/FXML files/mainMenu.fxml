@@ -24,7 +24,7 @@
          <children>
             <Button fx:id="startButton" mnemonicParsing="false" onAction="#mainMenuButton" prefHeight="45.0" prefWidth="177.0" styleClass="startButton" text="Start" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Button fx:id="rulesButton" mnemonicParsing="false" onAction="#rulesMenuButton" prefHeight="45.0" prefWidth="177.0" styleClass="rulesButton" text="Rules" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onAction="#settingsMenuButton" prefHeight="45.0" prefWidth="177.0" styleClass="settingsButton" text="Settings" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#settingsMenuButton" prefHeight="45.0" prefWidth="177.0" styleClass="settingsButton" text="Settings" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
       <ImageView fitHeight="200.0" fitWidth="100.0" layoutX="50.0" layoutY="99.0">
@@ -37,7 +37,7 @@
             <Image url="@../images/tycoonPart1-removebg-preview.png" />
          </image>
       </ImageView>
-      <Label alignment="CENTER" layoutX="190.0" layoutY="54.0" prefHeight="45.0" prefWidth="220.0" text="Property Tycoon">
+      <Label fx:id="startLabel" alignment="CENTER" layoutX="190.0" layoutY="54.0" prefHeight="45.0" prefWidth="220.0" text="Property Tycoon">
          <font>
             <Font size="24.0" />
          </font>
