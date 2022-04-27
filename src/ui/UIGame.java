@@ -138,14 +138,21 @@ public class UIGame extends BorderPane {
      * Method responsible for creating bunkrupt popup menu
      */
     private void createBankruptPopup() {
-        BankruptMenu menu = new BankruptMenu(model.getCurrentPlayer());
+        BankruptMenu menu = new BankruptMenu(model);
 
         showMenu(menu,
                 onShow -> {},
                 onExit -> {
-                    players.removePlayer(model.getCurrentPlayer());
-                    model.removePlayer(model.getCurrentPlayer()); {
+                    if (menu.didConcede()) {
+                        players.removePlayer(model.getCurrentPlayer());
+                        model.removePlayer(model.getCurrentPlayer());
                         startNextIteration();
+                    } else {
+                        if (model.getCurrentPlayer().getMoney() > 0) {
+                            startNextIteration();
+                        } else {
+                            createBankruptPopup();
+                        }
                     }
                 });
     }

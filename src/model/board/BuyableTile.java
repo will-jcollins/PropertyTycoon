@@ -44,6 +44,14 @@ public abstract class BuyableTile extends Tile {
         this.owner = owner;
     }
 
+    public boolean isMortgaged() {
+        return mortgaged;
+    }
+
+    public void setMortgaged(boolean mortgaged) {
+        this.mortgaged = mortgaged;
+    }
+
     @Override
     public UITile getUITile(int x, int y, int width, int height, int angle) {
         return new AssetUITile(x,y,width,height,angle,this);

@@ -144,10 +144,15 @@ public class Board {
             if (tile instanceof BuyableTile) {
                 BuyableTile buyable = (BuyableTile) tile;
 
-                if (buyable.getOwner() == p) {
-                    buyable.setOwner(null);
-                }
+                freeProperty(buyable);
             }
+        }
+    }
+
+    public void freeProperty(BuyableTile buyable) {
+        if (buyable.getOwner() != null) {
+            buyable.setOwner(null);
+            buyable.setMortgaged(false);
         }
     }
 

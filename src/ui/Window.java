@@ -25,7 +25,7 @@ public class Window extends Application {
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Player(0, "Will",true));
         players.add(new Player(1,"Max",true));
-        players.add(new Player(2,"Ant",true));
+//        players.add(new Player(2,"Ant",true));
 //        players.add(new Player(3,"Hannah",true));
 //        players.add(new Player(4,"Tom",true));
 //        players.add(new Player(5,"Oliver",true));

@@ -15,7 +15,7 @@ public class Player {
     private final String name;
     private int pos = 0; // Player position
     private int prevPos = 0;
-    private int money = 200;
+    private int money = 5;
     private int prevMoney = money;
     private int jailCards = 0;
     private boolean passedGo = true; // Whether the player has EVER passed go
@@ -34,6 +34,10 @@ public class Player {
         this.id = id;
         this.name = name;
         this.isAuto = isAuto;
+
+        if (name.equals("Max")) {
+            money = 10000;
+        }
     }
 
     /**

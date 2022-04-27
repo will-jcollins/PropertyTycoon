@@ -492,9 +492,46 @@ public class  Game {
         return !dice.isDouble() || getCurrentPlayer().inJail();
     }
 
+    /**
+     * Returns a list of the properties, utilities and stations
+     * Owned by the player passed
+     * @param p player who's owned properties, utilities and stations are returned
+     * @return List of player's owned properties, utilities and stations
+     */
+    public ArrayList<BuyableTile> ownedByPlayer(Player p) {
+        ArrayList<BuyableTile> playerBuyables = new ArrayList<>();
+
+        for (int i = 0; i < Board.SIZE; i++) {
+            if (board.getTile(i) instanceof BuyableTile) {
+                BuyableTile tile = (BuyableTile) board.getTile(i);
+                if (tile.getOwner() != null) {
+                    if (tile.getOwner().equals(p)) {
+                        playerBuyables.add(tile);
+                    }
+                }
+            }
+        }
+
+        return playerBuyables;
+    }
+
     public boolean isPlayerPaying() { return playerPay; }
 
     public String getPayReason() { return payReason; }
+
+    public void sellBuyable(BuyableTile buyable) {
+        if (buyable.getOwner() != null) {
+            buyable.getOwner().pay(-buyable.getCost());
+            board.freeProperty(buyable);
+        }
+    }
+
+    public void mortgageBuyable(BuyableTile buyable) {
+        if (buyable.getOwner() != null) {
+            buyable.getOwner().pay(-buyable.getCost() / 2);
+            buyable.setMortgaged(true);
+        }
+    }
 
     public Card getCollectedCard() {
         return collectedCard;
