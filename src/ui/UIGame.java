@@ -356,15 +356,19 @@ public class UIGame extends BorderPane {
                 model.buyTile((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()));
                 createTurnEndPopup();
             } else {
+                // Show auction menu if property was not purchased
                 AuctionMenu auctionMenu = new AuctionMenu(model);
                 showMenu(auctionMenu,onShow -> {
                     model.startAuction();
                     auctionMenu.start();
                 }, onExit1 -> {
-                    model.actOnAuction();
-                    Platform.runLater(() -> updatePlayerStats());
-                    Platform.runLater(() -> board.update());
-                    createTurnEndPopup();
+                    AuctionWonMenu wonMenu = new AuctionWonMenu(model.getMaxBid().getPlayer());
+                    showMenu(wonMenu,onShow -> {},onExit2 -> {
+                        model.actOnAuction();
+                        Platform.runLater(() -> updatePlayerStats());
+                        Platform.runLater(() -> board.update());
+                        createTurnEndPopup();
+                    });
                 });
             }
             Platform.runLater(() -> updatePlayerStats());
@@ -412,6 +416,7 @@ public class UIGame extends BorderPane {
                 onExit -> {
                     switch (menu.getOutcome()) {
                         case ROLL_DICE:
+                            // Create DiceMenu and leave jail if dices are double
                             Dice tempDice = model.rollForJail();
                             DiceMenu diceMenu = new DiceMenu(tempDice);
                             showMenu(diceMenu,onShow1 -> {}, onExit1 -> {
@@ -439,14 +444,16 @@ public class UIGame extends BorderPane {
     /**
      * Method responsible for showing menu
      * @param menu menu instance
-     * @param onShow stating EventHandler
+     * @param onShow starting EventHandler
      * @param onExit exit EventHandler
      */
     private void showMenu(Menu menu, EventHandler onShow, EventHandler onExit) {
+        // Add menu to be visible on gameStack (StackPane)
         menu.setOpacity(0);
         gameStack.getChildren().add(menu);
         menu.setTranslateY(menu.getTranslateY() + MENU_OFFSET);
 
+        // Create open and close animations
         FadeTransition showFadeTransition = new FadeTransition(Duration.millis(250),menu);
         showFadeTransition.setFromValue(0);
         showFadeTransition.setToValue(1);
@@ -477,6 +484,7 @@ public class UIGame extends BorderPane {
             onExit.handle(new ActionEvent());
         });
 
+        // Listen for change in finish value and close when set to true
         Task exitTask = new Task() {
             @Override
             protected Object call() throws Exception {
@@ -497,6 +505,7 @@ public class UIGame extends BorderPane {
 
     /**
      * Method responsible for updating player stats
+     * (Sidebar menu with each player's information)
      */
     private void updatePlayerStats() {
         for (PlayerStats stats : playerStats) {

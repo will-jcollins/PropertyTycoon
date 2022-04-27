@@ -1,6 +1,5 @@
 package ui.menu;
 
-import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
@@ -19,10 +18,8 @@ import ui.Sizes;
 import ui.player.UIPlayers;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class AuctionMenu extends Menu {
@@ -30,6 +27,7 @@ public class AuctionMenu extends Menu {
     private UITimer timer;
     private Text maxBid;
     private Map<Player,TextButton> buttonMap;
+    private boolean finished = false;
 
     public AuctionMenu(Game model) {
         BuyableCard card = new BuyableCard((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()), Sizes.getCardSize());
@@ -66,8 +64,8 @@ public class AuctionMenu extends Menu {
             }
 
             // If input is less than current bid, disable all bid buttons
-            if (model.getHighestBid() != null && bidField.getText().length() > 0) {
-                if (model.getHighestBid().getAmount() > Integer.parseInt(bidField.getText())) {
+            if (model.getMaxBid() != null && bidField.getText().length() > 0) {
+                if (model.getMaxBid().getAmount() >= Integer.parseInt(bidField.getText())) {
                     for (TextButton txtButton : buttonMap.values()) {
                         txtButton.setDisable(true);
                         txtButton.setFill(Color.GRAY);
@@ -76,9 +74,10 @@ public class AuctionMenu extends Menu {
             }
 
             // Gray out and disable buttons for players that can't afford input bid
+            // (does not allow player to bankrupt themselves)
             if (bidField.getText().length() > 0) {
                 for (Player p : buttonMap.keySet()) {
-                    if (p.getMoney() < Integer.parseInt(bidField.getText())) {
+                    if (p.getMoney() <= Integer.parseInt(bidField.getText())) {
                         buttonMap.get(p).setDisable(true);
                         buttonMap.get(p).setFill(Color.GRAY);
                     }
@@ -102,7 +101,7 @@ public class AuctionMenu extends Menu {
 
             HBox tempHBox = new HBox();
             tempHBox.setAlignment(Pos.CENTER);
-            tempHBox.setSpacing(Sizes.getPadding());
+            tempHBox.setSpacing(Sizes.getPadding() / 2);
 
             ImageView tempToken = new ImageView(UIPlayers.PLAYER_IMGS[p.getId()]);
             tempToken.setFitWidth(Sizes.getTokenSize());
@@ -118,9 +117,14 @@ public class AuctionMenu extends Menu {
             TextButton bidButton = new TextButton(Sizes.getButtonWidth() / 2,Sizes.getButtonHeight(), Street.GREEN.getColor(),"BID");
             bidButton.addEventHandler(MouseEvent.MOUSE_CLICKED,e -> {
                 if (model.addBid(new Bid(p,Integer.parseInt(bidField.getText())))) {
-                    maxBid.setText(model.getHighestBid().getPlayer().getName().toUpperCase() + "BID: $" + model.getHighestBid().getAmount());
+                    maxBid.setText(model.getMaxBid().getPlayer().getName().toUpperCase() + "'S BID: $" + model.getMaxBid().getAmount());
                 }
                 bidField.setText("");
+                // Reset all buttons to be disabled
+                for (TextButton txtButton : buttonMap.values()) {
+                    txtButton.setDisable(true);
+                    txtButton.setFill(Color.GRAY);
+                }
             });
             tempVBox.getChildren().add(bidButton);
             buttonMap.put(p,bidButton);
@@ -129,6 +133,13 @@ public class AuctionMenu extends Menu {
         }
 
         add(bidButtons,0,3,2,1);
+
+        TextButton finishEarly = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(),Street.RED.getColor(), "FINISH");
+        finishEarly.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            finished = true;
+        });
+        setHalignment(finishEarly,HPos.CENTER);
+        add(finishEarly,0,4,2,1);
     }
 
     public void start() {
@@ -142,6 +153,6 @@ public class AuctionMenu extends Menu {
 
     @Override
     public boolean isFinished() {
-        return timer.isFinished();
+        return timer.isFinished() || finished;
     }
 }

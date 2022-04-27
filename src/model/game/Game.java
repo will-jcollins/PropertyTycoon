@@ -9,7 +9,6 @@ import ui.menu.UITip;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EmptyStackException;
-import java.util.Stack;
 
 /**
  * Class for controlling game
@@ -37,7 +36,7 @@ public class  Game {
     private boolean gameOver = false;
     private boolean passedGo = false; // Whether current player passed go on this turn
     private Card collectedCard;
-    private Stack<Bid> auctionBids;
+    private Bid maxBid;
     // RNG
     private Dice dice = new Dice(2,6);
 
@@ -405,7 +404,7 @@ public class  Game {
     }
 
     public void startAuction() {
-        auctionBids = new Stack<>();
+        maxBid = null;
     }
 
     /**
@@ -419,18 +418,18 @@ public class  Game {
             return false;
         }
 
-        if (auctionBids.size() <= 0) {
-            // If there are no bids yet bid must be valid
-            auctionBids.add(bid);
-            return true;
-        } else if (auctionBids.peek().getAmount() < bid.getAmount()) {
-            // If bid amount is greater than current bid
-            auctionBids.add(bid);
-            return true;
+        // If bid amount is greater than current bid, bid is valid
+        if (maxBid != null) {
+            if (maxBid.getAmount() < bid.getAmount()) {
+                maxBid = bid;
+                return true;
+            }
         } else {
-            // Otherwise, bid is invalid
-            return false;
+            maxBid = bid;
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -439,25 +438,17 @@ public class  Game {
      * @return null if no valid bid was made, otherwise player who made last successful bid
      */
     public Player actOnAuction() {
-        if (auctionBids.peek() != null) {
+        if (maxBid != null) {
             // Buy tile and return player who won auction
-            buyTile((BuyableTile) board.getTile(getCurrentPlayer().getPos()),getHighestBid().getPlayer(),getHighestBid().getAmount());
-            return auctionBids.pop().getPlayer();
+            buyTile((BuyableTile) board.getTile(getCurrentPlayer().getPos()), getMaxBid().getPlayer(), maxBid.getAmount());
+            return maxBid.getPlayer();
         } else {
             return null;
         }
     }
 
-    public Bid getHighestBid() {
-        if (auctionBids != null) {
-            try {
-                return auctionBids.peek();
-            } catch (EmptyStackException e) {
-                return null;
-            }
-        } else {
-            return null;
-        }
+    public Bid getMaxBid() {
+        return maxBid;
     }
 
     public ArrayList<Player> getPlayers() {
