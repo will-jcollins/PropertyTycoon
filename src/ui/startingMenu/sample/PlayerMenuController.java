@@ -76,18 +76,13 @@ public class PlayerMenuController implements Initializable
      * ArrayLists of values from choiceBoxes and textFields
      */
 
-    public ArrayList<String> playerTypes = new ArrayList<>();
-    public ArrayList<String> playerNames = new ArrayList<>();
     public ArrayList<ChoiceBox> choiceBoxes = new ArrayList<>();
     public ArrayList<TextField> textFields = new ArrayList<>();
     public ArrayList<CheckBox> checkBoxes = new ArrayList<>();
     public ArrayList<Label> playersLabels = new ArrayList<>();
 
     private Button backButton;
-
-
-
-
+    private static ArrayList<Player> players;
 
     /**
      * Function from Initializable interface, used to put input into choiceBoxes
@@ -192,7 +187,7 @@ public class PlayerMenuController implements Initializable
         {
             try {
 
-                ArrayList<Player> players = new ArrayList<>();
+                players = new ArrayList<>();
 
 
 
@@ -207,27 +202,12 @@ public class PlayerMenuController implements Initializable
 
                 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
-                // Create monopoly model from options selected in menu
-                Game model = new Game(players);
-                UIGame root = new UIGame(model,-1);
-
-                // Trigger game logic after UI has loaded
-                Platform.runLater(() -> root.start());
-
-                // Scene & Stage setup
-                Scene scene = new Scene(root);
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("../FXML files/gameMode.fxml"));
+                Scene scene = new Scene(loader.load(),389,402 );
                 Stage stage = new Stage();
                 stage.setScene(scene);
-                stage.setFullScreen(true);
-                stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
                 stage.show();
-
-//                FXMLLoader loader = new FXMLLoader();
-//                loader.setLocation(getClass().getResource("../FXML files/gameMode.fxml"));
-//                Scene scene = new Scene(loader.load(),389,402 );
-//                Stage stage = new Stage();
-//                stage.setScene(scene);
-//                stage.show();
             }catch(Exception e)
             {
                 e.printStackTrace();
@@ -278,5 +258,9 @@ public class PlayerMenuController implements Initializable
 
 
 
+    }
+
+    public static ArrayList<Player> getPlayers() {
+        return players;
     }
 }
