@@ -517,10 +517,22 @@ public class  Game {
         return playerBuyables;
     }
 
+    /**
+     * Returns playing player
+     * @return returns playing player
+     */
     public boolean isPlayerPaying() { return playerPay; }
 
+    /**
+     * returns pay reason
+     * @return pay reason
+     */
     public String getPayReason() { return payReason; }
 
+    /**
+     * Method for selling the property
+     * @param buyable the property for selling
+     */
     public void sellBuyable(BuyableTile buyable) {
         if (buyable.getOwner() != null) {
             buyable.getOwner().pay(-buyable.getCost());
@@ -528,6 +540,10 @@ public class  Game {
         }
     }
 
+    /**
+     * Mehtod for mortgaging a property
+     * @param buyable the property for mortgage
+     */
     public void mortgageBuyable(BuyableTile buyable) {
         if (buyable.getOwner() != null) {
             buyable.getOwner().pay(-buyable.getCost() / 2);

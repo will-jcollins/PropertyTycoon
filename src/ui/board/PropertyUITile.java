@@ -19,6 +19,9 @@ import ui.player.UIPlayers;
 
 import java.security.acl.Owner;
 
+/**
+ * Class describing UITile which is a property
+ */
 public class PropertyUITile extends UITile {
 
     private static final String HOUSE_PATH = "file:assets/images/house.png";
@@ -32,6 +35,15 @@ public class PropertyUITile extends UITile {
     private Polygon ribbon;
     private PropertyTile property;
 
+    /**
+     * Constructor of PropertyUITile class
+     * @param x x value
+     * @param y y value
+     * @param width width value
+     * @param height height value
+     * @param angle angile value
+     * @param property property
+     */
     public PropertyUITile(int x, int y, double width, double height, double angle, PropertyTile property) {
         super(x, y, width, height, angle);
 

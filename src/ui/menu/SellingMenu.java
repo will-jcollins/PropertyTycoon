@@ -15,12 +15,19 @@ import ui.Sizes;
 
 import java.util.ArrayList;
 
+/**
+ * Class decribing selling menu
+ */
 public class SellingMenu extends Menu
 {
     private BuyableTile outcome;
     protected boolean finished = false;
     protected TextButton exitButton;
 
+    /**
+     * Constructor of SellingMenu class
+     * @param ownedProperties arrayLists of propeerties owned by a player
+     */
     public SellingMenu(ArrayList<BuyableTile> ownedProperties)
     {
         super();

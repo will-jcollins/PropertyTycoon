@@ -490,18 +490,18 @@ public class UIGame extends BorderPane {
     {
         ArrayList<PropertyTile> mortageProperties = model.getDevelopProperties(model.getCurrentPlayer());
         MortgageMenu mm = new MortgageMenu(mortageProperties,model.getCurrentPlayer());
-//TODO morgage menu
+
         showMenu(mm,onShow -> {}, onExit -> {
             // If player made a selection develop that property
             if (mm.getSelectedProperty() != null) {
-                //model.sellMortgageProperty(mm.getSelectedProperty());
+                model.mortgageBuyable(mm.getSelectedProperty());
             }
             // Update the board and return to turn end menu
             Platform.runLater(() -> board.update());
             createTurnEndPopup();
         });
     }
-//TODO sell menu
+
     private void createSellMenu()
     {
         ArrayList<BuyableTile> sellProperties = model.ownedByPlayer(model.getCurrentPlayer());
@@ -509,7 +509,7 @@ public class UIGame extends BorderPane {
 
         showMenu(sm,onShow -> {}, onExit -> {
             if(sm.getSelectedProperty() != null){
-                //model.sellBuyable(sm.getSelectedProperty());
+                model.sellBuyable(sm.getSelectedProperty());
             }
             Platform.runLater(() -> board.update());
             createTurnEndPopup();

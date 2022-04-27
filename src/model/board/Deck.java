@@ -11,6 +11,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
+/**
+ * class representing a deck of potluck cards
+ */
 public class Deck {
     private static final Random random = new Random();
     private LinkedList<Card> deck;
@@ -46,7 +49,10 @@ public class Deck {
         Collections.shuffle(deck);
     }
 
-
+    /**
+     * Method returns the top card on the deck of cards and puts it at the bottom
+     * @return top card from the deck
+     */
     public Card draw() {
         // Return top card and place a copy to the bottom
         deck.offer(deck.peek());
