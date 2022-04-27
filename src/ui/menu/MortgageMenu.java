@@ -9,7 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.Player.Player;
-import model.board.PropertyTile;
+import model.board.BuyableTile;
 import model.board.Street;
 import ui.Sizes;
 
@@ -17,11 +17,11 @@ import java.util.ArrayList;
 
 public class MortgageMenu extends Menu
 {
-    private PropertyTile property;
-    private boolean finished = false;
+    private BuyableTile outcome;
+    protected boolean finished = false;
+    protected TextButton exitButton;
 
-
-    public MortgageMenu(ArrayList<PropertyTile> ownedProperties, Player p)
+    public MortgageMenu(ArrayList<BuyableTile> ownedProperties)
     {
         super();
         ScrollPane scrollView = new ScrollPane();
@@ -42,26 +42,28 @@ public class MortgageMenu extends Menu
             root.getChildren().add(noDevelopTxt);
         }
 
-        for(PropertyTile prop: ownedProperties)
+        for (BuyableTile buyable: ownedProperties)
         {
             HBox row = new HBox();
             row.setAlignment(Pos.CENTER);
             row.setSpacing(PADDING);
 
-            BuyableCard card = new BuyableCard(prop,Sizes.getCardSize());
+            BuyableCard card = new BuyableCard(buyable,Sizes.getCardSize());
             row.getChildren().add(card);
 
             VBox buttonAndText = new VBox();
             buttonAndText.setAlignment(Pos.CENTER);
             buttonAndText.setSpacing(PADDING);
 
-            TextButton sell = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.GREEN.getColor(),"SELL FOR " + String.valueOf(prop.getCost()/2));
+            TextButton sell = new TextButton(Sizes.getButtonWidth() * 2,Sizes.getButtonHeight(),Street.GREEN.getColor(),"MORTGAGE FOR $" + buyable.getCost()/2);
             sell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                property = prop;
+                outcome = buyable;
                 finished = true;
             });
             buttonAndText.getChildren().add(sell);
 
+            row.getChildren().add(buttonAndText);
+            root.getChildren().add(row);
         }
 
         scrollView.setContent(root);
@@ -71,9 +73,9 @@ public class MortgageMenu extends Menu
         setColumnSpan(scrollView,2);
         setRowSpan(scrollView,2);
 
-        TextButton exitButton = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.RED.getColor(), "CANCEL");
+        exitButton = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.RED.getColor(), "CANCEL");
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            property = null;
+            outcome = null;
             finished = true;
         });
 
@@ -83,6 +85,10 @@ public class MortgageMenu extends Menu
         setRowSpan(exitButton,2);
         setHalignment(exitButton, HPos.CENTER);
         setValignment(exitButton, VPos.CENTER);
+    }
+
+    public BuyableTile getOutcome() {
+        return outcome;
     }
 
     @Override
@@ -95,9 +101,7 @@ public class MortgageMenu extends Menu
         return finished;
     }
 
-    public PropertyTile getSelectedProperty() {
-        return property;
+    public BuyableTile getSelectedProperty() {
+        return outcome;
     }
 }
-
-

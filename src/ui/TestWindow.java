@@ -13,7 +13,7 @@ import ui.menu.UITimer;
 
 import java.util.ArrayList;
 
-public class Window extends Application {
+public class TestWindow extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -23,7 +23,7 @@ public class Window extends Application {
     public void start(Stage primaryStage) {
         Sizes.computeSizes();
         ArrayList<Player> players = new ArrayList<>();
-        players.add(new Player(0, "Will",true));
+        players.add(new Player(0, "Will",false));
         players.add(new Player(1,"Max",true));
 //        players.add(new Player(2,"Ant",true));
 //        players.add(new Player(3,"Hannah",true));

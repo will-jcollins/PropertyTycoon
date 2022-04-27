@@ -123,7 +123,7 @@ public class  Game {
             if (buyable.getOwner() == null) {
                 // If player has passed go, give them opportunity to buy, otherwise don't
                 return p.hasPassedGo() ? UITip.SHOW_BUY_BUYABLE : UITip.NOP;
-            } else if (!buyable.getOwner().equals(getCurrentPlayer()) && !buyable.getOwner().inJail()) {
+            } else if (!buyable.getOwner().equals(getCurrentPlayer()) && !buyable.getOwner().inJail() && !buyable.isMortgaged()) {
                 int rentToPay;
                 // Calculate the amount of rent to pay based on tile type
                 if (tile instanceof PropertyTile) {

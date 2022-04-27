@@ -55,7 +55,7 @@ public class SellingMenu extends Menu
             buttonAndText.setAlignment(Pos.CENTER);
             buttonAndText.setSpacing(PADDING);
 
-            TextButton sell = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(),Street.GREEN.getColor(),"SELL FOR " + buyable.getCost()/2);
+            TextButton sell = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(),Street.GREEN.getColor(),"SELL FOR $" + buyable.getCost());
             sell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 outcome = buyable;
                 finished = true;

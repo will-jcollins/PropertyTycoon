@@ -2,22 +2,16 @@ package ui.menu;
 
 import javafx.geometry.HPos;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import model.Player.Player;
 import model.board.Street;
 import model.game.Game;
 import ui.Sizes;
 
-import java.util.Locale;
-
 /**
  * Class for creating Bankrupt menu
  */
-public class BankruptMenu extends SellingMenu {
+public class BankruptMenu extends MortgageMenu {
 
     private boolean concede = false;
 
