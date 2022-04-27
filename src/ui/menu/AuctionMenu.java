@@ -57,10 +57,17 @@ public class AuctionMenu extends Menu {
                 bidField.setText(oldValue);
             }
 
-            // Reset all buttons to be enabled
-            for (TextButton txtButton : buttonMap.values()) {
-                txtButton.setDisable(false);
-                txtButton.setFill(Street.GREEN.getColor());
+            // Reset all buttons to be enabled if bid field is not empty
+            if (!bidField.getText().isEmpty()) {
+                for (TextButton txtButton : buttonMap.values()) {
+                    txtButton.setDisable(false);
+                    txtButton.setFill(Street.GREEN.getColor());
+                }
+            } else {
+                for (TextButton txtButton : buttonMap.values()) {
+                    txtButton.setDisable(true);
+                    txtButton.setFill(Color.GRAY);
+                }
             }
 
             // If input is less than current bid, disable all bid buttons
@@ -91,6 +98,7 @@ public class AuctionMenu extends Menu {
         bidButtons.setSpacing(Sizes.getPadding());
 
         ArrayList<Player> players = new ArrayList<>(model.getPlayers());
+        players.remove(model.getCurrentPlayer());
 
         buttonMap = new HashMap<>();
 

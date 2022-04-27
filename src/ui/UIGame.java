@@ -3,7 +3,6 @@ package ui;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -11,22 +10,15 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Player.Player;
 import model.board.BuyableTile;
 import model.board.PropertyTile;
-import model.board.Street;
 import model.game.Dice;
 import model.game.Game;
-import model.game.JailOption;
 import ui.board.UIBoard;
 import ui.menu.*;
 import ui.menu.dice.DiceMenu;
@@ -142,13 +134,18 @@ public class UIGame extends BorderPane {
         BankruptMenu menu = new BankruptMenu(model);
 
         showMenu(menu,
-                onShow -> {},
+                onShow -> {Platform.runLater(() -> updatePlayerStats());},
                 onExit -> {
                     if (menu.didConcede()) {
-                        players.removePlayer(model.getCurrentPlayer());
                         model.removePlayer(model.getCurrentPlayer());
+                        players.removePlayer(model.getCurrentPlayer());
+                        Platform.runLater(() -> board.update());
+                        Platform.runLater(() -> updatePlayerStats());
                         startNextIteration();
                     } else {
+                        model.sellBuyable(menu.getSelectedProperty());
+                        Platform.runLater(() -> board.update());
+                        Platform.runLater(() -> updatePlayerStats());
                         if (model.getCurrentPlayer().getMoney() > 0) {
                             startNextIteration();
                         } else {
@@ -322,10 +319,10 @@ public class UIGame extends BorderPane {
                 createBankruptPopup();
                 break;
             case SHOW_OPPORTUNITY:
-                createCardPopup("OPPORTUNITY",model.getCollectedCard().getText());
+                createCardPopup("OPPORTUNITY KNOCK",model.getCollectedCard().getText());
                 break;
             case SHOW_POTLUCK:
-                createCardPopup("POTLUCK",model.getCollectedCard().getText());
+                createCardPopup("POT LUCK",model.getCollectedCard().getText());
                 break;
             case SHOW_JAIL_MENU:
                 createJailPopup();
@@ -361,7 +358,7 @@ public class UIGame extends BorderPane {
      */
     private void createCardPopup(String title, String description) {
         CardMenu menu = new CardMenu(title,description);
-        showMenu(menu, onShow -> {}, onExit -> executeUITip(model.executeCollectedCard()));
+        showMenu(menu, onShow -> updatePlayerStats(), onExit -> executeUITip(model.executeCollectedCard()));
     }
 
     /**
@@ -488,16 +485,15 @@ public class UIGame extends BorderPane {
 
     private void createMortgageMenu()
     {
-        ArrayList<PropertyTile> mortageProperties = model.getDevelopProperties(model.getCurrentPlayer());
-        MortgageMenu mm = new MortgageMenu(mortageProperties,model.getCurrentPlayer());
+        ArrayList<BuyableTile> mortageProperties = model.ownedByPlayer(model.getCurrentPlayer());
+        MortgageMenu mm = new MortgageMenu(mortageProperties);
 
         showMenu(mm,onShow -> {}, onExit -> {
-            // If player made a selection develop that property
             if (mm.getSelectedProperty() != null) {
                 model.mortgageBuyable(mm.getSelectedProperty());
             }
-            // Update the board and return to turn end menu
             Platform.runLater(() -> board.update());
+            Platform.runLater(() -> updatePlayerStats());
             createTurnEndPopup();
         });
     }
@@ -505,13 +501,14 @@ public class UIGame extends BorderPane {
     private void createSellMenu()
     {
         ArrayList<BuyableTile> sellProperties = model.ownedByPlayer(model.getCurrentPlayer());
-        SellingMenu sm = new SellingMenu(sellProperties);
+        MortgageMenu sm = new MortgageMenu(sellProperties);
 
         showMenu(sm,onShow -> {}, onExit -> {
-            if(sm.getSelectedProperty() != null){
+            if (sm.getSelectedProperty() != null) {
                 model.sellBuyable(sm.getSelectedProperty());
             }
             Platform.runLater(() -> board.update());
+            Platform.runLater(() -> updatePlayerStats());
             createTurnEndPopup();
         });
     }

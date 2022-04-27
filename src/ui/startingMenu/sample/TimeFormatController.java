@@ -1,12 +1,16 @@
 package ui.startingMenu.sample;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+import model.game.Game;
+import ui.UIGame;
 
 
 /**
@@ -51,10 +55,23 @@ public class TimeFormatController
         else{
             hour = Integer.valueOf(hours);
             minute = Integer.valueOf(minutes);
-            System.out.println(hour);
-            System.out.println(minute);
 
-            //TODO Add start game function
+            // Create monopoly model from options selected in menu
+            Game model = new Game(PlayerMenuController.getPlayers());
+            UIGame root = new UIGame(model,hour * 60 * 60 + minute * 60);
+
+            // Trigger game logic after UI has loaded
+            Platform.runLater(() -> root.start());
+
+            ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+
+            // Scene & Stage setup
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setFullScreen(true);
+            stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+            stage.show();
         }
 
 
