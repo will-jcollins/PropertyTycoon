@@ -464,6 +464,8 @@ public class  Game {
         }
     }
 
+
+
     public Bid getMaxBid() {
         return maxBid;
     }

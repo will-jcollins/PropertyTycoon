@@ -9,19 +9,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.Player.Player;
-import model.board.BuyableTile;
+import model.board.PropertyTile;
 import model.board.Street;
 import ui.Sizes;
 
 import java.util.ArrayList;
 
-public class SellingMenu extends Menu
+public class MortgageMenu extends Menu
 {
-    private BuyableTile outcome;
-    protected boolean finished = false;
-    protected TextButton exitButton;
+    private PropertyTile property;
+    private boolean finished = false;
 
-    public SellingMenu(ArrayList<BuyableTile> ownedProperties)
+
+    public MortgageMenu(ArrayList<PropertyTile> ownedProperties, Player p)
     {
         super();
         ScrollPane scrollView = new ScrollPane();
@@ -42,28 +42,26 @@ public class SellingMenu extends Menu
             root.getChildren().add(noDevelopTxt);
         }
 
-        for (BuyableTile buyable: ownedProperties)
+        for(PropertyTile prop: ownedProperties)
         {
             HBox row = new HBox();
             row.setAlignment(Pos.CENTER);
             row.setSpacing(PADDING);
 
-            BuyableCard card = new BuyableCard(buyable,Sizes.getCardSize());
+            BuyableCard card = new BuyableCard(prop,Sizes.getCardSize());
             row.getChildren().add(card);
 
             VBox buttonAndText = new VBox();
             buttonAndText.setAlignment(Pos.CENTER);
             buttonAndText.setSpacing(PADDING);
 
-            TextButton sell = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(),Street.GREEN.getColor(),"SELL FOR " + buyable.getCost()/2);
+            TextButton sell = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.GREEN.getColor(),"SELL FOR " + String.valueOf(prop.getCost()/2));
             sell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                outcome = buyable;
+                property = prop;
                 finished = true;
             });
             buttonAndText.getChildren().add(sell);
 
-            row.getChildren().add(buttonAndText);
-            root.getChildren().add(row);
         }
 
         scrollView.setContent(root);
@@ -73,9 +71,9 @@ public class SellingMenu extends Menu
         setColumnSpan(scrollView,2);
         setRowSpan(scrollView,2);
 
-        exitButton = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.RED.getColor(), "CANCEL");
+        TextButton exitButton = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.RED.getColor(), "CANCEL");
         exitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            outcome = null;
+            property = null;
             finished = true;
         });
 
@@ -85,10 +83,6 @@ public class SellingMenu extends Menu
         setRowSpan(exitButton,2);
         setHalignment(exitButton, HPos.CENTER);
         setValignment(exitButton, VPos.CENTER);
-    }
-
-    public BuyableTile getOutcome() {
-        return outcome;
     }
 
     @Override
@@ -105,3 +99,5 @@ public class SellingMenu extends Menu
         return property;
     }
 }
+
+
