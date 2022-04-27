@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
@@ -22,6 +23,7 @@ import javafx.util.Duration;
 import model.Player.Player;
 import model.board.BuyableTile;
 import model.board.PropertyTile;
+import model.board.Street;
 import model.game.Dice;
 import model.game.Game;
 import model.game.JailOption;
@@ -76,7 +78,6 @@ public class UIGame extends BorderPane {
             playerStats.add(stats);
             statsVBox.getChildren().add(stats);
         }
-
         if (gameLength > 0) {
             timer = new UITimer(gameLength);
             statsVBox.getChildren().add(timer);
@@ -183,10 +184,15 @@ public class UIGame extends BorderPane {
                     onShow -> {
                     },
                     onExit -> {
-                        if (menu.getOutcome()) {
+                        if (menu.getOutcome() == 0) {
                             startNextIteration();
-                        } else {
+                        } else if(menu.getOutcome() == 1){
                             createDevelopPopup();
+                        }else if(menu.getOutcome() == 2){
+                            createMortgageMenu();
+                        }
+                        else{
+                            createSellMenu();
                         }
                     });
         } else {
@@ -471,6 +477,36 @@ public class UIGame extends BorderPane {
                     }
                 }
         );
+    }
+
+    private void createMortgageMenu()
+    {
+        ArrayList<PropertyTile> mortageProperties = model.getDevelopProperties(model.getCurrentPlayer());
+        MortgageMenu mm = new MortgageMenu(mortageProperties,model.getCurrentPlayer());
+//TODO morgage menu
+        showMenu(mm,onShow -> {}, onExit -> {
+            // If player made a selection develop that property
+            if (mm.getSelectedProperty() != null) {
+                //model.sellMortgageProperty(mm.getSelectedProperty());
+            }
+            // Update the board and return to turn end menu
+            Platform.runLater(() -> board.update());
+            createTurnEndPopup();
+        });
+    }
+//TODO sell menu
+    private void createSellMenu()
+    {
+        ArrayList<PropertyTile> sellProperties = model.getDevelopProperties(model.getCurrentPlayer());
+        SellingMenu sm = new SellingMenu(sellProperties,model.getCurrentPlayer());
+
+        showMenu(sm,onShow -> {}, onExit -> {
+            if(sm.getSelectedProperty() != null){
+                //model.sellBuyable(sm.getSelectedProperty());
+            }
+            Platform.runLater(() -> board.update());
+            createTurnEndPopup();
+        });
     }
 
     /**

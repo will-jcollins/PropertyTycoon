@@ -94,6 +94,10 @@ public class MortgageMenu extends Menu
     public boolean isFinished() {
         return finished;
     }
+
+    public PropertyTile getSelectedProperty() {
+        return property;
+    }
 }
 
 

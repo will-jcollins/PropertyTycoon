@@ -54,7 +54,7 @@ public class SellingMenu extends Menu
             buttonAndText.setAlignment(Pos.CENTER);
             buttonAndText.setSpacing(PADDING);
 
-            TextButton sell = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(),Street.GREEN.getColor(),"SELL FOR " + String.valueOf(prop.getCost()/2));
+            TextButton sell = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(),Street.GREEN.getColor(),"SELL FOR " + String.valueOf(prop.getCost()));
             sell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 property = prop;
                 finished = true;
@@ -92,5 +92,9 @@ public class SellingMenu extends Menu
     @Override
     public boolean isFinished() {
         return finished;
+    }
+
+    public PropertyTile getSelectedProperty() {
+        return property;
     }
 }
