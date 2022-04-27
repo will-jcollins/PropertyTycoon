@@ -7,10 +7,7 @@ import model.board.*;
 import ui.menu.UITip;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EmptyStackException;
-import java.util.Timer;
+import java.util.*;
 
 /**
  * Class for controlling game
@@ -549,6 +546,46 @@ public class  Game {
             buyable.getOwner().pay(-buyable.getCost() / 2);
             buyable.setMortgaged(true);
         }
+    }
+    public int calculateValueOfAssets(Player p)
+    {
+        ArrayList<PropertyTile> props = new ArrayList<>();
+        for (Street street : streetsOwnedByPlayer(p))
+        {
+            props = board.getStreetTiles(street);
+        }
+        int value = 0;
+        for(PropertyTile tile: props)
+        {
+
+            if(!tile.isMortgaged())
+            {
+                value += tile.getCost() / 2;
+            }
+            else{
+                value += tile.getCost();
+            }
+        }
+        return value;
+    }
+
+    public Player getWinnerOfTime()
+    {
+        ArrayList<Integer> values = new ArrayList<>();
+        for(Player p: players)
+        {
+            values.add(calculateValueOfAssets(p));
+        }
+        int max = Collections.max(values);
+        int index = 0;
+        for(int i  = 0; i < values.size();i++)
+        {
+            if(values.get(i) == max)
+            {
+                index = i;
+            }
+        }
+        return players.get(index);
     }
 
     public Card getCollectedCard() {
