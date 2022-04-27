@@ -24,6 +24,7 @@ public class TextButton extends Group {
 
     private static final Font FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontHeading());
 
+    private Rectangle back;
     private Text buttonText;
 
     /**
@@ -36,7 +37,7 @@ public class TextButton extends Group {
     public TextButton(double width, double height, Color color, String text) {
         super();
 
-        Rectangle back = new Rectangle();
+        back = new Rectangle();
         back.setWidth(width);
         back.setHeight(height);
         back.setFill(color);
@@ -73,6 +74,10 @@ public class TextButton extends Group {
             scaleTransition.setToY(1);
             scaleTransition.play();
         });
+    }
+
+    public void setFill(Color c) {
+        back.setFill(c);
     }
 
     public void fire() {

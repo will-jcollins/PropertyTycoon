@@ -240,6 +240,7 @@ public class UIGame extends BorderPane {
             showMenu(menu,
                     onShow -> menu.startAnimation(),
                     onExit -> {
+                        updatePlayerStats();
                         createTurnEndPopup();
                     });
         } else {
@@ -355,8 +356,16 @@ public class UIGame extends BorderPane {
                 model.buyTile((BuyableTile) model.getBoard().getTile(model.getCurrentPlayer().getPos()));
                 createTurnEndPopup();
             } else {
-                // TODO :: Trigger Auction menu
-                createTurnEndPopup(); // Remove once auction menu implemented
+                AuctionMenu auctionMenu = new AuctionMenu(model);
+                showMenu(auctionMenu,onShow -> {
+                    model.startAuction();
+                    auctionMenu.start();
+                }, onExit1 -> {
+                    model.actOnAuction();
+                    Platform.runLater(() -> updatePlayerStats());
+                    Platform.runLater(() -> board.update());
+                    createTurnEndPopup();
+                });
             }
             Platform.runLater(() -> updatePlayerStats());
             Platform.runLater(() -> board.update());

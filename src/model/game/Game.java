@@ -8,6 +8,8 @@ import ui.menu.UITip;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EmptyStackException;
+import java.util.Stack;
 
 /**
  * Class for controlling game
@@ -20,6 +22,7 @@ public class  Game {
     public static final int JAIL_COST = 50; // Amount paid to leave jail
     public static final int GO_REWARD = 200; // Money player receives after passing GO
     public static final int JAIL_POS = 10; // Tile where Jail and Just Visiting are
+    public static final int AUCTION_TIME = 60; // Time given for each auction
 
     // Model
     private Board board = new Board();
@@ -34,6 +37,7 @@ public class  Game {
     private boolean gameOver = false;
     private boolean passedGo = false; // Whether current player passed go on this turn
     private Card collectedCard;
+    private Stack<Bid> auctionBids;
     // RNG
     private Dice dice = new Dice(2,6);
 
@@ -190,18 +194,25 @@ public class  Game {
                 tempPlayer = players.get(currentPlayer);
                 tempPlayer.setPos(action.getVal1());
                 if (tempPlayer.getPos() < tempPlayer.getPrevPos() && action.getVal2() == 1) {
-                    tempPlayer.pay(GO_REWARD * action.getVal2());
+                    tempPlayer.pay(-GO_REWARD);
                     passedGo = true;
                 }
                 return UITip.MOVE_PLAYER;
             case MOVEBACKN:
                 getCurrentPlayer().setMovingBack(true);
+                tempPlayer = players.get(currentPlayer);
+                tempPlayer.setPos(tempPlayer.getPos() - action.getVal1());
+                if (tempPlayer.getPos() < tempPlayer.getPrevPos() && action.getVal2() == 1){
+                    tempPlayer.pay(-GO_REWARD);
+                    passedGo = true;
+                }
+                return UITip.MOVE_PLAYER;
             case MOVEN:
                 tempPlayer = players.get(currentPlayer);
                 int currentPos = tempPlayer.getPos();
                 tempPlayer.setPos(currentPos + action.getVal1());
                 if (tempPlayer.getPos() < tempPlayer.getPrevPos() && action.getVal2() == 1){
-                    tempPlayer.pay(GO_REWARD * action.getVal2());
+                    tempPlayer.pay(-GO_REWARD);
                     passedGo = true;
                 }
                 return UITip.MOVE_PLAYER;
@@ -324,7 +335,7 @@ public class  Game {
 
     /**
      * Method for removing player from property
-     * @param p INstance of class player
+     * @param p Instance of class player
      */
     public void removePlayer(Player p) {
         players.remove(p);
@@ -349,13 +360,16 @@ public class  Game {
     }
 
     /**
-     * Function for buying tile
+     * Purchases the tile current player is on in for current player
      * @param tile instance of BuyableTile class
      */
     public void buyTile(BuyableTile tile) {
-        Player p = getCurrentPlayer();
-        tile.setOwner(p);
-        p.pay(tile.getCost());
+        buyTile(tile,getCurrentPlayer(),tile.getCost());
+    }
+
+    private void buyTile(BuyableTile tile, Player player, int cost) {
+        tile.setOwner(player);
+        player.pay(cost);
     }
 
     /**
@@ -388,6 +402,62 @@ public class  Game {
             getCurrentPlayer().leaveJail();
         }
         return tempDice;
+    }
+
+    public void startAuction() {
+        auctionBids = new Stack<>();
+    }
+
+    /**
+     * Adds a bid to the auction, returns true if bid is valid, false otherwise
+     * @param bid bid being made
+     * @return boolean indicating if bid was valid
+     */
+    public boolean addBid(Bid bid) {
+        // Invalid bid if less than zero
+        if (bid.getAmount() <= 0) {
+            return false;
+        }
+
+        if (auctionBids.size() <= 0) {
+            // If there are no bids yet bid must be valid
+            auctionBids.add(bid);
+            return true;
+        } else if (auctionBids.peek().getAmount() < bid.getAmount()) {
+            // If bid amount is greater than current bid
+            auctionBids.add(bid);
+            return true;
+        } else {
+            // Otherwise, bid is invalid
+            return false;
+        }
+    }
+
+    /**
+     * Uses data gathered in auction to either purchase property for
+     * highest bidder or do nothing if no bids were made
+     * @return null if no valid bid was made, otherwise player who made last successful bid
+     */
+    public Player actOnAuction() {
+        if (auctionBids.peek() != null) {
+            // Buy tile and return player who won auction
+            buyTile((BuyableTile) board.getTile(getCurrentPlayer().getPos()),getHighestBid().getPlayer(),getHighestBid().getAmount());
+            return auctionBids.pop().getPlayer();
+        } else {
+            return null;
+        }
+    }
+
+    public Bid getHighestBid() {
+        if (auctionBids != null) {
+            try {
+                return auctionBids.peek();
+            } catch (EmptyStackException e) {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     public ArrayList<Player> getPlayers() {

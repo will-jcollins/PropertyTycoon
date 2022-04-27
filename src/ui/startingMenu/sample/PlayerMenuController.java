@@ -156,10 +156,6 @@ public class PlayerMenuController implements Initializable
             validInput = false;
         }
 
-        System.out.println(checkedBoxes);
-        System.out.println(validInput);
-
-
         if (validInput)
         {
             try {
@@ -167,7 +163,8 @@ public class PlayerMenuController implements Initializable
                 ArrayList<Player> players = new ArrayList<>();
 
                 for (int i = 0; i < checkedBoxes; i++) {
-                    players.add(new Player(i,textFields.get(i).getText(),choiceBoxes.get(i).getValue().toString().equals("AI player")));
+                    boolean isAi = choiceBoxes.get(i).getValue().toString().equals("AI player");
+                    players.add(new Player(i,textFields.get(i).getText(),isAi));
                 }
 
                 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
