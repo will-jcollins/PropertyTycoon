@@ -9,6 +9,9 @@ import model.Player.Player;
 import ui.Sizes;
 import ui.player.UIPlayers;
 
+/**
+ * Class for menu if a player win the auction
+ */
 public class AuctionWonMenu extends Menu {
 
     public AuctionWonMenu(Player player) {

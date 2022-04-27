@@ -10,6 +10,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Class making Timer for the UI game, time mode
+ */
 public class UITimer extends Text {
 
     private long secondsLeft;

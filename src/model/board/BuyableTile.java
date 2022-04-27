@@ -44,10 +44,18 @@ public abstract class BuyableTile extends Tile {
         this.owner = owner;
     }
 
+    /**
+     * Checks if the property is mortgaged
+     * @return
+     */
     public boolean isMortgaged() {
         return mortgaged;
     }
 
+    /**
+     * Changes value of mortgaged boolean
+     * @param mortgaged
+     */
     public void setMortgaged(boolean mortgaged) {
         this.mortgaged = mortgaged;
     }

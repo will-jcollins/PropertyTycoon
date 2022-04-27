@@ -15,6 +15,9 @@ import ui.Sizes;
 
 import java.util.ArrayList;
 
+/**
+ * Class describing mortgage menu
+ */
 public class MortgageMenu extends Menu
 {
     private BuyableTile outcome;

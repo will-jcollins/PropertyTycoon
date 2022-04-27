@@ -7,6 +7,9 @@ import model.Player.Player;
 import ui.Sizes;
 import ui.player.UIPlayers;
 
+/**
+ * Class describing turn menu
+ */
 public class TurnMenu extends Menu {
 
     public TurnMenu(Player player) {

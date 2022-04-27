@@ -5,6 +5,9 @@ import javafx.geometry.Pos;
 import javafx.scene.text.Text;
 import model.board.Card;
 
+/**
+ * Class describing card menu
+ */
 public class CardMenu extends Menu {
 
     public CardMenu(String title, String description) {

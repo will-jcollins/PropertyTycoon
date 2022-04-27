@@ -20,6 +20,15 @@ public class AssetUITile extends ImgCostUITile {
     private BuyableTile asset;
     private OwnerRibbon ribbon;
 
+    /**
+     * Constructor of AssetUITile class
+     * @param x position x
+     * @param y position y
+     * @param width width value
+     * @param height height value
+     * @param angle angile value
+     * @param tile title of the card
+     */
     public AssetUITile(int x, int y, double width, double height, double angle, BuyableTile tile) {
         super(x, y, width, height, angle, tile.getName(),tile.getCost(),(tile instanceof StationTile) ? STATIONIMGPATH : UTILITYIMGPATH);
 
@@ -32,7 +41,6 @@ public class AssetUITile extends ImgCostUITile {
         getChildren().add(ribbon);
         ribbon.toBack();
     }
-
     public void update() {
         if (asset.getOwner() != null && ribbon.getOpacity() < 1) {
             ribbon.setFill(UIPlayers.PLAYER_COLORS[asset.getOwner().getId()]);
