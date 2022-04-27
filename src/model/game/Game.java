@@ -68,6 +68,11 @@ public class  Game {
             selectNextPlayer();
         }
 
+        // Check for bankruptcy from other player's turn
+        if (getCurrentPlayer().getMoney() < 0) {
+            return UITip.SHOW_BANKRUPT;
+        }
+
         dice.roll();
 
         if (players.size() < 2) {
@@ -142,13 +147,13 @@ public class  Game {
                     throw new IllegalStateException("Case for buyable tile not enumerated");
                 }
 
-                // If rent to be paid exceeds player's current money, player is bankrupt
-                if (rentToPay > getCurrentPlayer().getMoney()) {
-                    return UITip.SHOW_BANKRUPT;
-                }
-
                 getCurrentPlayer().pay(rentToPay);
                 buyable.getOwner().pay(-rentToPay);
+
+                // Check for bankruptcy
+                if (getCurrentPlayer().getMoney() < 0) {
+                    return UITip.SHOW_BANKRUPT;
+                }
 
                 return UITip.SHOW_RENT_PAY;
             } else {
@@ -184,6 +189,10 @@ public class  Game {
                 getCurrentPlayer().pay(action.getVal1());
                 payReason = "BANK";
                 playerPay = true;
+                // Check for bankruptcy
+                if (getCurrentPlayer().getMoney() < 0) {
+                    return UITip.SHOW_BANKRUPT;
+                }
                 return UITip.SHOW_TRANSFERMONEY;
             case JAIL:
                 getCurrentPlayer().sendToJail();
@@ -222,6 +231,9 @@ public class  Game {
                     tempPlayer.pay(action.getVal1() * board.getNoHouses(tempPlayer) + action.getVal2() * board.getNoHotels(tempPlayer));
                     payReason = "BANK";
                     playerPay = true;
+                    if (getCurrentPlayer().getMoney() < 0) {
+                        return UITip.SHOW_BANKRUPT;
+                    }
                     return UITip.SHOW_TRANSFERMONEY;
                 }
                 return UITip.NOP;
@@ -230,6 +242,10 @@ public class  Game {
                 freeParking += action.getVal1();
                 payReason = "TAX";
                 playerPay = true;
+                // Check for bankruptcy
+                if (getCurrentPlayer().getMoney() < 0) {
+                    return UITip.SHOW_BANKRUPT;
+                }
                 return UITip.SHOW_TRANSFERMONEY;
             case FINEPAY:
                 if (freeParking != 0) {

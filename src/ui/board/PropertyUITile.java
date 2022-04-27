@@ -28,11 +28,8 @@ public class PropertyUITile extends UITile {
 
     private ImageView houseIcon;
     private Text houseCount;
-
     private ImageView hotelIcon;
-
     private Polygon ribbon;
-
     private PropertyTile property;
 
     public PropertyUITile(int x, int y, double width, double height, double angle, PropertyTile property) {
