@@ -606,15 +606,5 @@ public class UIGame extends BorderPane {
 
     private void quit() {
         ((Stage) getScene().getWindow()).close();
-
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle("Start");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
