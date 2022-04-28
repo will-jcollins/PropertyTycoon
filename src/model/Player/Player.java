@@ -18,7 +18,7 @@ public class Player {
     private int money = 1500;
     private int prevMoney = money;
     private int jailCards = 0;
-    private boolean passedGo = true; // Whether the player has EVER passed go
+    private boolean passedGo = false; // Whether the player has EVER passed go
     private int turnsInJail = 0;
     private boolean leftJail = false;
     private boolean isAuto;

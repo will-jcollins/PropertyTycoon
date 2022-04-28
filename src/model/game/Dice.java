@@ -26,8 +26,8 @@ public class Dice {
         rand = new Random();
     }
     /**
-     * Function resposible for rolling the dice
-     * @return array of rolled values
+     * Generates n random numbers within the range passed in constructor
+     * @return resulting array of random values
      */
     public int[] roll() {
         for (int i = 0; i < vals.length; i++) {
@@ -40,20 +40,21 @@ public class Dice {
     }
 
     /**
-     * getter
-     * @return array of values - vals
+     * Provides an array of values for the last roll
+     * @return array of random values
      */
     public int[] getRoll() {
         return vals;
     }
 
     /**
-     * Add all values in vals
-     * @return sum of elements in val
+     * Add all values from last roll
+     * @return sum of values from last roll
      */
     public int getRollTotal() {
         return Arrays.stream(vals).sum();
     }
+
     /**
      * Checks if the dice roll is a double
      * @return true if it is a double, false otherwise
@@ -69,10 +70,18 @@ public class Dice {
         return true;
     }
 
+    /**
+     * Returns number of times a double has been rolled since last time
+     * Dice was reset
+     * @return n times double has been rolled by this dice
+     */
     public int getDoubles() {
         return doubles;
     }
 
+    /**
+     * Resets number of doubles to zero and clears last roll
+     */
     public void reset() {
         doubles = 0;
 

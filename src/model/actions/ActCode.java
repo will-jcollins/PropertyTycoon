@@ -7,7 +7,7 @@ import java.util.Locale;
  * Signifies to game which procedure to do for cards and certain tiles
  */
 public enum ActCode {
-    COLLECTALL, //Recive money from everyone (val1 represents the money everyone pays)
+    COLLECTALL, // Recive money from everyone (val1 represents the money everyone pays)
     BANKPAY, // Recieve money from bank (val1 represents money player receives)
     PAYBANK, // Pay money to bank (val1 represents money player pays)
     PAYFINEOROPP, // Place money under free parking or pick up oppurtunity knock (val1 represents money player pays)

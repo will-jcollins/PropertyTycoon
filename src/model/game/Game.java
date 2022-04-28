@@ -24,19 +24,16 @@ public class  Game {
     // Model
     private Board board = new Board();
     private ArrayList<Player> players;
-    private int currentPlayer = 0;
-    private Player storedPlayer;
+    private int currentPlayer = 0; // Index of current selected player in player list
     private Deck potLuck = new Deck(System.getProperty("user.dir") + "/assets/jsons/PotLuck.json");
     private Deck opportunity = new Deck(System.getProperty("user.dir") + "/assets/jsons/Opportunity.json");
     private int freeParking = 0; // Total fines collected
     private String payReason; // 'Entity' player is paying for an action (purely for UI)
     private boolean playerPay; // Whether player is paying for an action (purely for UI)
-    private boolean gameOver = false;
     private boolean passedGo = false; // Whether current player passed go on this turn
-    private Card collectedCard;
-    private Bid maxBid;
-    // RNG
-    private Dice dice = new Dice(2,6);
+    private Card collectedCard; // Card picked up on Opportunity knock and Pot Luck spaces
+    private Bid maxBid; // Maximum bid in an auction
+    private Dice dice = new Dice(2,6); // Random number generator
     /**
      * Constructor of class Game
      * @param players - arraylist of human and non-human players
@@ -46,8 +43,8 @@ public class  Game {
     }
 
     /**
-     * Mehtod for running turns of the game
-     * @return appropriate enum for action
+     * Iterates game by 1 turn, either moves the player from a dice roll or handles jail logic
+     * @return enum signal for UI
      */
     public UITip iterateGame() {
         passedGo = false;
@@ -97,16 +94,8 @@ public class  Game {
     }
 
     /**
-     * Method responsible for pointing to player for the next turn
-     */
-    public void selectNextPlayer() {
-        currentPlayer = (currentPlayer + 1) % players.size();
-        dice.reset();
-    }
-
-    /**
-     * Method responsible for running turns
-     * @return - UITip with action
+     * Takes action based on the tile the player is currently on
+     * @return enum signal for UI
      */
     public UITip takeTurn() {
         passedGo = false;
@@ -164,29 +153,37 @@ public class  Game {
     }
 
     /**
-     * Execute action
-     * @param actionable - action
-     * @return UITip action
+     * Method responsible for pointing to player for the next turn
+     */
+    public void selectNextPlayer() {
+        currentPlayer = (currentPlayer + 1) % players.size();
+        dice.reset();
+    }
+
+    /**
+     * Performs an enumerated action based on the parameter passed
+     * @param actionable interface with Action class
+     * @return enum signal for UI
      */
     private UITip executeActionable(Actionable actionable) {
 
         Action action = actionable.getAction();
-        Player tempPlayer;
+        Player currentPlayer = getCurrentPlayer();
         switch (action.getActCode()) {
             case PAYFINEOROPP:
                 collectedCard = opportunity.draw();
                 return UITip.SHOW_OPPCHOICE;
             case BANKPAY:
-                getCurrentPlayer().pay(-action.getVal1());
+                currentPlayer.pay(-action.getVal1());
                 payReason = "BANK";
                 playerPay = false;
                 return UITip.SHOW_TRANSFERMONEY;
             case PAYBANK:
-                getCurrentPlayer().pay(action.getVal1());
+                currentPlayer.pay(action.getVal1());
                 payReason = "BANK";
                 playerPay = true;
                 // Check for bankruptcy
-                if (getCurrentPlayer().getMoney() < 0) {
+                if (currentPlayer.getMoney() < 0) {
                     return UITip.SHOW_BANKRUPT;
                 }
                 return UITip.SHOW_TRANSFERMONEY;
@@ -196,56 +193,52 @@ public class  Game {
             case MOVEBACKTO:
                 getCurrentPlayer().setMovingBack(true);
             case MOVETO:
-                tempPlayer = players.get(currentPlayer);
-                tempPlayer.setPos(action.getVal1());
-                if (tempPlayer.getPos() < tempPlayer.getPrevPos() && action.getVal2() == 1) {
-                    tempPlayer.pay(-GO_REWARD);
+                currentPlayer.setPos(action.getVal1());
+                if (currentPlayer.getPos() < currentPlayer.getPrevPos() && action.getVal2() == 1) {
+                    currentPlayer.pay(-GO_REWARD);
                     passedGo = true;
                 }
                 return UITip.MOVE_PLAYER;
             case MOVEBACKN:
-                getCurrentPlayer().setMovingBack(true);
-                tempPlayer = players.get(currentPlayer);
-                tempPlayer.setPos(tempPlayer.getPos() - action.getVal1());
-                if (tempPlayer.getPos() < tempPlayer.getPrevPos() && action.getVal2() == 1){
-                    tempPlayer.pay(-GO_REWARD);
+                currentPlayer.setMovingBack(true);
+                currentPlayer.setPos(currentPlayer.getPos() - action.getVal1());
+                if (currentPlayer.getPos() < currentPlayer.getPrevPos() && action.getVal2() == 1){
+                    currentPlayer.pay(-GO_REWARD);
                     passedGo = true;
                 }
                 return UITip.MOVE_PLAYER;
             case MOVEN:
-                tempPlayer = players.get(currentPlayer);
-                int currentPos = tempPlayer.getPos();
-                tempPlayer.setPos(currentPos + action.getVal1());
-                if (tempPlayer.getPos() < tempPlayer.getPrevPos() && action.getVal2() == 1){
-                    tempPlayer.pay(-GO_REWARD);
+                int currentPos = currentPlayer.getPos();
+                currentPlayer.setPos(currentPos + action.getVal1());
+                if (currentPlayer.getPos() < currentPlayer.getPrevPos() && action.getVal2() == 1){
+                    currentPlayer.pay(-GO_REWARD);
                     passedGo = true;
                 }
                 return UITip.MOVE_PLAYER;
             case PAYASSETS:
-                tempPlayer = getCurrentPlayer();
                 if (board.getNoHouses(getCurrentPlayer()) > 0 || board.getNoHotels(getCurrentPlayer()) > 0) {
-                    tempPlayer.pay(action.getVal1() * board.getNoHouses(tempPlayer) + action.getVal2() * board.getNoHotels(tempPlayer));
+                    currentPlayer.pay(action.getVal1() * board.getNoHouses(currentPlayer) + action.getVal2() * board.getNoHotels(currentPlayer));
                     payReason = "BANK";
                     playerPay = true;
-                    if (getCurrentPlayer().getMoney() < 0) {
+                    if (currentPlayer.getMoney() < 0) {
                         return UITip.SHOW_BANKRUPT;
                     }
                     return UITip.SHOW_TRANSFERMONEY;
                 }
                 return UITip.NOP;
             case PAYFINE:
-                getCurrentPlayer().pay(action.getVal1());
+                currentPlayer.pay(action.getVal1());
                 freeParking += action.getVal1();
                 payReason = "TAX";
                 playerPay = true;
                 // Check for bankruptcy
-                if (getCurrentPlayer().getMoney() < 0) {
+                if (currentPlayer.getMoney() < 0) {
                     return UITip.SHOW_BANKRUPT;
                 }
                 return UITip.SHOW_TRANSFERMONEY;
             case FINEPAY:
                 if (freeParking != 0) {
-                    getCurrentPlayer().pay(-freeParking);
+                    currentPlayer.pay(-freeParking);
                     freeParking = 0;
                     payReason = "FINES";
                     playerPay = false;
@@ -259,17 +252,14 @@ public class  Game {
                 collectedCard = opportunity.draw();
                 return UITip.SHOW_OPPORTUNITY;
             case JAILCARD:
-                tempPlayer = players.get(currentPlayer);
-                tempPlayer.addJailCard();
+                currentPlayer.addJailCard();
                 return UITip.NOP;
             case COLLECTALL:
-                tempPlayer = players.get(currentPlayer);
-                storedPlayer = players.get(currentPlayer);
                 Player playerToPay;
                 for (int i = 0; i < players.size(); i++) {
                     playerToPay = players.get(i);
                     playerToPay.pay(action.getVal1());
-                    tempPlayer.pay(-action.getVal1());
+                    currentPlayer.pay(-action.getVal1());
                 }
                 return UITip.SHOW_MULTITRANSFER;
             default:
@@ -278,15 +268,16 @@ public class  Game {
     }
 
     /**
-     * Returns card
-     * @return cards
+     * Returns card picked up from Opportunity knock or Pot luck tile
+     * If no card has been picked up returns null
+     * @return card object
      */
     public UITip executeCollectedCard() {
         return executeActionable(collectedCard);
     }
 
     /**
-     * Returns list of properties to develop
+     * Returns list of properties that can be developed
      * @param p instance of class player
      * @return list of properties
      */
@@ -314,7 +305,7 @@ public class  Game {
     }
 
     /**
-     * Returns list of streets which player owns
+     * Returns list of streets where player owns every property
      * @param p instance of class player
      * @return list of streets which player owns
      */
@@ -346,7 +337,7 @@ public class  Game {
     }
 
     /**
-     * Method for removing player from property
+     * Method for removing player from game
      * @param p Instance of class player
      */
     public void removePlayer(Player p) {
@@ -356,7 +347,7 @@ public class  Game {
     }
 
     /**
-     * Returns dice
+     * Returns dice object used to calculate rolls
      * @return dice
      */
     public Dice getDice() {
@@ -364,7 +355,7 @@ public class  Game {
     }
 
     /**
-     * Getter of board
+     * Returns board object used by game
      * @return board
      */
     public Board getBoard() {
@@ -372,8 +363,8 @@ public class  Game {
     }
 
     /**
-     * Purchases the tile current player is on in for current player
-     * @param tile instance of BuyableTile class
+     * Purchases the tile current player is on for current player
+     * @param tile instance of BuyableTile class to be bought
      */
     public void buyTile(BuyableTile tile) {
         buyTile(tile,getCurrentPlayer(),tile.getCost());
@@ -385,8 +376,8 @@ public class  Game {
     }
 
     /**
-     * Method for leaving jail
-     * @param option instance of JailOption class
+     * Removes player from jail
+     * @param option way in which player has left jail
      */
     public void leaveJail(JailOption option) {
         switch (option) {
@@ -407,6 +398,10 @@ public class  Game {
         }
     }
 
+    /**
+     * Creates a dice removes player from jail if it rolls a double
+     * @return dice object created for roll
+     */
     public Dice rollForJail() {
         Dice tempDice = new Dice(2,6);
         tempDice.roll();
@@ -416,6 +411,9 @@ public class  Game {
         return tempDice;
     }
 
+    /**
+     * Resets auction system
+     */
     public void startAuction() {
         maxBid = null;
     }
@@ -460,39 +458,48 @@ public class  Game {
         }
     }
 
-
-
+    /**
+     * @return highest bid in current auction, if no bid exists returns null
+     */
     public Bid getMaxBid() {
         return maxBid;
     }
 
+    /**
+     * Getter for list of players that have not gone bankrupt
+     * @return ArrayList of players
+     */
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
+    /**
+     * Returns true if current player has passed GO on this iteration, otherwise false
+     * @return boolean
+     */
     public boolean hasPassedGo() {
         return passedGo;
     }
 
-    public Player getStoredPlayer() {
-        return storedPlayer;
-    }
-
+    /**
+     * Gets the currently selected player
+     * @return player object
+     */
     public Player getCurrentPlayer() {
         return players.get(currentPlayer);
     }
 
+    /**
+     * Returns true if player does not receive another turn
+     * @return boolean
+     */
     public boolean isPlayersLastRoll() {
         return !dice.isDouble() || getCurrentPlayer().inJail();
     }
 
     /**
      * Returns a list of the properties, utilities and stations
-     * Owned by the player passed
+     * Owned by the player passed as a parameter
      * @param p player who's owned properties, utilities and stations are returned
      * @return List of player's owned properties, utilities and stations
      */
@@ -514,19 +521,20 @@ public class  Game {
     }
 
     /**
-     * Returns playing player
-     * @return returns playing player
+     * Returns true if player is paying someone else as the result of an Action
+     * @return boolean
      */
     public boolean isPlayerPaying() { return playerPay; }
 
     /**
-     * returns pay reason
-     * @return pay reason
+     * returns name of the 'entity' player is paying
+     * @return string name
      */
     public String getPayReason() { return payReason; }
 
     /**
-     * Method for selling the property
+     * Method which sells a property back to the bank
+     * If property has houses or a hotel developed on it then 1 house / hotel will be sold instead
      * @param buyable the property for selling
      */
     public void sellBuyable(BuyableTile buyable) {
@@ -548,8 +556,8 @@ public class  Game {
     }
 
     /**
-     * Mehtod for mortgaging a property
-     * @param buyable the property for mortgage
+     * Method for mortgaging a property
+     * @param buyable the property to mortgage
      */
     public void mortgageBuyable(BuyableTile buyable) {
         if (buyable.getOwner() != null) {
@@ -557,6 +565,12 @@ public class  Game {
             buyable.setMortgaged(true);
         }
     }
+
+    /**
+     * Calculates the combined value of player's assets as well as their balance
+     * @param p player who's value will be calculated
+     * @return value
+     */
     public int calculateValue(Player p)
     {
         int value = p.getMoney();
@@ -580,6 +594,11 @@ public class  Game {
         return value;
     }
 
+    /**
+     * If there is more than one player left, returns highest value player
+     * Otherwise returns last remaining player
+     * @return player who has won the game
+     */
     public Player getWinner()
     {
         if (players.size() > 1) {
@@ -599,6 +618,7 @@ public class  Game {
             return players.get(0);
         }
     }
+
 
     public Card getCollectedCard() {
         return collectedCard;

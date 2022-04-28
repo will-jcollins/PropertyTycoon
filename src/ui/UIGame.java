@@ -228,13 +228,13 @@ public class UIGame extends BorderPane {
         String[] playerNames = new String[model.getPlayers().size()];
 
         for (Player otherPlayer : model.getPlayers()) {
-            if (!Objects.equals(otherPlayer.getName(), model.getStoredPlayer().getName())) {
+            if (!Objects.equals(otherPlayer.getName(), model.getCurrentPlayer().getName())) {
                 playerNames[i] = otherPlayer.getName().toUpperCase();
             } else playerNames[i] = "";
             i++;
         }
 
-        MultiTransferMoneyMenu menu = new MultiTransferMoneyMenu(model.getStoredPlayer(), playerNames);
+        MultiTransferMoneyMenu menu = new MultiTransferMoneyMenu(model.getCurrentPlayer(), playerNames);
 
         showMenu(menu,
                 onShow -> menu.startAnimation(),

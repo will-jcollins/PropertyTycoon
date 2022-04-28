@@ -130,6 +130,13 @@ public class PlayerMenuController implements Initializable
         textFields.add(playerName5);
         textFields.add(playerName6);
 
+        for (TextField field : textFields) {
+            field.textProperty().addListener((observable,oldValue,newValue) -> {
+                if (newValue.length() > 10) {
+                    field.setText(oldValue);
+                }
+            });
+        }
 
 
         checkBoxes.add(playerBox1);
@@ -145,9 +152,6 @@ public class PlayerMenuController implements Initializable
         playersLabels.add(player4);
         playersLabels.add(player5);
         playersLabels.add(player6);
-
-
-
 
     }
 

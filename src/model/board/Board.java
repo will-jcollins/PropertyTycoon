@@ -94,10 +94,6 @@ public class Board {
         }
     }
 
-    public void setTile(int i, Tile tile) {
-        tiles[i] = tile;
-    }
-
     /**
      * Returns the tile at index i in the board
      *
@@ -138,17 +134,29 @@ public class Board {
         return out;
     }
 
+    /**
+     * Resets ownership on every buyable tile
+     * Where player passed is the owner
+     * @param p player who's properties should be reset
+     */
     public void freeProperties(Player p) {
-        // Removes ownership from every property with player p
         for (Tile tile : tiles) {
             if (tile instanceof BuyableTile) {
                 BuyableTile buyable = (BuyableTile) tile;
 
-                freeProperty(buyable);
+                if (buyable.getOwner() != null) {
+                    if (buyable.getOwner().equals(p)) {
+                        freeProperty(buyable);
+                    }
+                }
             }
         }
     }
 
+    /**
+     * Resets ownership on a buyable tile
+     * @param buyable tile to reset ownership on
+     */
     public void freeProperty(BuyableTile buyable) {
         if (buyable.getOwner() != null) {
             buyable.setOwner(null);
