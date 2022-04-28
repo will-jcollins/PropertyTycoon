@@ -36,6 +36,7 @@ public class Player {
         this.isAuto = isAuto;
     }
 
+
     /**
      * @return return player position
      */
