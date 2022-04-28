@@ -32,13 +32,14 @@ public class UITile extends Group {
     private final double maxX;
     private final double minY;
     private final double maxY;
+
     /**
      * Costructor of class UITile
-     * @param x x coordinate
-     * @param y y coordinate
+     * @param x x coordinate in group
+     * @param y y coordinate in group
      * @param width width value
      * @param height height value
-     * @param angle angle value
+     * @param angle angle value (currently only multiples of 90 are supported, anything else will lead to unknown behaviour)
      */
     public UITile(int x, int y, double width, double height, double angle) {
         Rectangle back = new Rectangle();
@@ -70,8 +71,9 @@ public class UITile extends Group {
         this.width = width;
         this.height = height;
     }
+
     /**
-     * Method responsible for formating text inside UITile
+     * Inserts a newline to text if it extends past UITile's bounds
      * @param in text to format
      * @return formated text
      */

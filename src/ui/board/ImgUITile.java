@@ -5,6 +5,9 @@ import javafx.scene.image.ImageView;
 import model.board.ActionTile;
 import model.board.Tile;
 
+/**
+ * Displays a UITile which is filled by an image
+ */
 public class ImgUITile extends UITile {
 
     public ImgUITile(int x, int y, double width, double height, double angle, String imgPath) {

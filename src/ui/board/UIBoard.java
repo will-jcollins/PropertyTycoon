@@ -10,12 +10,10 @@ import model.game.Game;
 
 import java.util.HashMap;
 /**
- * Class which is responsible for building the board
+ * Class which is responsible for building and displaying the game board
  * @Author Will Collins
  */
 public class UIBoard extends Group {
-
-    private static final int DEFAULT_SIZE = 810;
 
     // Geometry constants
     private final int SIZE;
@@ -28,10 +26,11 @@ public class UIBoard extends Group {
 
     private UITile[] tiles;
     private Board board;
+
     /**
      * Costructor of class UIBoard
-     * @param board Instance of class Board from model.board
-     * @param size size of the row in the board
+     * @param board Instance of class Board from model.board to represent
+     * @param size width and height of displayed board
      */
     public UIBoard(Board board, int size) {
         super();
@@ -56,33 +55,14 @@ public class UIBoard extends Group {
         setCache(true);
     }
 
-    public UIBoard(Board board) {
-        super();
-
-        this.board = board;
-
-        this.tiles = new UITile[Board.SIZE];
-
-        // Not possible to draw a monopoly board with tile count that isn't a factor of 4
-        if (Board.SIZE % 4 != 0) {
-            throw new IllegalArgumentException("No of tiles on board must be divisible by 4");
-        }
-
-        // Calculate geometry constants
-        SIZE = DEFAULT_SIZE;
-        TILESPERSIDE = (Board.SIZE - 4) / 4;
-        TILE_HEIGHT = SIZE / 8;
-        TILE_WIDTH = (SIZE - (2 * TILE_HEIGHT)) / TILESPERSIDE;
-
-        drawBoard(this.board);
-
-        setCache(true);
-    }
     /**
      * Method responsible for drawing the board
      * @param board instance of class Board from model.board
      */
     public void drawBoard(Board board) {
+        // Reset group so board has an empty canvas to draw onto
+        getChildren().clear();
+
         final int[] xDirections = new int[] {-1, 0, 1, 0};
         final int[] yDirections = new int[] {0, -1, 0, 1};
         // Tracks position where elements are placed on the screen
@@ -123,8 +103,15 @@ public class UIBoard extends Group {
             // Update angle tiles are placed
             angle = (angle + 90) % 360;
         }
+
+        update();
     }
 
+    /**
+     * Returns the x position of tile in local space at position given
+     * @param pos position of tile in Board object
+     * @return x co-ordinate
+     */
     public double getXTilePos(int pos) {
         if (pos != Game.JAIL_POS) {
             return (tiles[pos].getMinX() + tiles[pos].getMaxX()) / 2;
@@ -135,6 +122,11 @@ public class UIBoard extends Group {
 
     }
 
+    /**
+     * Returns the y position of tile in local space at position given
+     * @param pos position of tile in Board object
+     * @return y co-ordinate
+     */
     public double getYTilePos(int pos) {
         if (pos != Game.JAIL_POS) {
             return (tiles[pos].getMinY() + tiles[pos].getMaxY()) / 2;
@@ -143,18 +135,34 @@ public class UIBoard extends Group {
         }
     }
 
+    /**
+     * Returns the x position of jail tile
+     * @return x co-ordinate
+     */
     public double getXJailPos() {
         return (tiles[Game.JAIL_POS].getMinX() + tiles[Game.JAIL_POS].getMaxX()) / 2 + TILE_HEIGHT / 5;
     }
 
+    /**
+     * Returns the y position of jail tile
+     * @return y co-ordinate
+     */
     public double getYJailPos() {
         return (tiles[Game.JAIL_POS].getMinY() + tiles[Game.JAIL_POS].getMaxY()) / 2 - TILE_HEIGHT / 5;
     }
 
+    /**
+     * Returns how large the drawn board is
+     * @return size
+     */
     public int getSize() {
         return SIZE;
     }
 
+    /**
+     * Adds ownership ribbons to any tiles that have a new owner
+     * For BuyableTiles
+     */
     public void update() {
         for (UITile t : tiles) {
             if (t instanceof PropertyUITile) {

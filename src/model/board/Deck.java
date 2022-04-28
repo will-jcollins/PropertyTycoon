@@ -15,9 +15,12 @@ import java.util.Random;
  * class representing a deck of potluck cards
  */
 public class Deck {
-    private static final Random random = new Random();
     private LinkedList<Card> deck;
 
+    /**
+     * Builds a deck of cards using the information at the path supplied
+     * @param path filepath to JSON file with card information
+     */
     public Deck(String path) {
         StringBuilder sb = new StringBuilder();
 

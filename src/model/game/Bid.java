@@ -17,7 +17,7 @@ public class Bid {
 
     /**
      * Getter for player
-     * @return INstance of class player
+     * @return Instance of class player
      */
     public Player getPlayer() {
         return player;
