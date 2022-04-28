@@ -201,17 +201,35 @@ public class PlayerMenuController implements Initializable
                     boolean isAi = choiceBoxes.get(i).getValue().toString().equals("AI player");
                     players.add(new Player(i,textFields.get(i).getText(),isAi));
                 }
+                int len = players.size();
+                int count = 0;
+                for(Player p: players)
+                {
+                    if(p.isAuto())
+                    {
+                        count++;
+                    }
+                }
+                if(count != len)
+                {
+                    ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
-
-
-                ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("../FXML files/gameMode.fxml"));
-                Scene scene = new Scene(loader.load(),389,402 );
-                Stage stage = new Stage();
-                stage.setScene(scene);
-                stage.show();
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("../FXML files/gameMode.fxml"));
+                    Scene scene = new Scene(loader.load(),389,402 );
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.show();
+                }
+                else{
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("../FXML files/playerException.fxml"));
+                    Scene scene = new Scene(loader.load(),350,208);
+                    Stage stage = new Stage();
+                    stage.setTitle("ERROR");
+                    stage.setScene(scene);
+                    stage.show();
+                }
             }catch(Exception e)
             {
                 e.printStackTrace();
