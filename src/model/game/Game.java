@@ -629,13 +629,13 @@ public class  Game {
      */
     public int calculateValue(Player p)
     {
-        // Start
+        // Start with player's current balance
         int value = p.getMoney();
 
         for (BuyableTile tile : ownedByPlayer(p)) {
 
             // Sum value of buyables, half value if property was mortgaged
-            if (!tile.isMortgaged()) {
+            if (tile.isMortgaged()) {
                 value += tile.getCost() / 2;
             }
             else {

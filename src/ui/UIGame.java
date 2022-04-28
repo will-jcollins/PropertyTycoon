@@ -7,16 +7,23 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Player.Player;
 import model.board.BuyableTile;
 import model.board.PropertyTile;
+import model.board.Street;
 import model.game.Dice;
 import model.game.Game;
 import ui.board.UIBoard;
@@ -25,6 +32,7 @@ import ui.menu.dice.DiceMenu;
 import ui.player.PlayerStats;
 import ui.player.UIPlayers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -60,7 +68,7 @@ public class UIGame extends BorderPane {
         gameStack.getChildren().add(board);
         gameStack.getChildren().add(players);
 
-        // Create vertical list of player information
+        // Create vertical list of player information and stats
         VBox statsVBox = new VBox();
         statsVBox.setSpacing(Sizes.getPadding());
         playerStats = new ArrayList<>();
@@ -70,6 +78,13 @@ public class UIGame extends BorderPane {
             playerStats.add(stats);
             statsVBox.getChildren().add(stats);
         }
+
+        // Button which allows players to quit the game without finishing
+        TextButton quitButton = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.RED.getColor(),"QUIT");
+        quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> quit());
+        statsVBox.getChildren().add(quitButton);
+
+        // If game has a time limit, add timer to stats VBox
         if (gameLength > 0) {
             timer = new UITimer(gameLength);
             statsVBox.getChildren().add(timer);
@@ -163,7 +178,7 @@ public class UIGame extends BorderPane {
 
         showMenu(menu,
                 onShow -> {},
-                onExit -> {});
+                onExit -> quit());
     }
 
     /**
@@ -587,5 +602,19 @@ public class UIGame extends BorderPane {
 
     private void remove(Node n) {
         gameStack.getChildren().remove(n);
+    }
+
+    private void quit() {
+        ((Stage) getScene().getWindow()).close();
+
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Start");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
