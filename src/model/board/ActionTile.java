@@ -10,6 +10,7 @@ import ui.board.UITile;
 
 /**
  * Class for implementing action tiles
+ * Action tiles have an Action associated with them that can trigger logic on the game
  */
 public class ActionTile extends Tile implements Actionable {
     /**

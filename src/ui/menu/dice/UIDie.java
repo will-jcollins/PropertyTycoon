@@ -14,10 +14,8 @@ import java.util.Random;
  */
 public class UIDie extends Group {
 
-    private static final int DEPTH_BEFORE_FINISH = 50;
+    private static final int DEPTH_BEFORE_FINISH = 50; // Number of random numbers sh
     private static final int TIME_BETWEEN_NUM = 20;
-
-    private static final int PADDING = 10;
 
     private final int dotRadius;
     private final double width;
@@ -46,6 +44,11 @@ public class UIDie extends Group {
         displayNum(1);
     }
 
+    /**
+     * Starts dice animation, shows a series of random dice numbers before finally landing
+     * On supplied final number
+     * @param finalNum last number that will be shown
+     */
     public void animateRoll(int finalNum) {
         animateRoll(finalNum, DEPTH_BEFORE_FINISH);
     }
@@ -60,7 +63,7 @@ public class UIDie extends Group {
             Random rand = new Random();
             displayNum(rand.nextInt(6) + 1);
 
-            // Run on separate thread to prevent UI from freezing
+            // Wait for a small amount of time before showing next random number
             Platform.runLater(() -> {
                 try {
                     Thread.sleep(TIME_BETWEEN_NUM);
@@ -71,6 +74,7 @@ public class UIDie extends Group {
             });
         }
     }
+
     /**
      * Method for displaying dots on the dice when animating
      * @param i numebr of dots to display

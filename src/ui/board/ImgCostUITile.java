@@ -18,7 +18,7 @@ public class ImgCostUITile extends UITile {
         // Replace space chars with newline
         name = formatText(name);
 
-        // Draw station's name
+        // Draw title
         Text title = new Text(name.toUpperCase());
         title.setX(x);
         title.setY(y + 1.7 * (height / 10));

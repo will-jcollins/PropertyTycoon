@@ -59,6 +59,10 @@ public abstract class Menu extends GridPane {
         return 1000;
     }
 
+    /**
+     * Returns true when menu can be closed
+     * @return boolean
+     */
     public boolean isFinished() {
         return true;
     }
@@ -73,7 +77,7 @@ public abstract class Menu extends GridPane {
     }
 
     /**
-     * Randomly presses one of the TextButton options (if any exist)
+     * Randomly presses a TextButton options (if any exist)
      */
     public void autoFire() {
         if (options.size() > 0) {

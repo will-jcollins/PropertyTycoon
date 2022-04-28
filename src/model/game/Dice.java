@@ -9,7 +9,7 @@ public class Dice {
 
     private int[] vals;
     private int range;
-    private int doubles = 0;
+    private int doubles = 0; // Number of doubles in a row
     private Random rand;
 
     /**
@@ -30,10 +30,12 @@ public class Dice {
      * @return resulting array of random values
      */
     public int[] roll() {
+        // Populate array with random values
         for (int i = 0; i < vals.length; i++) {
             vals[i] = rand.nextInt(range) + 1;
         }
 
+        // If a double was rolled, increment double counter, otherwise reset it to zero
         doubles = isDouble() ? (doubles + 1) : 0;
 
         return vals;
@@ -64,6 +66,7 @@ public class Dice {
             if (vals[i] != vals[i + 1]) {
                 return false;
             } else if (vals[i] == 0) {
+                // Return false if any value is zero as that means dice has been reset since last roll
                 return false;
             }
         }
@@ -71,8 +74,7 @@ public class Dice {
     }
 
     /**
-     * Returns number of times a double has been rolled since last time
-     * Dice was reset
+     * Returns number of times a double has been rolled in a row since last time Dice was reset
      * @return n times double has been rolled by this dice
      */
     public int getDoubles() {
