@@ -47,17 +47,26 @@ public class Controller {
      * @param event
      */
 
-    //TODO add rule window and write couple of rules into it
+
     public void rulesMenuButton(ActionEvent event)
     {
-        //TODO open rules window
+
+        try{
+            ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("../FXML files/rulesMenu.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(),800,600);
+            Stage stage = new Stage();
+            stage.setTitle("Rules");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    /**
-     * Opens settings menu
-     * @param event
-     */
 
 
 

@@ -1,6 +1,5 @@
 package ui.menu;
 
-import apple.laf.JRSUIConstants;
 import javafx.geometry.HPos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
