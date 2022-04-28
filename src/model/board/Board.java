@@ -168,7 +168,7 @@ public class Board {
             if (tile instanceof PropertyTile) {
                 PropertyTile prop = (PropertyTile) tile;
                 if (prop.getOwner() == p) {
-                    houses += Math.max(((PropertyTile) tile).getNoHouses(), PropertyTile.MAX_NO_HOUSES - 1);
+                    houses += Math.min(((PropertyTile) tile).getNoHouses(), PropertyTile.MAX_NO_HOUSES - 1);
                 }
             }
         }

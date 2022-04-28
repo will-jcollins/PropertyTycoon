@@ -38,6 +38,7 @@ public class BankruptMenu extends MortgageMenu {
             finished = true;
             concede = true;
         });
+        addOption(concedeButton);
     }
 
     public boolean didConcede() {

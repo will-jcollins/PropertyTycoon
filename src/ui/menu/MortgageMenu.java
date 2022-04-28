@@ -1,5 +1,6 @@
 package ui.menu;
 
+import javafx.beans.property.Property;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -10,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.Player.Player;
 import model.board.BuyableTile;
+import model.board.PropertyTile;
 import model.board.Street;
 import ui.Sizes;
 
@@ -47,6 +49,13 @@ public class MortgageMenu extends Menu
 
         for (BuyableTile buyable: ownedProperties)
         {
+            // Skip properties that have been developed
+            if (buyable instanceof PropertyTile) {
+                if (((PropertyTile) buyable).getNoHouses() > 0) {
+                    continue;
+                }
+            }
+
             HBox row = new HBox();
             row.setAlignment(Pos.CENTER);
             row.setSpacing(PADDING);

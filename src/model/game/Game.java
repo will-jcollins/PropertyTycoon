@@ -6,7 +6,6 @@ import model.actions.Actionable;
 import model.board.*;
 import ui.menu.UITip;
 
-import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -532,8 +531,19 @@ public class  Game {
      */
     public void sellBuyable(BuyableTile buyable) {
         if (buyable.getOwner() != null) {
-            buyable.getOwner().pay(-buyable.getCost());
-            board.freeProperty(buyable);
+            if (buyable instanceof PropertyTile) {
+                PropertyTile property = (PropertyTile) buyable;
+                if (property.getNoHouses() > 0) {
+                    property.setNoHouses(property.getNoHouses() - 1);
+                    buyable.getOwner().pay(-property.getStreet().getDevelopCost());
+                } else {
+                    buyable.getOwner().pay(-buyable.getCost());
+                    board.freeProperty(buyable);
+                }
+            } else {
+                buyable.getOwner().pay(-buyable.getCost());
+                board.freeProperty(buyable);
+            }
         }
     }
 
@@ -547,45 +557,47 @@ public class  Game {
             buyable.setMortgaged(true);
         }
     }
-    public int calculateValueOfAssets(Player p)
+    public int calculateValue(Player p)
     {
-        ArrayList<PropertyTile> props = new ArrayList<>();
-        for (Street street : streetsOwnedByPlayer(p))
-        {
-            props = board.getStreetTiles(street);
-        }
-        int value = 0;
-        for(PropertyTile tile: props)
-        {
+        int value = p.getMoney();
 
-            if(!tile.isMortgaged())
-            {
+        for (BuyableTile tile : ownedByPlayer(p)) {
+
+            // Sum value of buyables
+            if (!tile.isMortgaged()) {
                 value += tile.getCost() / 2;
             }
-            else{
+            else {
                 value += tile.getCost();
             }
+
+            // Sum value of houses
+            if (tile instanceof PropertyTile) {
+                value += ((PropertyTile) tile).getNoHouses() * ((PropertyTile) tile).getStreet().getDevelopCost();
+            }
         }
+
         return value;
     }
 
-    public Player getWinnerOfTime()
+    public Player getWinner()
     {
-        ArrayList<Integer> values = new ArrayList<>();
-        for(Player p: players)
-        {
-            values.add(calculateValueOfAssets(p));
-        }
-        int max = Collections.max(values);
-        int index = 0;
-        for(int i  = 0; i < values.size();i++)
-        {
-            if(values.get(i) == max)
-            {
-                index = i;
+        if (players.size() > 1) {
+            ArrayList<Integer> values = new ArrayList<>();
+            for (Player p : players) {
+                values.add(calculateValue(p));
             }
+            int max = Collections.max(values);
+            int index = 0;
+            for (int i = 0; i < values.size(); i++) {
+                if (values.get(i) == max) {
+                    index = i;
+                }
+            }
+            return players.get(index);
+        } else {
+            return players.get(0);
         }
-        return players.get(index);
     }
 
     public Card getCollectedCard() {

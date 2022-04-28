@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import model.Player.Player;
 import model.board.BuyableTile;
+import model.board.PropertyTile;
 import model.board.Street;
 import ui.Sizes;
 
@@ -62,12 +63,24 @@ public class SellingMenu extends Menu
             buttonAndText.setAlignment(Pos.CENTER);
             buttonAndText.setSpacing(PADDING);
 
-            TextButton sell = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(),Street.GREEN.getColor(),"SELL FOR $" + buyable.getCost());
+            TextButton sell;
+
+            if (buyable instanceof PropertyTile) {
+                PropertyTile property = (PropertyTile) buyable;
+                if (property.getNoHouses() > 0) {
+                     sell = new TextButton(Sizes.getButtonWidth() * 1.5,Sizes.getButtonHeight(),Street.GREEN.getColor(),"SELL HOUSE FOR $" + ((PropertyTile) buyable).getStreet().getDevelopCost());
+                } else {
+                    sell = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(),Street.GREEN.getColor(),"SELL FOR $" + buyable.getCost());
+                }
+            } else {
+                sell = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(),Street.GREEN.getColor(),"SELL FOR $" + buyable.getCost());
+            }
+
+            buttonAndText.getChildren().add(sell);
             sell.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 outcome = buyable;
                 finished = true;
             });
-            buttonAndText.getChildren().add(sell);
 
             row.getChildren().add(buttonAndText);
             root.getChildren().add(row);

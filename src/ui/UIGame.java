@@ -159,7 +159,7 @@ public class UIGame extends BorderPane {
      * Method responsible for creating game over popup menu
      */
     private void createGameOverPopup() {
-        GameOverMenu menu = new GameOverMenu(model.getPlayers());
+        GameOverMenu menu = new GameOverMenu(model.getWinner(),model.calculateValue(model.getWinner()));
 
         showMenu(menu,
                 onShow -> {},
@@ -501,7 +501,7 @@ public class UIGame extends BorderPane {
     private void createSellMenu()
     {
         ArrayList<BuyableTile> sellProperties = model.ownedByPlayer(model.getCurrentPlayer());
-        MortgageMenu sm = new MortgageMenu(sellProperties);
+        SellingMenu sm = new SellingMenu(sellProperties);
 
         showMenu(sm,onShow -> {}, onExit -> {
             if (sm.getSelectedProperty() != null) {
