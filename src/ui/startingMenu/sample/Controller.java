@@ -50,7 +50,7 @@ public class Controller {
     //TODO add rule window and write couple of rules into it
     public void rulesMenuButton(ActionEvent event)
     {
-
+        //TODO open rules window
 
     }
 
@@ -59,11 +59,7 @@ public class Controller {
      * @param event
      */
 
-    //TODO settings window as soon as we discuss which settings are needed
-    public void settingsMenuButton(ActionEvent event)
-    {
 
-    }
 
 
 
