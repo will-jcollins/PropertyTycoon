@@ -13,6 +13,7 @@ import model.board.PropertyTile;
 import model.board.StationTile;
 import model.board.UtilityTile;
 
+// If there is time refactor this class to use JavaFX layouts
 public class BuyableCard extends Group {
     /**
      * Parameters for the design of buyable cards
@@ -256,7 +257,7 @@ public class BuyableCard extends Group {
             y += caption.getBoundsInLocal().getHeight();
         }
 
-        y += PADDING * 2;
+        y += PADDING;
 
         Text mortgage = new Text("Mortgage Value       $" + (utility.getCost() / 2));
         mortgage.setFont(CAPTION_FONT);

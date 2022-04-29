@@ -1,6 +1,7 @@
 package model.Player;
 
 import model.board.Board;
+import model.game.Game;
 
 import java.util.Objects;
 import java.util.Random;
@@ -8,27 +9,33 @@ import java.util.Random;
 /**
  * Class defining player
  */
-public abstract class Player {
+public class Player {
 
     private final int id;
     private final String name;
-    private int pos = 39; // Player position
+    private int pos = 0; // Player position
     private int prevPos = 0;
     private int money = 1500;
     private int prevMoney = money;
     private int jailCards = 0;
-    private boolean passedGo = true; // Whether the player has EVER passed go
-    private boolean inJail = false;
+    private boolean passedGo = false; // Whether the player has EVER passed go
+    private int turnsInJail = 0;
+    private boolean leftJail = false;
+    private boolean isAuto;
+    private boolean movingBack = false;
 
     /**
      * Costructor of class player
      * @param id player id
      * @param name player name
+     * @param isAuto is the player controlled autonomously
      */
-    public Player(int id, String name){
+    public Player(int id, String name, boolean isAuto) {
         this.id = id;
         this.name = name;
+        this.isAuto = isAuto;
     }
+
 
     /**
      * @return return player position
@@ -90,8 +97,28 @@ public abstract class Player {
         return id;
     }
 
+    /**
+     * Increase player's number of get out of jail free
+     * cards by 1
+     */
     public void addJailCard(){
         jailCards += 1;
+    }
+
+    /**
+     * Decrease player's number of get out of jail free
+     * cards by 1
+     */
+    public void removeJailCard() {
+        jailCards -= 1;
+    }
+
+    /**
+     * Indicates if player has at least 1 jail card
+     * @return true if player has at least 1 jail card
+     */
+    public int getJailCards() {
+        return jailCards;
     }
 
     /**
@@ -110,11 +137,6 @@ public abstract class Player {
         return name;
     }
 
-    public boolean askPlayer(String message) {
-        System.out.println(message);
-        return true;
-    }
-
     /**
      * Checks if player passed starting tile
      * @return true if passed, false otherwise
@@ -123,8 +145,49 @@ public abstract class Player {
         return passedGo;
     }
 
-    public boolean isInJail() {
-        return inJail;
+    /**
+     * Sets player state to enter jail
+     */
+    public void sendToJail() {
+        turnsInJail = 1;
+    }
+
+    public void leaveJail() {
+        turnsInJail = 0;
+        pos = Game.JAIL_POS;
+        leftJail = true;
+    }
+
+    public boolean inJail() {
+        return turnsInJail > 0;
+    }
+
+    public void addTurnInJail() {
+        turnsInJail += 1;
+    }
+
+    public int getTurnsInJail() {
+        return turnsInJail;
+    }
+
+    public boolean hasLeftJail() {
+        return leftJail;
+    }
+
+    public void setLeftJail(boolean leftJail) {
+        this.leftJail = leftJail;
+    }
+
+    public boolean isAuto() {
+        return isAuto;
+    }
+
+    public boolean isMovingBack() {
+        return movingBack;
+    }
+
+    public void setMovingBack(boolean movingBack) {
+        this.movingBack = movingBack;
     }
 
     @Override

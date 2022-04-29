@@ -1,7 +1,9 @@
 package ui.menu.dice;
 
+import javafx.event.Event;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -16,7 +18,7 @@ import ui.menu.Menu;
 import ui.menu.TextButton;
 
 /**
- * Class which builds rolling dice menu
+ * Class which visualises a 2 dice roll
  */
 public class DiceMenu extends Menu {
 
@@ -24,9 +26,10 @@ public class DiceMenu extends Menu {
     private UIDie die2;
 
     private boolean started = false;
+
     /**
      * Constructor of class DiceMenu
-     * @param dice Instance of class Dice from model.game
+     * @param dice Instance of Dice to visualise
      */
     public DiceMenu(Dice dice) {
         super();
@@ -63,7 +66,9 @@ public class DiceMenu extends Menu {
                 die2.animateRoll(dice.getRoll()[1]);
             }
         });
+        addOption(accept);
     }
+
     /**
      * Method checks if rolling animation is finished
      * @return true if the animation is finished, false otherwise

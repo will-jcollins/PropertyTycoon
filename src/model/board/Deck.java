@@ -1,6 +1,5 @@
 package model.board;
 
-import model.actions.ActCode;
 import model.actions.Action;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -8,13 +7,20 @@ import org.json.JSONObject;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Random;
 
+/**
+ * class representing a deck of potluck cards
+ */
 public class Deck {
-    private static final Random random = new Random();
-    private Card[] deck;
+    private LinkedList<Card> deck;
 
+    /**
+     * Builds a deck of cards using the information at the path supplied
+     * @param path filepath to JSON file with card information
+     */
     public Deck(String path) {
         StringBuilder sb = new StringBuilder();
 
@@ -33,21 +39,26 @@ public class Deck {
         }
 
         JSONArray objects = new JSONArray(sb.toString());
-        deck = new Card[objects.length()];
+        deck = new LinkedList<>();
         // Populate deck with Card objects using information from JSON
         for (int i = 0; i < objects.length(); i++) {
             JSONObject obj = objects.getJSONObject(i);
-
             Card card;
             card = new Card(obj.getString("text"),
                     new Action(obj.getString("action")));
-            deck[i] = card;
+            deck.add(card);
         }
+        // Randomise order of cards
+        Collections.shuffle(deck);
     }
 
-
-    public Card draw(){
-        int pos = random.nextInt(deck.length);
-        return deck[pos];
+    /**
+     * Method returns the top card on the deck of cards and puts it at the bottom
+     * @return top card from the deck
+     */
+    public Card draw() {
+        // Return top card and place a copy to the bottom
+        deck.offer(deck.peek());
+        return deck.poll();
     }
 }

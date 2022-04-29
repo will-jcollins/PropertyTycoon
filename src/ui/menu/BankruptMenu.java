@@ -2,47 +2,46 @@ package ui.menu;
 
 import javafx.geometry.HPos;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import model.Player.Player;
+import javafx.scene.text.TextAlignment;
 import model.board.Street;
+import model.game.Game;
 import ui.Sizes;
 
-public class BankruptMenu extends Menu {
+/**
+ * Class for creating Bankrupt menu
+ */
+public class BankruptMenu extends MortgageMenu {
 
-    private boolean finished;
+    private boolean concede = false;
 
-    public BankruptMenu(Player player) {
-        super();
+    /**
+     * Constructor of BunkruptMenu class
+     * @param model - game object representing current monopoly game
+     */
+    public BankruptMenu(Game model) {
+        super(model.ownedByPlayer(model.getCurrentPlayer()));
 
-        Text title =  new Text(player.getName() + " IS BANKRUPT!");
-        title.setFont(TITLE_FONT);
-        title.setFill(Color.BLACK);
-        getChildren().add(title);
-        setColumnIndex(title,0);
-        setColumnSpan(title,2);
-        setRowIndex(title, 0);
-        setHalignment(title, HPos.CENTER);
+        // Prevent player from being able to exit the menu without conceding
+        getChildren().remove(exitButton);
 
-        TextButton gameOver = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.RED.getColor(), "CONTINUE");
-        getChildren().add(gameOver);
-        setColumnIndex(gameOver,0);
-        setRowIndex(gameOver, 1);
-        setHalignment(gameOver, HPos.CENTER);
-        gameOver.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                    finished = true;
-                }
-        );
+        Text nameTxt = new Text(model.getCurrentPlayer().getName().toUpperCase() + " IS BANKRUPT\nSELL PROPERTIES OR CONCEDE");
+        nameTxt.setFont(TITLE_FONT);
+        nameTxt.setTextAlignment(TextAlignment.CENTER);
+        nameTxt.setLineSpacing(Sizes.getLineSpacing());
+        add(nameTxt,0,4);
 
-        setStyle("");
-        setBackground(new Background(new BackgroundFill(Color.TRANSPARENT,null,null)));
+        TextButton concedeButton = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Street.RED.getColor(), "CONCEDE");
+        add(concedeButton,1,4);
+        setHalignment(concedeButton, HPos.CENTER);
+        concedeButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            finished = true;
+            concede = true;
+        });
+        addOption(concedeButton);
     }
 
-    @Override
-    public boolean isFinished() {
-        return finished;
+    public boolean didConcede() {
+        return concede;
     }
-
 }

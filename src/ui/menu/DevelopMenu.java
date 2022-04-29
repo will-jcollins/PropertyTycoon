@@ -72,6 +72,7 @@ public class DevelopMenu extends Menu {
                     finished = true;
                 });
                 buttonAndText.getChildren().add(develop);
+                addOption(develop);
             } else {
                 develop = new TextButton(Sizes.getButtonWidth(),Sizes.getButtonHeight(), Color.GRAY,"DEVELOP");
                 buttonAndText.getChildren().add(develop);
@@ -80,8 +81,6 @@ public class DevelopMenu extends Menu {
                 lowBalanceTxt.setFont(TEXT_FONT);
                 buttonAndText.getChildren().add(lowBalanceTxt);
             }
-
-
 
             int houses = Math.min(prop.getNoHouses(),PropertyTile.MAX_NO_HOUSES - 1);
             int hotels = prop.getNoHouses() / 5;
@@ -111,6 +110,7 @@ public class DevelopMenu extends Menu {
         setRowSpan(exitButton,2);
         setHalignment(exitButton, HPos.CENTER);
         setValignment(exitButton, VPos.CENTER);
+        addOption(exitButton);
     }
 
     public PropertyTile getSelectedProperty() {

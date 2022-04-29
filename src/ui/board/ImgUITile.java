@@ -5,10 +5,10 @@ import javafx.scene.image.ImageView;
 import model.board.ActionTile;
 import model.board.Tile;
 
+/**
+ * Displays a UITile which is filled by an image
+ */
 public class ImgUITile extends UITile {
-
-    protected static final String GOTOJAILIMG = "file:assets/images/gotojail.png";
-    protected static final String PARKINGIMG = "file:assets/images/parking.png";
 
     public ImgUITile(int x, int y, double width, double height, double angle, String imgPath) {
         super(x, y, width, height, angle);

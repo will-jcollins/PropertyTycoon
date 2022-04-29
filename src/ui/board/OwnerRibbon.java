@@ -11,6 +11,7 @@ import javafx.util.Duration;
 import ui.Sizes;
 /**
  * Class defining ribbons which appear after player buys a tile
+ * @Author Will Collins
  */
 public class OwnerRibbon extends Polygon {
     /**

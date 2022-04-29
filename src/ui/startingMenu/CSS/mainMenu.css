@@ -1,0 +1,44 @@
+*{
+    -fx-base: rgb(191,219,173);
+}
+
+
+.button{
+    -fx-font-size: 16pt;
+
+    -fx-text-fill: white;
+}
+
+
+.startButton{
+    -fx-background-color: #E66152;
+    -fx-border-color: white;
+    -fx-border-width: 2,2,2,2;
+    -fx-background-insets: 0;
+
+
+}
+.startButton:hover{
+    -fx-background-color: rgb(255, 69, 0,0.65);
+}
+
+.settingsButton{
+    -fx-background-color: #E66152;
+    -fx-border-color: white;
+    -fx-border-width: 2,2,2,2;
+    -fx-background-insets: 0;
+}
+.settingsButton:hover{
+    -fx-background-color: rgb(255, 69, 0,0.65);
+}
+
+.rulesButton{
+    -fx-background-color: #E66152;
+    -fx-border-color: white;
+    -fx-border-width: 2,2,2,2;
+    -fx-background-insets: 0;
+}
+.rulesButton:hover{
+    -fx-background-color: rgb(255, 69, 0,0.65);
+}
+

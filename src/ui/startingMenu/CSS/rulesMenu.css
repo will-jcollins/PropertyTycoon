@@ -1,0 +1,15 @@
+*{
+    -fx-base: rgb(191,219,173);
+}
+
+.returnButton{
+    -fx-text-fill: white;
+    -fx-shape: "M 550 400 L 450 300 L 550 400 L 450 300 L 450 300 L 550 200 L 550 250 L 650 250 L 650 350 L 550 350 L 550 400 ";
+    -fx-background-color: #E66152;
+
+}
+
+.returnButton:hover{
+    -fx-background-color: rgb(255, 69, 0,0.65);
+
+}

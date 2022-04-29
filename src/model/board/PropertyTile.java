@@ -55,7 +55,8 @@ public class PropertyTile extends BuyableTile {
     }
 
     public void setNoHouses(int noHouses) {
-        this.noHouses = noHouses;
+        this.noHouses = Math.max(0,noHouses);
+        this.noHouses = Math.min(MAX_NO_HOUSES,this.noHouses);
     }
 
     @Override

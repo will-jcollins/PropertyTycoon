@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="402.0" prefWidth="389.0" stylesheets="@../CSS/gameMode.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.startingMenu.sample.GameMenuController">
+   <children>
+      <Label alignment="CENTER" layoutX="112.0" layoutY="53.0" prefHeight="40.0" prefWidth="166.0" text="Choose game mode" />
+      <Button layoutX="120.0" layoutY="120.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#classicalMode" prefHeight="70.0" prefWidth="150.0" styleClass="classicalMode" text="Classical mode" />
+      <Button layoutX="120.0" layoutY="240.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#timeMode" prefHeight="70.0" prefWidth="150.0" styleClass="timeMode" text="Time mode" />
+      <Button layoutX="41.0" layoutY="339.0" mnemonicParsing="false" onAction="#returnButton" prefHeight="27.0" prefWidth="54.0" styleClass="returnButton" />
+   </children>
+</AnchorPane>

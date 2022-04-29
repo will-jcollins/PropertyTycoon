@@ -3,12 +3,10 @@ package ui.player;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import model.Player.Player;
@@ -20,12 +18,18 @@ import java.util.HashMap;
 import java.util.List;
 /**
  * Class responsible for crating and moving player tokens
+ * @Author Will Collins
  */
 public class UIPlayers extends Group {
 
     private static final double OPACITY = 0.5;
 
-    public static final Color[] PLAYER_COLORS = {new Color(0.58,0.67,0.59,1), Color.GRAY, Color.BLUE, Color.GREEN, Color.PINK, Color.PURPLE};
+    public static final Color[] PLAYER_COLORS = {new Color(0.58,0.67,0.59,1),
+                                                 new Color(0.78,0.52,0.6,1),
+                                                 new Color(0.63,0.48,0.65,1),
+                                                 new Color(0.32,0.67,0.73,1),
+                                                 new Color(0.71,0.51,0.38,1),
+                                                 new Color(0.76,0.61,0.17,1)};
     public static final String[] PLAYER_IMGS = {"file:assets/images/token1.png","file:assets/images/token2.png","file:assets/images/token3.png","file:assets/images/token4.png","file:assets/images/token5.png","file:assets/images/token6.png",};
     private HashMap<Player, ImageView> tokens;
 
@@ -88,32 +92,52 @@ public class UIPlayers extends Group {
      * @param onFinish EventHandler responisble for animation of the player movement
      * @throws InterruptedException
      */
-    public void updatePlayers(Player player, UIBoard board, EventHandler onFinish) throws InterruptedException {
+    public void updatePlayers(Player player, UIBoard board, EventHandler onFinish) {
         finished = false;
 
         // Move pieces to the correct tile, changing tile player is positioned on by 1 at a time
         ImageView token = tokens.get(player);
         SequentialTransition seqTransition = new SequentialTransition(token);
 
-        // Build all transitions required to move token to next position one by one
-        int nextPos = player.getPrevPos();
-        int prevPos = nextPos;
 
-        while (nextPos != player.getPos()) {
-            nextPos = (nextPos + 1) % Board.SIZE;
-
+        if (player.getTurnsInJail() == 1) {
+            // Move player into jail on their first turn
             TranslateTransition transTransition = new TranslateTransition(Duration.millis(500));
-            transTransition.setByX(board.getXTilePos(nextPos) - board.getXTilePos(prevPos));
-            transTransition.setByY(board.getYTilePos(nextPos) - board.getYTilePos(prevPos));
+            transTransition.setByX(board.getXJailPos() - board.getXTilePos(player.getPos()));
+            transTransition.setByY(board.getYJailPos() - board.getYTilePos(player.getPos()));
             seqTransition.getChildren().add(transTransition);
+        } else if (player.hasLeftJail()) {
+            // Move player into jail on their first turn
+            TranslateTransition transTransition = new TranslateTransition(Duration.millis(500));
+            transTransition.setByX(board.getXTilePos(player.getPos()) - board.getXJailPos());
+            transTransition.setByY(board.getYTilePos(player.getPos()) - board.getYJailPos());
+            seqTransition.getChildren().add(transTransition);
+        } else if (!player.inJail()) {
+            // Build all transitions required to move token to next position one by one
+            int nextPos = player.getPrevPos();
+            int prevPos = nextPos;
 
-            prevPos = nextPos;
+            while (nextPos != player.getPos()) {
+                if (!player.isMovingBack()) {
+                    nextPos = (nextPos + 1) % Board.SIZE;
+                } else {
+                    nextPos = (nextPos - 1) <= -1 ? Board.SIZE - 1 : (nextPos - 1);
+                }
+
+                TranslateTransition transTransition = new TranslateTransition(Duration.millis(500));
+                transTransition.setByX(board.getXTilePos(nextPos) - board.getXTilePos(prevPos));
+                transTransition.setByY(board.getYTilePos(nextPos) - board.getYTilePos(prevPos));
+                seqTransition.getChildren().add(transTransition);
+
+                prevPos = nextPos;
+            }
         }
 
         // Play transitions constructed in sequence
         seqTransition.play();
         seqTransition.setOnFinished(onFinish);
     }
+
     /**
      * Method responisible for highlighting player whose move is currently on
      * @param p Instance of class Player
@@ -133,6 +157,10 @@ public class UIPlayers extends Group {
         outFade.setFromValue(1);
         outFade.setToValue(OPACITY);
         outFade.play();
+    }
+
+    public void removePlayer(Player p) {
+        getChildren().remove(tokens.get(p));
     }
 
     public boolean isFinished() {

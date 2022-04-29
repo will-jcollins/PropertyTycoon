@@ -9,7 +9,7 @@ public class Dice {
 
     private int[] vals;
     private int range;
-    private int doubles = 0;
+    private int doubles = 0; // Number of doubles in a row
     private Random rand;
 
     /**
@@ -26,36 +26,37 @@ public class Dice {
         rand = new Random();
     }
     /**
-     * Function resposible for rolling the dice
-     * @return array of rolled values
+     * Generates n random numbers within the range passed in constructor
+     * @return resulting array of random values
      */
     public int[] roll() {
+        // Populate array with random values
         for (int i = 0; i < vals.length; i++) {
             vals[i] = rand.nextInt(range) + 1;
-            vals[0] = 2;
-            vals[1] = 6;
         }
 
+        // If a double was rolled, increment double counter, otherwise reset it to zero
         doubles = isDouble() ? (doubles + 1) : 0;
 
         return vals;
     }
 
     /**
-     * getter
-     * @return array of values - vals
+     * Provides an array of values for the last roll
+     * @return array of random values
      */
     public int[] getRoll() {
         return vals;
     }
 
     /**
-     * Add all values in vals
-     * @return sum of elements in val
+     * Add all values from last roll
+     * @return sum of values from last roll
      */
     public int getRollTotal() {
         return Arrays.stream(vals).sum();
     }
+
     /**
      * Checks if the dice roll is a double
      * @return true if it is a double, false otherwise
@@ -64,31 +65,30 @@ public class Dice {
         for (int i = 0; i < vals.length - 1; i++) {
             if (vals[i] != vals[i + 1]) {
                 return false;
+            } else if (vals[i] == 0) {
+                // Return false if any value is zero as that means dice has been reset since last roll
+                return false;
             }
         }
         return true;
     }
 
+    /**
+     * Returns number of times a double has been rolled in a row since last time Dice was reset
+     * @return n times double has been rolled by this dice
+     */
     public int getDoubles() {
         return doubles;
     }
 
+    /**
+     * Resets number of doubles to zero and clears last roll
+     */
     public void reset() {
         doubles = 0;
 
-        for (int i : vals) {
-            i = 0;
-        }
-    }
-
-    public static void main(String[] args) {
-        Dice d = new Dice(3, 6);
-        int[] roll = d.roll();
-
-        for (int i = 0; i < 100; i++) {
-            System.out.println(Arrays.toString(roll));
-            System.out.println(d.isDouble());
-            roll = d.roll();
+        for (int i = 0; i < vals.length; i++) {
+            vals[i] = 0;
         }
     }
 }

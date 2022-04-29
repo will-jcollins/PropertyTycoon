@@ -19,6 +19,9 @@ import ui.player.UIPlayers;
 
 import java.security.acl.Owner;
 
+/**
+ * Class describing UITile which is a property
+ */
 public class PropertyUITile extends UITile {
 
     private static final String HOUSE_PATH = "file:assets/images/house.png";
@@ -28,13 +31,19 @@ public class PropertyUITile extends UITile {
 
     private ImageView houseIcon;
     private Text houseCount;
-
     private ImageView hotelIcon;
-
     private Polygon ribbon;
-
     private PropertyTile property;
 
+    /**
+     * Constructor of PropertyUITile class
+     * @param x x value
+     * @param y y value
+     * @param width width value
+     * @param height height value
+     * @param angle angile value
+     * @param property property
+     */
     public PropertyUITile(int x, int y, double width, double height, double angle, PropertyTile property) {
         super(x, y, width, height, angle);
 
@@ -95,8 +104,8 @@ public class PropertyUITile extends UITile {
         ribbon.setOpacity(0);
         ribbon.setStroke(Color.BLACK);
         ribbon.setStrokeWidth(Sizes.getSmallStroke());
-        ribbon.toBack();
         getChildren().add(ribbon);
+        ribbon.toBack();
     }
 
     public void update() {
@@ -105,15 +114,24 @@ public class PropertyUITile extends UITile {
             houseCount.setVisible(true);
             int houses = Math.min(property.getNoHouses(),PropertyTile.MAX_NO_HOUSES - 1);
             Platform.runLater(() -> houseCount.setText(Integer.toString(houses)));
+        } else {
+            houseIcon.setVisible(false);
+            houseCount.setVisible(false);
         }
 
         if (property.getNoHouses() >= PropertyTile.MAX_NO_HOUSES) {
             hotelIcon.setVisible(true);
+        } else {
+            hotelIcon.setVisible(false);
         }
 
-        if (property.getOwner() != null && ribbon.getOpacity() < 1) {
-            ribbon.setFill(UIPlayers.PLAYER_COLORS[property.getOwner().getId()]);
-            ribbon.setOpacity(1);
+        if (property.getOwner() != null) {
+            if (ribbon.getOpacity() < 1) {
+                ribbon.setFill(UIPlayers.PLAYER_COLORS[property.getOwner().getId()]);
+                ribbon.setOpacity(1);
+            }
+        } else {
+            ribbon.setOpacity(0);
         }
     }
 }

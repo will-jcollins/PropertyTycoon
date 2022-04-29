@@ -94,10 +94,6 @@ public class Board {
         }
     }
 
-    public void setTile(int i, Tile tile) {
-        tiles[i] = tile;
-    }
-
     /**
      * Returns the tile at index i in the board
      *
@@ -109,22 +105,12 @@ public class Board {
         return tiles[i];
     }
 
-    /**
-     * Returns the first board tile with the name entered
-     *
-     * @param name name attribute of tile searching for
-     * @return tile with name equal to param, null if there is no tile with that name
-     * @author Will Collins
-     */
-    public Tile getTile(String name) {
-        for (Tile tile : tiles) {
-            if (tile.getName().equals(name)) {
-                return tile;
-            }
-        }
-        return null;
-    }
 
+    /**
+     * Gets all of the properties on a given street
+     * @param street street which properties returned are on
+     * @return list of properties on street supplied
+     */
     public ArrayList<PropertyTile> getStreetTiles(Street street) {
         ArrayList<PropertyTile> out = new ArrayList<>();
         for (Tile t : tiles) {
@@ -138,16 +124,33 @@ public class Board {
         return out;
     }
 
+    /**
+     * Resets ownership on every buyable tile
+     * Where player passed is the owner
+     * @param p player who's properties should be reset
+     */
     public void freeProperties(Player p) {
-        // Removes ownership from every property with player p
         for (Tile tile : tiles) {
             if (tile instanceof BuyableTile) {
                 BuyableTile buyable = (BuyableTile) tile;
 
-                if (buyable.getOwner() == p) {
-                    buyable.setOwner(null);
+                if (buyable.getOwner() != null) {
+                    if (buyable.getOwner().equals(p)) {
+                        freeProperty(buyable);
+                    }
                 }
             }
+        }
+    }
+
+    /**
+     * Resets ownership on a buyable tile
+     * @param buyable tile to reset ownership on
+     */
+    public void freeProperty(BuyableTile buyable) {
+        if (buyable.getOwner() != null) {
+            buyable.setOwner(null);
+            buyable.setMortgaged(false);
         }
     }
 
@@ -163,7 +166,9 @@ public class Board {
             if (tile instanceof PropertyTile) {
                 PropertyTile prop = (PropertyTile) tile;
                 if (prop.getOwner() == p) {
-                    houses += Math.max(((PropertyTile) tile).getNoHouses(), PropertyTile.MAX_NO_HOUSES - 1);
+                    // Limit number of houses that can be added to the max no of houses minus 1
+                    // This is because houses and hotels are tracked by the same attribute
+                    houses += Math.min(((PropertyTile) tile).getNoHouses(), PropertyTile.MAX_NO_HOUSES - 1);
                 }
             }
         }
@@ -191,6 +196,11 @@ public class Board {
         return hotels;
     }
 
+    /**
+     * Returns the number of stations player passed owns
+     * @param p player who's number of stations will be returned
+     * @return number of stations player passed owns
+     */
     public int noStationsOwned(Player p) {
         int noStations = 0;
 
@@ -207,6 +217,11 @@ public class Board {
         return noStations;
     }
 
+    /**
+     * Returns the number of utilities player passed owns
+     * @param p player who's number of utilities will be returned
+     * @return number of utilities player passed owns
+     */
     public int noUtilitiesOwned(Player p) {
         int noStations = 0;
 

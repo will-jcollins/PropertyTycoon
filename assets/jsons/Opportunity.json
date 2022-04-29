@@ -45,6 +45,6 @@
 },
 {
 "text":"Go back 3 spaces" ,
-"action":"MOVEN 3 -1"
+"action":"MOVEBACKN 3 0"
 }
 ]

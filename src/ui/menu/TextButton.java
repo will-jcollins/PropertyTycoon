@@ -1,15 +1,12 @@
 package ui.menu;
 
+import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.animation.SequentialTransition;
+import javafx.application.Platform;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -27,6 +24,7 @@ public class TextButton extends Group {
 
     private static final Font FONT = Font.loadFont("file:assets/fonts/Kabel.ttf", Sizes.getFontHeading());
 
+    private Rectangle back;
     private Text buttonText;
 
     /**
@@ -39,7 +37,7 @@ public class TextButton extends Group {
     public TextButton(double width, double height, Color color, String text) {
         super();
 
-        Rectangle back = new Rectangle();
+        back = new Rectangle();
         back.setWidth(width);
         back.setHeight(height);
         back.setFill(color);
@@ -62,5 +60,56 @@ public class TextButton extends Group {
         buttonText.setX(width / 2 - (buttonText.getBoundsInLocal().getWidth() / 2));
         buttonText.setY(height / 2 + (buttonText.getBoundsInLocal().getHeight() / 3));
         getChildren().add(buttonText);
+
+        addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(5),this);
+            scaleTransition.setToX(0.95);
+            scaleTransition.setToY(0.95);
+            scaleTransition.play();
+        });
+
+        addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(5),this);
+            scaleTransition.setToX(1);
+            scaleTransition.setToY(1);
+            scaleTransition.play();
+        });
+    }
+
+    public void setFill(Color c) {
+        back.setFill(c);
+    }
+
+    public void fire() {
+        ScaleTransition shrinkTransition = new ScaleTransition(Duration.millis(50),this);
+        shrinkTransition.setToX(0.9);
+        shrinkTransition.setToY(0.9);
+
+        ScaleTransition growTransition = new ScaleTransition(Duration.millis(50),this);
+        growTransition.setToX(1);
+        growTransition.setToY(1);
+
+        SequentialTransition sequentialTransition = new SequentialTransition(shrinkTransition,growTransition);
+        sequentialTransition.setOnFinished(e -> {
+            fireEvent(new MouseEvent(MouseEvent.MOUSE_CLICKED, 0, // double x,
+                    0, // double y,
+                    0, // double screenX,
+                    0, // double screenY,
+                    MouseButton.PRIMARY, // MouseButton button,
+                    0, // int clickCount,
+                    false, // boolean shiftDown,
+                    false, // boolean controlDown,
+                    false, // boolean altDown,
+                    false, // boolean metaDown,
+                    true, // boolean primaryButtonDown,
+                    false, // boolean middleButtonDown,
+                    false, // boolean secondaryButtonDown,
+                    false, // boolean synthesized,
+                    false, // boolean popupTrigger,
+                    false, // boolean stillSincePress,
+                    null // PickResult pickResult
+            ));
+        });
+        sequentialTransition.play();
     }
 }
