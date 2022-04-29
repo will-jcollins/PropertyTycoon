@@ -26,16 +26,16 @@
             <Button fx:id="rulesButton" mnemonicParsing="false" onAction="#rulesMenuButton" prefHeight="45.0" prefWidth="177.0" styleClass="rulesButton" text="Rules" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
-      <ImageView fitHeight="200.0" fitWidth="100.0" layoutX="50.0" layoutY="99.0">
-         <image>
-            <Image url="@../images/tycoonPart2-removebg-preview.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="99.0" layoutX="451.0" layoutY="101.0">
-         <image>
-            <Image url="@../images/tycoonPart1-removebg-preview.png" />
-         </image>
-      </ImageView>
+<!--      <ImageView fitHeight="200.0" fitWidth="100.0" layoutX="50.0" layoutY="99.0">-->
+<!--         <image>-->
+<!--            <Image url="@../images/tycoonPart2-removebg-preview.png" />-->
+<!--         </image>-->
+<!--      </ImageView>-->
+<!--      <ImageView fitHeight="200.0" fitWidth="99.0" layoutX="451.0" layoutY="101.0">-->
+<!--         <image>-->
+<!--            <Image url="@../images/tycoonPart1-removebg-preview.png" />-->
+<!--         </image>-->
+<!--      </ImageView>-->
       <Label fx:id="startLabel" alignment="CENTER" layoutX="190.0" layoutY="54.0" prefHeight="45.0" prefWidth="220.0" text="Property Tycoon">
          <font>
             <Font size="24.0" />
