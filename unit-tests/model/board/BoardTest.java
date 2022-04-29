@@ -1,6 +1,6 @@
 package model.board;
 
-import model.Player.HumanPlayer;
+
 import model.Player.Player;
 import model.actions.Action;
 import org.junit.jupiter.api.BeforeAll;
@@ -42,7 +42,7 @@ class BoardTest {
     void testGetTileName() {
         ActionTile tile = new ActionTile("Go", new Action("NOP"));
         board.setTile(0, tile);
-        assertEquals(board.getTile(tile.getName()), tile);
+        assertEquals(board.getTile(0), tile);
     }
 
     @Test
@@ -54,7 +54,7 @@ class BoardTest {
 
         PropertyTile tile = new PropertyTile("testProperty", 500,rent,t);
         board.setTile(0, tile);
-        assertEquals(board.getTile(tile.getName()), tile);
+        assertEquals(board.getTile(0), tile);
     }
 
     @Test
@@ -67,7 +67,7 @@ class BoardTest {
         PropertyTile tile = new PropertyTile("testProperty", 500,rent,t);
         board.setTile(0, tile);
         BuyableTile buyable = tile;
-        Player p = new HumanPlayer(1, "Test");
+        Player p = new Player(1, "Test", false);
         buyable.setOwner(p);
 
         assertEquals(buyable.getOwner(), p);
@@ -89,7 +89,7 @@ class BoardTest {
         board.setTile(0, tile);
         board.setTile(1, station);
         BuyableTile buyable = tile;
-        Player p = new HumanPlayer(1, "Test");
+        Player p = new Player(1, "Test", false);
         buyable.setOwner(p);
         station.setOwner(p);
 
