@@ -177,6 +177,15 @@ public class Board {
     }
 
     /**
+     * Changes tile at index i of board to tile passed
+     * @param i index of tile to be changed
+     * @param tile new value
+     */
+    public void setTile(int i, Tile tile) {
+        tiles[i] = tile;
+    }
+
+    /**
      * Determines number of hotels a player owns
      * @param p player to analyse
      * @return number of hotels owned by player p

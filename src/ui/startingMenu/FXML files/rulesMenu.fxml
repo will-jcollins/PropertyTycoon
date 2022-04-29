@@ -28,7 +28,7 @@
             <Label text="4. A pair of dice are rolled each turn" GridPane.rowIndex="3" />
             <Label text="5. Rolling a double means the player rolls again" GridPane.rowIndex="4" />
             <Label text="6. Properties can be purchased for the price shown " GridPane.rowIndex="5" />
-            <Label text="7. A property owned by another player extracts rent at the rate shown" GridPane.rowIndex="6" />
+            <Label text="7. Players get the amount of rent shown on a card" GridPane.rowIndex="6" />
             <Label text="8. Houses and hotels can be built to increase rent payments" GridPane.columnIndex="1" />
             <Label text="9. A player who cannot pay rent is bankrupt" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="10. Properties can be mortgaged to raise half their value in funds" GridPane.columnIndex="1" GridPane.rowIndex="2" />
