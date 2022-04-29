@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TileTest {
+class UtilityTileTest {
 
     @Test
     void testGetters() {
-        String name = "GO";
-        Tile tile = new Tile(name);
+        String name = "utility";
+        UtilityTile tile = new UtilityTile(name, 200);
         assertEquals(tile.getName(), name);
     }
 }

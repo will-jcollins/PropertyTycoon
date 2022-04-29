@@ -2,6 +2,9 @@ package model.board;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PropertyTileTest {
@@ -12,29 +15,16 @@ class PropertyTileTest {
         Street color = Street.BROWN;
         int cost = 60;
         int[] rent = {1, 2, 3, 4, 5, 6};
-        PropertyTile propTile = new PropertyTile(name, color, cost, rent);
-        assertEquals(propTile.getName(), name);
-        assertEquals(propTile.getCost(), cost);
+        ArrayList<Street> streets = new ArrayList<>(Arrays.asList(Street.values()));
+        Street t = streets.get(0);
+        PropertyTile propTile = new PropertyTile(name, cost, rent, t);
+        // assertEquals(propTile.getName(), name);
+        // assertEquals(propTile.getCost(), cost);
         assertEquals(propTile.getStreet(), color);
         assertEquals(propTile.getNoHouses(), 0);
-        assertEquals(propTile.getOwnerID(), -1);
+        assertEquals(propTile.getRent(2), 3);
+        assertEquals(propTile.getRent(), 1);
+        // assertEquals(propTile.getOwnerID(), -1);
 
-        for (int i = 0; i < PropertyTile.MAX_NO_HOUSES; i++) {
-            assertEquals(rent[i], propTile.getRent());
-            propTile.addHouse();
-        }
-    }
-
-    @Test
-    void testAddHouse() {
-        String name = "Montreal";
-        Street color = Street.BROWN;
-        int cost = 60;
-        int[] rent = {1, 2, 3, 4, 5, 6};
-        PropertyTile propTile = new PropertyTile(name, color, cost, rent);
-        for (int i = 0; i < PropertyTile.MAX_NO_HOUSES - 1; i++) {
-            assertTrue(propTile.addHouse());
-        }
-        assertFalse(propTile.addHouse());
     }
 }
